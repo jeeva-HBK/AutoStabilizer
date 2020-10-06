@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#0091EA</color>
+    <color name="colorBlack">#000</color>
+    <color name="colorGreen">#0F9D58</color>
+    <color name="colorRed">#DB4437</color>
+    <color name="white">#fff</color>
+    <color name="tfe_semi_transparent">#66000000</color>
+    <color name="colorNavigation">#fff</color>
+    <color name="colorNavigationDivider">#E0E0E0</color>
+    <color name="colorBlue">#4285F4</color>
+    <color name="colorTransparentWhite">#B7FFFFFF</color>
+    <color name="colorGray">#757575</color>
+    <color name="colorSelectedItem">#E8F0FE</color>
+    <color name="colorDisabled">#808080</color>
+</resources>
