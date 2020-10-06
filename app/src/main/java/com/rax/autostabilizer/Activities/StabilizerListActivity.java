@@ -45,9 +45,15 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
         mBinding.rvStabilizerList.setAdapter(mAdapter);
         mAdapter.setData(mRepo.getStabilizerList(this));
 
-       /* DialogFragment d = new DialogFragment(new SmartConfigFragment(), "Add Stabilizer");
-        d.show(getSupportFragmentManager(), null);
-        d.dismiss();*/
+        mBinding.rvStabilizerFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DialogFragment d = new DialogFragment(new SmartConfigFragment(), "Add Stabilizer");
+                d.show(getSupportFragmentManager(), null);
+            }
+        });
+
+
     }
 
     @Override

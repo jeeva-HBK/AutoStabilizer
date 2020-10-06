@@ -47,6 +47,32 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_name"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginEnd="30dp"
+                    app:boxCornerRadiusBottomEnd="10dp"
+                    app:boxCornerRadiusBottomStart="10dp"
+                    app:boxCornerRadiusTopEnd="10dp"
+                    app:boxCornerRadiusTopStart="10dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtNAME"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="10dp"
+                        android:enabled="false"
+                        android:hint="Name"
+                        android:imeOptions="actionNext"
+                        android:inputType="text"
+                        android:maxLength="30"
+                        android:maxLines="1" />
+
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/til_ssid"
@@ -71,7 +97,8 @@
                         android:imeOptions="actionNext"
                         android:inputType="text"
                         android:maxLength="30"
-                        android:maxLines="1" />
+                        android:maxLines="1"
+                        android:clickable="false"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -97,7 +124,8 @@
                         android:imeOptions="actionNext"
                         android:inputType="text"
                         android:maxLength="30"
-                        android:maxLines="1" />
+                        android:maxLines="1"
+                        android:clickable="false"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
