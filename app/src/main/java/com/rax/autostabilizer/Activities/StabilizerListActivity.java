@@ -49,8 +49,8 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
         mAdapter = new StabilizerListAdapter(this);
         mBinding.rvStabilizerList.setLayoutManager(new LinearLayoutManager(mContext));
         mBinding.rvStabilizerList.setAdapter(mAdapter);
-        mAdapter.setData(mRepo.getStabilizerList(this));
-        //mAdapter.setData(getStabListDemo());
+        //mAdapter.setData(mRepo.getStabilizerList(this));
+        mAdapter.setData(getStabListDemo());
 
         mBinding.rvStabilizerFab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,7 +63,7 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
 
     private List<Stabilizer> getStabListDemo() {
         List<Stabilizer> stabilizers = new ArrayList<>();
-        stabilizers.add(new Stabilizer("Stabilizer 1", "1.1.1.1", 5050, "4545784578"));
+        stabilizers.add(new Stabilizer("Test","192.168.6.45",5000,"454545"));
         stabilizers.add(new Stabilizer("Stabilizer 2", "1.1.1.2", 5050, "4545784578"));
         stabilizers.add(new Stabilizer("Stabilizer 3", "1.1.1.3", 5050, "4545784578"));
         stabilizers.add(new Stabilizer("Stabilizer 4", "1.1.1.4", 5050, "4545784578"));
@@ -121,8 +121,6 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
         mAppClass.sendPacket(data -> {
             dismissProgress();
             if (data.equals(CONNECTED)) {
-                S_Communication communication = new S_Communication();
-                communication.stop();
                 startActivity(new Intent(StabilizerListActivity.this, StabilizerStatusActivity.class));
                 return;
             }

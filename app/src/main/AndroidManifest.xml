@@ -21,18 +21,12 @@
         <activity
             android:name=".Activities.SplashActivity"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
-        <activity android:name=".Activities.StabilizerStatusActivity">
-
-        </activity>
-
+        <activity android:name=".Activities.StabilizerStatusActivity"></activity>
         <service android:name=".Utilities.S_Communication" />
     </application>
 

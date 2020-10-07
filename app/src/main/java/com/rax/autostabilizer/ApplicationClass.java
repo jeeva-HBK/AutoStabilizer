@@ -107,8 +107,6 @@ public class ApplicationClass extends Application {
     }
 
     public void sendPacket(final TCPDataListener listener, String packet) {
-        S_Communication communication = new S_Communication();
-        communication.stop();
         this.mTCPTCPDataListener = listener;
         if (mPacketTimeout != null) {
             mPacketTimeout.cancel();
