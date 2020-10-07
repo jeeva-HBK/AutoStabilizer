@@ -14,8 +14,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.rax.autostabilizer.Utilities.S_Communication;
+import com.rax.autostabilizer.Utilities.UtilMethods;
 
 import static com.rax.autostabilizer.Utilities.S_Communication.ACTION_MyIntentService;
+import static com.rax.autostabilizer.Utilities.S_Communication.RECEIVED_DATA;
 
 public class ApplicationClass extends Application {
     Context mContext;
@@ -26,15 +28,29 @@ public class ApplicationClass extends Application {
         public void onReceive(Context context, Intent intent) {
             try {
                 String data;
+                data = intent.getStringExtra(RECEIVED_DATA);
                 if (mPacketTimeout != null) {
                     mPacketTimeout.cancel();
                 }
                 if (mTCPTCPDataListener != null) {
-                    data = intent.getStringExtra("received_data");
-                    if (data.contains("restart")) {
-                        return;
+                    if (data.contains("*") && data.contains("#")) {
+                        data = data.split("\\*")[1].split("#")[0];
+                        String[] splitted = data.split(";");
+                        StringBuilder builder = new StringBuilder();
+                        for (int i = 0; i < splitted.length; i++) {
+                            if (i != splitted.length - 1) {
+                                builder.append(splitted[i]);
+                                builder.append(";");
+                            }
+                        }
+                        if (UtilMethods.checkCRC(builder.toString(), splitted[splitted.length - 1])) {
+                            mTCPTCPDataListener.OnDataReceive(data);
+                        } else {
+                            mTCPTCPDataListener.OnDataReceive("Invalid CRC");
+                        }
+                    } else {
+                        mTCPTCPDataListener.OnDataReceive(data);
                     }
-                    mTCPTCPDataListener.OnDataReceive(data);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -91,6 +107,8 @@ public class ApplicationClass extends Application {
     }
 
     public void sendPacket(final TCPDataListener listener, String packet) {
+        S_Communication communication = new S_Communication();
+        communication.stop();
         this.mTCPTCPDataListener = listener;
         if (mPacketTimeout != null) {
             mPacketTimeout.cancel();
@@ -124,6 +142,10 @@ public class ApplicationClass extends Application {
 
     public void unregisterReceiver() {
         mContext.unregisterReceiver(mTCPDataReceiver);
+    }
+
+    public String framePack(String data) {
+        return "*" + data + UtilMethods.CRCCalc(data) + "#";
     }
 
     public interface TCPDataListener {

@@ -28,6 +28,13 @@ public class Repository {
                 machineArray = new JSONArray();
             }
 
+            for (int i = 0; i < machineArray.length(); i++) {
+                JSONObject object = machineArray.getJSONObject(i);
+                if (object.get(STAB_MAC).equals(stabilizer.getMacAddress())) {
+                    machineArray.remove(i);
+                }
+            }
+
             machineObject = new JSONObject();
             machineObject.put(STAB_NAME, stabilizer.getName());
             machineObject.put(STAB_IP, stabilizer.getIPAddress());

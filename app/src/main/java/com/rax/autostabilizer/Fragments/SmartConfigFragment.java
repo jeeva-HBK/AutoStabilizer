@@ -15,7 +15,6 @@ import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -38,15 +37,14 @@ import com.espressif.iot.esptouch.IEsptouchTask;
 import com.espressif.iot.esptouch.util.ByteUtil;
 import com.espressif.iot.esptouch.util.TouchNetUtil;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.rax.autostabilizer.Database.Repository;
+import com.rax.autostabilizer.Models.Stabilizer;
 import com.rax.autostabilizer.R;
 import com.rax.autostabilizer.Utilities.S_Communication;
 import com.rax.autostabilizer.databinding.FragmentSmartConfigBinding;
 
 import java.lang.ref.WeakReference;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import static android.content.Context.WIFI_SERVICE;
 import static com.rax.autostabilizer.Utilities.S_Communication.ACTION_MyIntentService;
@@ -57,7 +55,7 @@ public class SmartConfigFragment extends Fragment {
     private static final String TAG = "SmartConfigFragment";
     private final int RETRY_COUNT = 3, RETRY_DELAY = 2000;
     public String configURL, mIPAddress, mDeviceMac;
-    private FragmentSmartConfigBinding binding;
+    public FragmentSmartConfigBinding binding;
     private boolean mReceiverRegistered = false;
     private Context mContext;
 
@@ -135,10 +133,17 @@ public class SmartConfigFragment extends Fragment {
                 Toast.makeText(mContext, "Unknown BSSID", Toast.LENGTH_SHORT).show();
                 return;
             }
+
+            if (binding.edtNAME.getText().toString().equals("")) {
+                Toast.makeText(mContext, "Enter Name", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             if (binding.edtPass.getText().toString().equals("")) {
                 Toast.makeText(mContext, "Enter password", Toast.LENGTH_SHORT).show();
                 return;
             }
+
 
             byte[] ssid = binding.edtSSID.getTag() == null ? ByteUtil.getBytesByString(binding.edtSSID.getText().toString())
                     : (byte[]) binding.edtSSID.getTag();
@@ -256,7 +261,6 @@ public class SmartConfigFragment extends Fragment {
     }
 
 
-
     private void showProgress() {
         binding.progressCircular.setVisibility(View.VISIBLE);
     }
@@ -264,7 +268,6 @@ public class SmartConfigFragment extends Fragment {
     private void dismissProgress() {
         binding.progressCircular.setVisibility(View.GONE);
     }
-
 
 
     public void sendData(Context mContext, String message) {
@@ -311,7 +314,7 @@ public class SmartConfigFragment extends Fragment {
 
         EspSmartConfig(SmartConfigFragment mActivity) {
             this.mActivity = new WeakReference<>(mActivity);
-            registerCustomReceiver(mActivity.mContext, receiver);
+            //  registerCustomReceiver(mActivity.mContext, receiver);
         }
 
         void registerCustomReceiver(Context context, BroadcastReceiver receiver) {
@@ -433,9 +436,14 @@ public class SmartConfigFragment extends Fragment {
             }
             mActivity.get().mIPAddress = firstResult.getInetAddress().getHostAddress();
             mActivity.get().mDeviceMac = firstResult.getBssid();
-            S_Communication.mIPAddress = mActivity.get().mIPAddress;
-            S_Communication.mPortNumber = 5000;
-            // mActivity.get().startPacketSender();
+            new MaterialAlertDialogBuilder(mActivity.get().mContext)
+                    .setTitle("Stabilizer Configured")
+                    .setMessage("IP Address: " + mActivity.get().mIPAddress + "\n" + "MAC: " + mActivity.get().mDeviceMac)
+                    .setPositiveButton("OK", null)
+                    .show();
+            Repository repository = new Repository();
+            repository.saveStabilizer(mActivity.get().getActivity(),
+                    new Stabilizer(mActivity.get().binding.edtNAME.getText().toString(), mActivity.get().mIPAddress, 5000, mActivity.get().mDeviceMac));
 
         }
     }

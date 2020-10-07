@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -101,16 +102,24 @@ public class StabilizerListAdapter extends RecyclerView.Adapter<StabilizerListAd
 
     public class StabilizerViewHolder extends RecyclerView.ViewHolder {
         TextView txtStabilizerName, txtStabilizerIP;
+        CardView parent;
 
         public StabilizerViewHolder(@NonNull View itemView) {
             super(itemView);
             txtStabilizerName = itemView.findViewById(R.id.txtStabilizerName);
             txtStabilizerIP = itemView.findViewById(R.id.txtStabilizerIP);
-            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            parent = itemView.findViewById(R.id.item_parent);
+            parent.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    mListener.OnStabilizerLongClick(getAdapterPosition(),mStabilizerList.get(getAdapterPosition()),view);
+                    mListener.OnStabilizerLongClick(getAdapterPosition(), mStabilizerList.get(getAdapterPosition()), view);
                     return true;
+                }
+            });
+            parent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mListener.OnStabilizerClicked(mStabilizerList.get(getAdapterPosition()));
                 }
             });
         }

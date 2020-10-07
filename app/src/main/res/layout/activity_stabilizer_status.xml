@@ -1,18 +1,229 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".Activities.StabilizerStatusActivity">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/text1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:text="SMART Stabilizers for Air Conditioner"
+            android:textColor="@android:color/black"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/text2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="I/P VOLTAGE"
+            android:textColor="@android:color/black"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/vertical"
+            app:layout_constraintTop_toBottomOf="@+id/text1" />
+
+        <TextView
+            android:id="@+id/text3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="O/P VOLTAGE"
+            android:textColor="@android:color/black"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toRightOf="@id/vertical"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text1" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <TextView
+            android:id="@+id/txtInputVoltage"
+            android:layout_width="160dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/round_corner"
+            android:gravity="center"
+            android:text="180 v"
+            android:textColor="@color/colorBlack"
+            android:textSize="30sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/vertical"
+            app:layout_constraintTop_toBottomOf="@+id/text2" />
+
+        <TextView
+            android:id="@+id/txtOutputVoltage"
+            android:layout_width="160dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/round_corner"
+            android:gravity="center"
+            android:text="230 v"
+            android:textColor="@color/colorBlack"
+            android:textSize="30sp"
+            app:layout_constraintLeft_toLeftOf="@id/vertical"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text3" />
+
+        <TextView
+            android:id="@+id/text4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Power On/Off"
+            android:textColor="@android:color/black"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/swtPower"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="@id/vertical"
+            app:layout_constraintStart_toStartOf="@+id/txtInputVoltage"
+            app:layout_constraintTop_toTopOf="@+id/swtPower" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/swtPower"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
+            app:layout_constraintLeft_toRightOf="@id/vertical"
+            app:layout_constraintStart_toStartOf="@+id/txtOutputVoltage"
+            app:layout_constraintTop_toBottomOf="@id/txtOutputVoltage" />
+
+        <TextView
+            android:id="@+id/text5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Wifi On/Off"
+            android:textColor="@android:color/black"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/swtWifi"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="@id/vertical"
+            app:layout_constraintStart_toStartOf="@+id/text4"
+            app:layout_constraintTop_toTopOf="@+id/swtWifi" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/swtWifi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:visibility="gone"
+            app:layout_constraintLeft_toRightOf="@id/vertical"
+            app:layout_constraintStart_toStartOf="@+id/swtPower"
+            app:layout_constraintTop_toBottomOf="@id/swtPower" />
+
+        <TextView
+            android:id="@+id/text6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Time Delay"
+            android:textColor="@android:color/black"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/swtTimeDelay"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="@id/vertical"
+            app:layout_constraintStart_toStartOf="@+id/text5"
+            app:layout_constraintTop_toTopOf="@+id/swtTimeDelay" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/swtTimeDelay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:enabled="false"
+            app:layout_constraintLeft_toRightOf="@id/vertical"
+            app:layout_constraintStart_toStartOf="@+id/swtWifi"
+            app:layout_constraintTop_toBottomOf="@id/swtWifi" />
+
+        <TextView
+            android:id="@+id/text7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fault Alert"
+            android:textColor="@android:color/black"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/txtFaultAlert"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/vertical"
+            app:layout_constraintStart_toStartOf="@+id/text6"
+            app:layout_constraintTop_toTopOf="@id/txtFaultAlert" />
+
+        <TextView
+            android:id="@+id/txtFaultAlert"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/round_corner"
+            android:gravity="center"
+            android:text="Low"
+            android:textColor="@color/colorBlack"
+            android:textSize="20sp"
+            app:layout_constraintLeft_toRightOf="@+id/text7"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/vertical"
+            app:layout_constraintTop_toBottomOf="@+id/swtTimeDelay" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="140dp"
+            android:layout_height="80dp"
+
+            android:src="@drawable/logo"
+            app:layout_constraintBottom_toTopOf="@+id/textView"
+            app:layout_constraintEnd_toEndOf="@+id/textView"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textView" />
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_margin="10dp"
+            android:src="@drawable/make_in_india_logo"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/textView2"
+            app:layout_constraintLeft_toRightOf="@+id/imageView" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="C ALFO INDIA COMPANY"
+            android:textColor="@color/colorBlack"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:autoLink="web"
+            android:text="www.senseasia.in"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

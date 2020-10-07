@@ -18,7 +18,7 @@ import java.net.UnknownHostException;
 @SuppressWarnings("ALL")
 public class S_Communication extends IntentService {
 
-    public static final String ACTION_MyIntentService = "com.example.w.RESPONSE";
+    public static final String ACTION_MyIntentService = "com.example.w.RESPONSE", CONNECTED = "Connected", RECEIVED_DATA = "ReceivedData";
     public static Socket socketDevice = null;
     public static BufferedReader _inputSteam;
     public static String Packet, mIPAddress;
@@ -50,7 +50,7 @@ public class S_Communication extends IntentService {
         Intent intentResponse = new Intent();
         intentResponse.setAction(ACTION_MyIntentService);
         intentResponse.addCategory(Intent.CATEGORY_DEFAULT);
-        intentResponse.putExtra("news", message);
+        intentResponse.putExtra(RECEIVED_DATA, message);
         sendBroadcast(intentResponse);
     }
 
@@ -135,7 +135,7 @@ public class S_Communication extends IntentService {
                 Log.d("Receive Message", e1.getMessage());
                 Log.d("Receive Message", "UnknownHostException");
             } catch (IOException e1) {
-                intentMessage("restart");
+                //    intentMessage("restart");
                 Log.d("Receive Message", e1.getMessage());
                 Log.d("Receive Message", "restart");
             }
@@ -151,7 +151,7 @@ public class S_Communication extends IntentService {
                     _inputSteam = new BufferedReader(new InputStreamReader(socketDevice.getInputStream()));
                     socketDevice.setKeepAlive(true);
                     socketDevice.setSoLinger(true, 1);
-                    // intentMessage("Connected");
+                    intentMessage("Connected");
                     Log.d("Communication", "Device Connected");
 
                 }
