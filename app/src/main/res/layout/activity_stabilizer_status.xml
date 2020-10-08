@@ -1,11 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/progress_circular"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#7AFFFFFF"
+            android:clickable="true"
+            android:elevation="1dp"
+            android:focusable="true"
+            android:visibility="gone">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true" />
+
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/text1"
@@ -62,7 +78,7 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/round_corner"
             android:gravity="center"
-            android:text="180 v"
+            android:text="N/A"
             android:textColor="@color/colorBlack"
             android:textSize="30sp"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -76,7 +92,7 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/round_corner"
             android:gravity="center"
-            android:text="230 v"
+            android:text="N/A"
             android:textColor="@color/colorBlack"
             android:textSize="30sp"
             app:layout_constraintLeft_toLeftOf="@id/vertical"
@@ -177,7 +193,7 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/round_corner"
             android:gravity="center"
-            android:text="Low"
+            android:text="N/A"
             android:textColor="@color/colorBlack"
             android:textSize="20sp"
             app:layout_constraintLeft_toRightOf="@+id/text7"
@@ -224,7 +240,9 @@
             android:autoLink="web"
             android:text="www.senseasia.in"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"/>
+            app:layout_constraintEnd_toEndOf="@+id/textView"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -33,7 +33,10 @@ public class ApplicationClass extends Application {
                     mPacketTimeout.cancel();
                 }
                 if (mTCPTCPDataListener != null) {
-                    if (data.contains("*") && data.contains("#")) {
+                    // Without CRC
+                    mTCPTCPDataListener.OnDataReceive(data);
+                    // With CRC
+                    /*if (data.contains("*") && data.contains("#")) {
                         data = data.split("\\*")[1].split("#")[0];
                         String[] splitted = data.split(";");
                         StringBuilder builder = new StringBuilder();
@@ -43,6 +46,7 @@ public class ApplicationClass extends Application {
                                 builder.append(";");
                             }
                         }
+                        mTCPTCPDataListener.OnDataReceive(data);
                         if (UtilMethods.checkCRC(builder.toString(), splitted[splitted.length - 1])) {
                             mTCPTCPDataListener.OnDataReceive(data);
                         } else {
@@ -50,9 +54,10 @@ public class ApplicationClass extends Application {
                         }
                     } else {
                         mTCPTCPDataListener.OnDataReceive(data);
-                    }
+                    }*/
                 }
             } catch (Exception e) {
+                Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
         }

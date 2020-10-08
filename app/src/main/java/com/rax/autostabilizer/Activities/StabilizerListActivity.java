@@ -21,7 +21,6 @@ import com.rax.autostabilizer.Fragments.DialogFragment;
 import com.rax.autostabilizer.Fragments.SmartConfigFragment;
 import com.rax.autostabilizer.Models.Stabilizer;
 import com.rax.autostabilizer.R;
-import com.rax.autostabilizer.Utilities.S_Communication;
 import com.rax.autostabilizer.databinding.ActivityStabilizerListBinding;
 
 import java.util.ArrayList;
@@ -49,8 +48,15 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
         mAdapter = new StabilizerListAdapter(this);
         mBinding.rvStabilizerList.setLayoutManager(new LinearLayoutManager(mContext));
         mBinding.rvStabilizerList.setAdapter(mAdapter);
-        //mAdapter.setData(mRepo.getStabilizerList(this));
-        mAdapter.setData(getStabListDemo());
+        List<Stabilizer> list = mRepo.getStabilizerList(this);
+        if (list.size() == 0) {
+            mBinding.emptyState.setVisibility(View.VISIBLE);
+        } else {
+            mAdapter.setData(list);
+            mBinding.emptyState.setVisibility(View.GONE);
+        }
+
+        //mAdapter.setData(getStabListDemo());
 
         mBinding.rvStabilizerFab.setOnClickListener(new View.OnClickListener() {
             @Override

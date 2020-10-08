@@ -15,10 +15,14 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 
+/*
+ * Do not use this class for other projects, this class is modified for autoStabilizer,
+ * */
 @SuppressWarnings("ALL")
 public class S_Communication extends IntentService {
 
     public static final String ACTION_MyIntentService = "com.example.w.RESPONSE", CONNECTED = "Connected", RECEIVED_DATA = "ReceivedData";
+    private static final String TAG = "S_Communication";
     public static Socket socketDevice = null;
     public static BufferedReader _inputSteam;
     public static String Packet, mIPAddress;
@@ -79,20 +83,21 @@ public class S_Communication extends IntentService {
 
             try {
                 if (Connect()) {
-                    if (send()) {
-                        Receive();
+                    if (!Packet.equals("")) {
+                        if (send()) {
+                            Receive();
+                        }
                     }
                 }
             } catch (Exception e1) {
                 intentMessage("No Device");
-                Log.d("Send Message", "No Device");
+                Log.d(TAG, "No Device");
             }
 
         }
 
         public boolean send() {
             PrintWriter out0;
-            Log.d("Send Message", Packet);
             try {
                 out0 = new PrintWriter(new BufferedWriter(
                         new OutputStreamWriter(
@@ -100,27 +105,29 @@ public class S_Communication extends IntentService {
 
                 out0.println(Packet);
 
-                Log.e("SR1COMM", "Send  " + Packet);
+                Log.d(TAG, "Send: " + Packet);
 
                 return true;
             } catch (Exception e) {
                 intentMessage("sendCatch");
-                Log.d("Send Message", e.getMessage());
+                Log.d(TAG, e.getMessage());
             }
             intentMessage("pckError");
-            Log.d("Send Message", "Packet Error");
-            close();
+            Log.d(TAG, "Packet Error");
             return false;
         }
 
         public void Receive() {
+            boolean dataReceived = false;
+            String data = "";
             try {
                 char[] buffer = new char[2048];
                 int charsRead = 0;
                 while ((charsRead = _inputSteam.read(buffer)) != -1) {
                     String message = new String(buffer).substring(0, charsRead);
                     if (!message.isEmpty()) {
-                        intentMessage(message);
+                        dataReceived = true;
+                        data = message;
                         Log.e("SR1COMM", "Receive  " + message);
                     } else {
                         Log.d("Receive Error Message", message);
@@ -128,23 +135,27 @@ public class S_Communication extends IntentService {
                 }
             } catch (java.io.InterruptedIOException e) {
                 intentMessage("timeOut");
-                Log.d("Receive Message", e.getMessage());
-                Log.d("Receive Message", "timeOut");
+                Log.d(TAG, e.getMessage());
+                Log.d(TAG, "timeOut");
             } catch (UnknownHostException e1) {
                 intentMessage("UnknownHostException");
-                Log.d("Receive Message", e1.getMessage());
-                Log.d("Receive Message", "UnknownHostException");
+                Log.d(TAG, e1.getMessage());
+                Log.d(TAG, "UnknownHostException");
             } catch (IOException e1) {
-                //    intentMessage("restart");
-                Log.d("Receive Message", e1.getMessage());
-                Log.d("Receive Message", "restart");
+                intentMessage("restart");
+                Log.d(TAG, e1.getMessage());
+                Log.d(TAG, "restart");
             }
+            close();
+            Log.d(TAG, "Receive: " + data);
+            intentMessage(data);
         }
 
         public boolean Connect() {
-
+            Log.d(TAG, "Connect: " + (socketDevice == null));
             try {
                 if (socketDevice == null) {
+                    Log.d(TAG, "Connect: ");
                     socketDevice = new Socket();
                     socketDevice.connect(new InetSocketAddress(
                             mIPAddress, mPortNumber), 30000);
@@ -152,18 +163,17 @@ public class S_Communication extends IntentService {
                     socketDevice.setKeepAlive(true);
                     socketDevice.setSoLinger(true, 1);
                     intentMessage("Connected");
-                    Log.d("Communication", "Device Connected");
-
+                    Log.d(TAG, "Device Connected");
                 }
                 return true;
             } catch (UnknownHostException e1) {
                 intentMessage("UnknownHostException");
-                Log.d("Communication", e1.getMessage());
+                Log.d(TAG, e1.getMessage());
                 socketDevice = null;
             } catch (IOException e1) {
 //                intentMessage("No Device");
                 intentMessage("FailedToConnect");
-                Log.d("Communication", e1.getMessage());
+                Log.d(TAG, e1.getMessage());
                 socketDevice = null;
             } catch (Exception e) {
                 socketDevice = null;
@@ -175,11 +185,14 @@ public class S_Communication extends IntentService {
             if (socketDevice != null) {
                 if (socketDevice.isConnected()) {
                     try {
+                        Log.d(TAG, "closing ");
                         socketDevice.close();
+                        Log.d(TAG, "closed ");
                     } catch (IOException e) {
-                        // TODO Auto-generated catch block
+                        Log.d(TAG, "Excep: " + e.getMessage());
                         e.printStackTrace();
                     }
+                    Log.d(TAG, "close: ");
                     socketDevice = null;
                 }
             }
