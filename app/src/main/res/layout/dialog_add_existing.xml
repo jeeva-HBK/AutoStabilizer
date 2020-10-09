@@ -40,6 +40,7 @@
             android:layout_height="wrap_content"
             android:hint="Ip Address"
             android:inputType="number"
+            android:maxLength="15"
             android:digits="1234567890."/>
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -61,6 +62,7 @@
             android:layout_height="wrap_content"
             android:hint="Mac Address"
             android:inputType="number"
+            android:maxLength="12"
             android:digits="1234567890."/>
 
     </com.google.android.material.textfield.TextInputLayout>
