@@ -87,6 +87,23 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/lay_alertLetter"
                     app:layout_constraintTop_toBottomOf="@+id/txtStabilizerName" />
+
+                <TextView
+                    android:id="@+id/txtStabilizerMac"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/lay_alertLetter"
+                    android:gravity="center_vertical"
+                    android:text="Mac Address"
+                    android:textColor="@color/colorDisabled"
+                    app:layout_constraintTop_toBottomOf="@+id/txtStabilizerIP"
+                    app:layout_constraintStart_toStartOf="@id/txtStabilizerIP"
+                    app:layout_constraintEnd_toEndOf="@id/txtStabilizerIP"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginBottom="5dp"/>
+
+
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <RelativeLayout

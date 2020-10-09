@@ -7,9 +7,12 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.ViewCompat;
 import androidx.databinding.DataBindingUtil;
@@ -27,6 +30,8 @@ import com.rax.autostabilizer.databinding.ActivityStabilizerListBinding;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.rax.autostabilizer.Utilities.S_Communication.CONNECTED;
 import static com.rax.autostabilizer.Utilities.S_Communication.mIPAddress;
@@ -40,6 +45,12 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
     private Context mContext;
     private ApplicationClass mAppClass;
     private boolean isFabOpen = false;
+    private static final Pattern IP_ADDRESS
+            = Pattern.compile(
+            "((25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9])\\.(25[0-5]|2[0-4]"
+                    + "[0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1]"
+                    + "[0-9]{2}|[1-9][0-9]|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}"
+                    + "|[1-9][0-9]|[0-9]))");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,10 +72,10 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
 
         //mAdapter.setData(getStabListDemo());
 
-        mBinding.fabAddNew.setOnClickListener(new View.OnClickListener() {
+        mBinding.fabAddExisting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //gva do here
+                showAddDialog();
             }
         });
 
@@ -88,6 +99,68 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
         });
     }
 
+    private void showAddDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Add Stablizer");
+        View dialogView = getLayoutInflater()
+                .inflate(R.layout.dialog_add_existing, null);
+        builder.setView(dialogView);
+        builder.setPositiveButton("Save",null);
+        builder.setNegativeButton("Cancel",null);
+        AlertDialog dialog = builder.create();
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
+                Button P =  dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                Button N = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+                P.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        EditText name, ipAddress, macAddress;
+                        name = dialogView.findViewById(R.id.dialogNameEt);
+                        ipAddress = dialogView.findViewById(R.id.dialogIpEt);
+                        macAddress = dialogView.findViewById(R.id.dialogMacEt);
+                        Matcher matcher = IP_ADDRESS.matcher(ipAddress.getText().toString());
+                        if (name.getText().toString().trim().equals("")) {
+                            name.setError("Enter Name");
+                            return;
+                        }
+                        if (ipAddress.getText().toString().trim().equals("")) {
+                            ipAddress.setError("Enter ip");
+                            return;
+                        }else if (!matcher.matches()){
+                            ipAddress.setError("Enter a valid Ip Address");
+                            return;
+                        }
+                        if (macAddress.getText().toString().trim().equals("")) {
+                            macAddress.setError("Enter mac address");
+                            return;
+                        }else if (!isValidMac(macAddress.toString())){
+                            macAddress.setError("Enter a valid Mac Address");
+                            return;
+                        }
+                        Stabilizer stabilizer = new Stabilizer(name.getText().toString()
+                                , ipAddress.getText().toString(), 5000
+                                , macAddress.getText().toString());
+                        Repository repo = new Repository();
+                        repo.saveStabilizer(StabilizerListActivity.this, stabilizer);
+                        Toast.makeText(mContext, "Complete !", Toast.LENGTH_SHORT).show();
+                        closeFab();
+                        dialogInterface.dismiss();
+                    }
+                });
+                N.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialogInterface.dismiss();
+                        closeFab();
+                    }
+                });
+            }
+        });
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    }
     private void openFab() {
         isFabOpen = true;
         mBinding.rlWhiteOverlay.setVisibility(View.VISIBLE);
@@ -96,6 +169,11 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
         rotateFab(mBinding.fabAddStabilizer, isFabOpen);
         mBinding.fabAddExisting.show();
         mBinding.fabAddNew.show();
+    }
+    public boolean isValidMac(String mac) {
+        Pattern p = Pattern.compile("^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$");
+        Matcher m = p.matcher(mac);
+        return m.matches();
     }
 
     private void closeFab() {

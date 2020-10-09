@@ -92,7 +92,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:backgroundTint="@color/colorPrimary"
-            android:visibility="visible"
+            android:visibility="gone"
             app:fabSize="mini"
             app:layout_constraintBottom_toTopOf="@+id/fabAddExisting"
             app:layout_constraintEnd_toEndOf="@+id/fabAddExisting"
@@ -106,7 +106,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:backgroundTint="@color/colorPrimary"
-            android:visibility="visible"
+            android:visibility="gone"
             app:fabSize="mini"
             app:layout_constraintBottom_toTopOf="@+id/fabAddStabilizer"
             app:layout_constraintEnd_toEndOf="@+id/fabAddStabilizer"
@@ -120,6 +120,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
             android:text="Add New"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/fabAddNew"
             app:layout_constraintEnd_toStartOf="@+id/fabAddNew"
             app:layout_constraintTop_toTopOf="@+id/fabAddNew" />
@@ -130,6 +131,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
             android:text="Add Existing"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/fabAddExisting"
             app:layout_constraintEnd_toStartOf="@+id/fabAddExisting"
             app:layout_constraintTop_toTopOf="@+id/fabAddExisting" />

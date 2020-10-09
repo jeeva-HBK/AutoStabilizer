@@ -39,6 +39,7 @@ public class StabilizerListAdapter extends RecyclerView.Adapter<StabilizerListAd
         Stabilizer stabilizer = mStabilizerList.get(position);
         holder.txtStabilizerName.setText(stabilizer.getName());
         holder.txtStabilizerIP.setText(stabilizer.getIPAddress());
+        holder.txtStabilizerMac.setText(stabilizer.getMacAddress());
     }
 
     @Override
@@ -101,13 +102,14 @@ public class StabilizerListAdapter extends RecyclerView.Adapter<StabilizerListAd
     }
 
     public class StabilizerViewHolder extends RecyclerView.ViewHolder {
-        TextView txtStabilizerName, txtStabilizerIP;
+        TextView txtStabilizerName, txtStabilizerIP, txtStabilizerMac;
         CardView parent;
 
         public StabilizerViewHolder(@NonNull View itemView) {
             super(itemView);
             txtStabilizerName = itemView.findViewById(R.id.txtStabilizerName);
             txtStabilizerIP = itemView.findViewById(R.id.txtStabilizerIP);
+            txtStabilizerMac= itemView.findViewById(R.id.txtStabilizerMac);
             parent = itemView.findViewById(R.id.item_parent);
             parent.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
