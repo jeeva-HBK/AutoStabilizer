@@ -6,10 +6,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.ViewCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -37,6 +39,7 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
     Repository mRepo;
     private Context mContext;
     private ApplicationClass mAppClass;
+    private boolean isFabOpen = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,18 +61,60 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
 
         //mAdapter.setData(getStabListDemo());
 
-        mBinding.rvStabilizerFab.setOnClickListener(new View.OnClickListener() {
+        mBinding.fabAddNew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        mBinding.fabAddNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 DialogFragment d = new DialogFragment(new SmartConfigFragment(), "Add Stabilizer");
                 d.show(getSupportFragmentManager(), null);
             }
         });
+
+        mBinding.fabAddStabilizer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isFabOpen) {
+                    closeFab();
+                } else {
+                    openFab();
+                }
+            }
+        });
+    }
+
+    private void openFab() {
+        isFabOpen = true;
+        mBinding.rlWhiteOverlay.setVisibility(View.VISIBLE);
+        mBinding.txtAddExisiting.setVisibility(View.VISIBLE);
+        mBinding.txtAddnew.setVisibility(View.VISIBLE);
+        rotateFab(mBinding.fabAddStabilizer, isFabOpen);
+        mBinding.fabAddExisting.show();
+        mBinding.fabAddNew.show();
+    }
+
+    private void closeFab() {
+        isFabOpen = false;
+        mBinding.rlWhiteOverlay.setVisibility(View.GONE);
+        mBinding.txtAddExisiting.setVisibility(View.GONE);
+        mBinding.txtAddnew.setVisibility(View.GONE);
+        rotateFab(mBinding.fabAddStabilizer, isFabOpen);
+        mBinding.fabAddExisting.hide();
+        mBinding.fabAddNew.hide();
+    }
+
+    private void rotateFab(final View v, boolean rotate) {
+        ViewCompat.animate(v).rotation(rotate ? 135f : 0f).withLayer().setDuration(200).setInterpolator(new LinearInterpolator()).start();
     }
 
     private List<Stabilizer> getStabListDemo() {
         List<Stabilizer> stabilizers = new ArrayList<>();
-        stabilizers.add(new Stabilizer("Test","192.168.6.45",5000,"454545"));
+        stabilizers.add(new Stabilizer("Test", "192.168.6.45", 5000, "454545"));
         stabilizers.add(new Stabilizer("Stabilizer 2", "1.1.1.2", 5050, "4545784578"));
         stabilizers.add(new Stabilizer("Stabilizer 3", "1.1.1.3", 5050, "4545784578"));
         stabilizers.add(new Stabilizer("Stabilizer 4", "1.1.1.4", 5050, "4545784578"));
@@ -108,12 +153,12 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
 
     private void showProgress() {
         mBinding.progressbar.setVisibility(View.VISIBLE);
-        mBinding.rvStabilizerFab.hide();
+        mBinding.fabAddStabilizer.hide();
     }
 
     private void dismissProgress() {
         mBinding.progressbar.setVisibility(View.GONE);
-        mBinding.rvStabilizerFab.show();
+        mBinding.fabAddStabilizer.show();
     }
 
     @Override

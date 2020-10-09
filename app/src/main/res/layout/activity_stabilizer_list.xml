@@ -76,9 +76,67 @@
 
         </RelativeLayout>
 
+        <RelativeLayout
+            android:id="@+id/rl_white_overlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorTransparentWhite"
+            android:clickable="true"
+            android:elevation="1dp"
+            android:focusable="true"
+            android:visibility="gone" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/rvStabilizerFab"
+            android:id="@+id/fabAddNew"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:backgroundTint="@color/colorPrimary"
+            android:visibility="visible"
+            app:fabSize="mini"
+            app:layout_constraintBottom_toTopOf="@+id/fabAddExisting"
+            app:layout_constraintEnd_toEndOf="@+id/fabAddExisting"
+            app:layout_constraintStart_toStartOf="@+id/fabAddExisting"
+            app:srcCompat="@drawable/ic_add"
+            app:tint="@android:color/white" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabAddExisting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:backgroundTint="@color/colorPrimary"
+            android:visibility="visible"
+            app:fabSize="mini"
+            app:layout_constraintBottom_toTopOf="@+id/fabAddStabilizer"
+            app:layout_constraintEnd_toEndOf="@+id/fabAddStabilizer"
+            app:layout_constraintStart_toStartOf="@+id/fabAddStabilizer"
+            app:srcCompat="@drawable/ic_add"
+            app:tint="@android:color/white" />
+
+        <TextView
+            android:id="@+id/txtAddnew"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:text="Add New"
+            app:layout_constraintBottom_toBottomOf="@+id/fabAddNew"
+            app:layout_constraintEnd_toStartOf="@+id/fabAddNew"
+            app:layout_constraintTop_toTopOf="@+id/fabAddNew" />
+
+        <TextView
+            android:id="@+id/txtAddExisiting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:text="Add Existing"
+            app:layout_constraintBottom_toBottomOf="@+id/fabAddExisting"
+            app:layout_constraintEnd_toStartOf="@+id/fabAddExisting"
+            app:layout_constraintTop_toTopOf="@+id/fabAddExisting" />
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabAddStabilizer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
