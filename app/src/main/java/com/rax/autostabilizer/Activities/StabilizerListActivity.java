@@ -64,7 +64,7 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
         mBinding.fabAddNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                //gva do here
             }
         });
 
