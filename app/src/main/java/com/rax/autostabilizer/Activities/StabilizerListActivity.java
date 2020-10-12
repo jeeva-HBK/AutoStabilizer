@@ -147,6 +147,7 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
                             macAddress.setError("Enter a valid Mac Address");
                             return;
                         }
+                        //jeeva
                         Stabilizer stabilizer = new Stabilizer(name.getText().toString()
                                 , ipAddress.getText().toString(), 5000
                                 , macAddress.getText().toString());
