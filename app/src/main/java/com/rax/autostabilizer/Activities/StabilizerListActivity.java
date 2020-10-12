@@ -62,15 +62,7 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
         mAdapter = new StabilizerListAdapter(this);
         mBinding.rvStabilizerList.setLayoutManager(new LinearLayoutManager(mContext));
         mBinding.rvStabilizerList.setAdapter(mAdapter);
-        List<Stabilizer> list = mRepo.getStabilizerList(this);
-        if (list.size() == 0) {
-            mBinding.emptyState.setVisibility(View.VISIBLE);
-        } else {
-            mAdapter.setData(list);
-            mBinding.emptyState.setVisibility(View.GONE);
-        }
 
-        //mAdapter.setData(getStabListDemo());
 
         mBinding.fabAddExisting.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,14 +91,30 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
         });
     }
 
+    private void refreshData() {
+        List<Stabilizer> list = mRepo.getStabilizerList(this);
+        if (list.size() == 0) {
+            mBinding.emptyState.setVisibility(View.VISIBLE);
+        } else {
+            mAdapter.setData(list);
+            mBinding.emptyState.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        refreshData();
+    }
+
     private void showAddDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Add Stablizer");
         View dialogView = getLayoutInflater()
                 .inflate(R.layout.dialog_add_existing, null);
         builder.setView(dialogView);
-        builder.setPositiveButton("Save",null);
-        builder.setNegativeButton("Cancel",null);
+        builder.setPositiveButton("Save", null);
+        builder.setNegativeButton("Cancel", null);
         AlertDialog dialog = builder.create();
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
@@ -147,6 +155,7 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
                         Toast.makeText(mContext, "Complete !", Toast.LENGTH_SHORT).show();
                         closeFab();
                         dialogInterface.dismiss();
+                        refreshData();
                     }
                 });
                 N.setOnClickListener(new View.OnClickListener() {
@@ -154,6 +163,7 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
                     public void onClick(View view) {
                         dialogInterface.dismiss();
                         closeFab();
+
                     }
                 });
             }

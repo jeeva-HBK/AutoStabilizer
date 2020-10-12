@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="wrap_content">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/dialogNameLl"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,49 +21,52 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Name"
-            android:inputType="textPersonName"/>
+            android:imeOptions="actionNext"
+            android:inputType="textPersonName"
+            android:maxLength="50" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/dialogIpLl"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         app:layout_constraintTop_toBottomOf="@+id/dialogNameLl"
-        app:layout_constraintVertical_bias="0"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        app:layout_constraintVertical_bias="0">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/dialogIpEt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:digits="1234567890."
             android:hint="Ip Address"
+            android:imeOptions="actionNext"
             android:inputType="number"
-            android:maxLength="15"
-            android:digits="1234567890."/>
+            android:maxLength="15" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/dialogMacLl"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        app:layout_constraintTop_toBottomOf="@+id/dialogIpLl"
-        app:layout_constraintVertical_bias="0"
         android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        app:layout_constraintTop_toBottomOf="@+id/dialogIpLl"
+        app:layout_constraintVertical_bias="0">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/dialogMacEt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Mac Address"
+            android:imeOptions="actionDone"
             android:inputType="number"
-            android:maxLength="12"
-            android:digits="1234567890."/>
+            android:maxLength="12" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
