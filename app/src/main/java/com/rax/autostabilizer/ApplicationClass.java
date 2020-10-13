@@ -91,7 +91,7 @@ public class ApplicationClass extends Application {
 
             @Override
             public void onActivityPaused(@NonNull Activity activity) {
-                unregisterReceiver();
+              //  unregisterReceiver();
             }
 
             @Override

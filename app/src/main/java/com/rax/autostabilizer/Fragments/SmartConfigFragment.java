@@ -58,7 +58,7 @@ public class SmartConfigFragment extends Fragment {
     public FragmentSmartConfigBinding binding;
     private boolean mReceiverRegistered = false;
     private Context mContext;
-
+    public DialogFragment parentDialog;
     private EspSmartConfig mTask;
     private boolean mDestroyed = false;
     private BroadcastReceiver mReceiver = new BroadcastReceiver() {
@@ -82,6 +82,10 @@ public class SmartConfigFragment extends Fragment {
             }
         }
     };
+
+    public SmartConfigFragment(DialogFragment parentDialog) {
+        this.parentDialog = parentDialog;
+    }
 
 
     @Override
@@ -439,7 +443,11 @@ public class SmartConfigFragment extends Fragment {
             new MaterialAlertDialogBuilder(mActivity.get().mContext)
                     .setTitle("Stabilizer Configured")
                     .setMessage("IP Address: " + mActivity.get().mIPAddress + "\n" + "MAC: " + mActivity.get().mDeviceMac)
-                    .setPositiveButton("OK", null)
+                    .setPositiveButton("OK", (dialogInterface, i) -> {
+                        if (mActivity.get().parentDialog != null) {
+                            mActivity.get().parentDialog.dismiss();
+                        }
+                    })
                     .show();
             Repository repository = new Repository();
             repository.saveStabilizer(mActivity.get().getActivity(),

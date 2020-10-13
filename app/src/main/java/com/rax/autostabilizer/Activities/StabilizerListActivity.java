@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
@@ -51,6 +52,7 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
                     + "[0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1]"
                     + "[0-9]{2}|[1-9][0-9]|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}"
                     + "|[1-9][0-9]|[0-9]))");
+    private static final String TAG = "StabilizerListActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +69,7 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
         mBinding.fabAddExisting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                closeFab();
                 showAddDialog();
             }
         });
@@ -74,8 +77,15 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
         mBinding.fabAddNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DialogFragment d = new DialogFragment(new SmartConfigFragment(), "Add Stabilizer");
-                d.show(getSupportFragmentManager(), null);
+                closeFab();
+                DialogFragment dialog = new DialogFragment(new DialogFragment.OnDismissListener() {
+                    @Override
+                    public void OnDismiss() {
+                        refreshData();
+                    }
+                });
+                dialog.setFragment(new SmartConfigFragment(dialog), "Add Stabilizer");
+                dialog.show(getSupportFragmentManager(), null);
             }
         });
 
@@ -119,7 +129,7 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialogInterface) {
-                Button P =  dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                Button P = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
                 Button N = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
                 P.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -136,15 +146,12 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
                         if (ipAddress.getText().toString().trim().equals("")) {
                             ipAddress.setError("Enter ip");
                             return;
-                        }else if (!matcher.matches()){
+                        } else if (!matcher.matches()) {
                             ipAddress.setError("Enter a valid Ip Address");
                             return;
                         }
                         if (macAddress.getText().toString().trim().equals("")) {
                             macAddress.setError("Enter mac address");
-                            return;
-                        }else if (!isValidMac(macAddress.toString())){
-                            macAddress.setError("Enter a valid Mac Address");
                             return;
                         }
                         //jeeva
@@ -172,6 +179,7 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
     }
+
     private void openFab() {
         isFabOpen = true;
         mBinding.rlWhiteOverlay.setVisibility(View.VISIBLE);
@@ -181,11 +189,12 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
         mBinding.fabAddExisting.show();
         mBinding.fabAddNew.show();
     }
-    public boolean isValidMac(String mac) {
+
+    /*   public boolean isValidMac(String mac) {
         Pattern p = Pattern.compile("^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$");
         Matcher m = p.matcher(mac);
         return m.matches();
-    }
+    }*/
 
     private void closeFab() {
         isFabOpen = false;
@@ -254,12 +263,12 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
     public void OnStabilizerClicked(Stabilizer stabilizer) {
 
         // startActivity(new Intent(StabilizerListActivity.this, StabilizerStatusActivity.class));
-
         mIPAddress = stabilizer.getIPAddress();
         mPortNumber = stabilizer.getPort();
         showProgress();
         mAppClass.sendPacket(data -> {
             dismissProgress();
+            Log.d(TAG, "OnStabilizerClicked: " + data);
             if (data.equals(CONNECTED)) {
                 startActivity(new Intent(StabilizerListActivity.this, StabilizerStatusActivity.class));
                 return;

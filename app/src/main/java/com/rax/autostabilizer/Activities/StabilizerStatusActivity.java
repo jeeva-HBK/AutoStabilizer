@@ -1,6 +1,7 @@
 package com.rax.autostabilizer.Activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -110,7 +111,6 @@ public class StabilizerStatusActivity extends AppCompatActivity implements Appli
 
     @Override
     public void OnDataReceive(String data) {
-
         Log.d(TAG, "OnDataReceive: " + data);
         if (data.contains("\r") || data.contains("\n")) {
             data = data.replace("\r", "");
@@ -172,16 +172,20 @@ public class StabilizerStatusActivity extends AppCompatActivity implements Appli
                 switch (splitData[2]) {
                     case "01":
                         mBinding.txtFaultAlert.setText("Low");
+                        mBinding.swtPower.setEnabled(false);
                         break;
                     case "02":
                         mBinding.txtFaultAlert.setText("High");
+                        mBinding.swtPower.setEnabled(false);
                         break;
                     case "03":
                         mBinding.txtFaultAlert.setText("Time delay");
+                        mBinding.swtPower.setEnabled(false);
                         mBinding.swtTimeDelay.setChecked(true);
                         break;
                     case "04":
                         mBinding.txtFaultAlert.setText("Normal");
+                        mBinding.swtPower.setEnabled(true);
                         break;
                 }
                 String[] inputVolt = splitData[4].split(",");
@@ -226,5 +230,13 @@ public class StabilizerStatusActivity extends AppCompatActivity implements Appli
     protected void onResume() {
         super.onResume();
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        closeTelnet();
+        dismissProgress();
+        startActivity(new Intent(StabilizerStatusActivity.this,StabilizerListActivity.class));
+        finish();
     }
 }

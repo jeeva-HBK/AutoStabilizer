@@ -1,6 +1,7 @@
 package com.rax.autostabilizer.Fragments;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,9 +23,10 @@ public class DialogFragment extends androidx.fragment.app.DialogFragment {
     private DialogFullscreenBinding binding;
     private String title = "";
     private boolean showAppBar = true;
+    OnDismissListener onDismissListener;
 
-    public DialogFragment() {
-
+    public DialogFragment(OnDismissListener onDismissListener) {
+        this.onDismissListener = onDismissListener;
     }
 
     public DialogFragment(Fragment fragment, String title) {
@@ -40,6 +42,12 @@ public class DialogFragment extends androidx.fragment.app.DialogFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStyle(DialogFragment.STYLE_NORMAL, R.style.AppTheme_FullScreenDialog);
+    }
+
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        super.onDismiss(dialog);
+        onDismissListener.OnDismiss();
     }
 
     @Nullable
@@ -72,8 +80,9 @@ public class DialogFragment extends androidx.fragment.app.DialogFragment {
         }
     }
 
-    public void showCloseIcon() {
-
+    public void setFragment(Fragment fragment, String title) {
+        this.fragment = fragment;
+        this.title = title;
     }
 
     @Override
@@ -85,5 +94,9 @@ public class DialogFragment extends androidx.fragment.app.DialogFragment {
             int height = ViewGroup.LayoutParams.MATCH_PARENT;
             dialog.getWindow().setLayout(width, height);
         }
+    }
+
+    public interface OnDismissListener {
+        void OnDismiss();
     }
 }
