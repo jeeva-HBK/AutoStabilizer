@@ -18,7 +18,7 @@ import com.rax.autostabilizer.Utilities.S_Communication;
 import com.rax.autostabilizer.databinding.ActivityStabilizerStatusBinding;
 
 import static com.rax.autostabilizer.Utilities.S_Communication.CONNECTED;
-
+//NEWONE
 public class StabilizerStatusActivity extends AppCompatActivity implements ApplicationClass.TCPDataListener {
 
     private static final String TAG = "StabilizerStatusActivit";
@@ -133,9 +133,9 @@ public class StabilizerStatusActivity extends AppCompatActivity implements Appli
                         @Override
                         public void run() {
                             Toast.makeText(mContext, "Please restart and try again", Toast.LENGTH_SHORT).show();
+                            onBackPressed();
                         }
                     });
-                    finish();
                 }
             } else if (packetToSend.contains("A") || packetToSend.contains("B")) {
                 if (powerPacketNackCount < 3) {
@@ -236,7 +236,12 @@ public class StabilizerStatusActivity extends AppCompatActivity implements Appli
     public void onBackPressed() {
         closeTelnet();
         dismissProgress();
-        startActivity(new Intent(StabilizerStatusActivity.this,StabilizerListActivity.class));
-        finish();
+      /*  startActivity(new Intent(StabilizerStatusActivity.this,StabilizerListActivity.class));
+        finish();*/
+
+        Intent homeIntent = new Intent(StabilizerStatusActivity.this,StabilizerListActivity.class);
+      //  homeIntent.addCategory( Intent.CATEGORY_HOME );
+        homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(homeIntent);
     }
 }

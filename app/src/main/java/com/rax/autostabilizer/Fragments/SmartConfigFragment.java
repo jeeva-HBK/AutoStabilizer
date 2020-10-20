@@ -68,7 +68,6 @@ public class SmartConfigFragment extends Fragment {
             if (action == null) {
                 return;
             }
-
             WifiManager wifiManager = (WifiManager) context.getApplicationContext()
                     .getSystemService(WIFI_SERVICE);
             Log.d(TAG, "onReceive: " + wifiManager.is5GHzBandSupported());
@@ -99,7 +98,6 @@ public class SmartConfigFragment extends Fragment {
         return super.onOptionsItemSelected(item);
 
     }
-
 
     @Nullable
     @Override

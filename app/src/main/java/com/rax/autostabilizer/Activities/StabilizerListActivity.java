@@ -261,7 +261,6 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
 
     @Override
     public void OnStabilizerClicked(Stabilizer stabilizer) {
-
         // startActivity(new Intent(StabilizerListActivity.this, StabilizerStatusActivity.class));
         mIPAddress = stabilizer.getIPAddress();
         mPortNumber = stabilizer.getPort();
@@ -275,5 +274,26 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
             }
             Toast.makeText(mContext, data, Toast.LENGTH_SHORT).show();
         }, "");
+    }
+
+    @Override
+    public void onBackPressed() {
+        new MaterialAlertDialogBuilder(mContext)
+                .setTitle("Exit")
+                .setMessage("Are You Sure, You Want To Exit ?")
+                .setCancelable(false)
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        finish();
+                    }
+                })
+                .show();
     }
 }
