@@ -18,6 +18,7 @@ import com.rax.autostabilizer.Utilities.S_Communication;
 import com.rax.autostabilizer.databinding.ActivityStabilizerStatusBinding;
 
 import static com.rax.autostabilizer.Utilities.S_Communication.CONNECTED;
+
 //NEWONE
 public class StabilizerStatusActivity extends AppCompatActivity implements ApplicationClass.TCPDataListener {
 
@@ -30,6 +31,7 @@ public class StabilizerStatusActivity extends AppCompatActivity implements Appli
     int keepAliveNackCount = 0, powerPacketNackCount = 0;
     CountDownTimer keepAliveHandler;
     String packetToSend;
+    boolean isViewVisible = false;
 
     //  Handler keepAliveHandler;
 
@@ -82,6 +84,9 @@ public class StabilizerStatusActivity extends AppCompatActivity implements Appli
 
     private void sendPacket(String packet) {
         packetToSend = packet;
+        if (!isViewVisible) {
+            return;
+        }
         mAppClass.sendPacket(StabilizerStatusActivity.this, "");
     }
 
@@ -101,6 +106,9 @@ public class StabilizerStatusActivity extends AppCompatActivity implements Appli
 
     private void retryLastSentPacket() {
         Log.d(TAG, "retryLastSentPacket: ");
+        if (!isViewVisible) {
+            return;
+        }
         mAppClass.sendPacket(StabilizerStatusActivity.this, "");
     }
 
@@ -120,6 +128,9 @@ public class StabilizerStatusActivity extends AppCompatActivity implements Appli
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    if (!isViewVisible) {
+                        return;
+                    }
                     mAppClass.sendPacket(StabilizerStatusActivity.this, packetToSend);
                 }
             }, 500);
@@ -132,6 +143,7 @@ public class StabilizerStatusActivity extends AppCompatActivity implements Appli
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            Log.d(TAG, "run: "+keepAliveNackCount);
                             Toast.makeText(mContext, "Please restart and try again", Toast.LENGTH_SHORT).show();
                             onBackPressed();
                         }
@@ -223,13 +235,16 @@ public class StabilizerStatusActivity extends AppCompatActivity implements Appli
     @Override
     protected void onPause() {
         super.onPause();
+        isViewVisible = false;
         //keepAliveHandler.cancel();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
+        keepAliveNackCount = 0;
+        powerPacketNackCount = 0;
+        isViewVisible = true;
     }
 
     @Override
@@ -239,8 +254,8 @@ public class StabilizerStatusActivity extends AppCompatActivity implements Appli
       /*  startActivity(new Intent(StabilizerStatusActivity.this,StabilizerListActivity.class));
         finish();*/
 
-        Intent homeIntent = new Intent(StabilizerStatusActivity.this,StabilizerListActivity.class);
-      //  homeIntent.addCategory( Intent.CATEGORY_HOME );
+        Intent homeIntent = new Intent(StabilizerStatusActivity.this, StabilizerListActivity.class);
+        //  homeIntent.addCategory( Intent.CATEGORY_HOME );
         homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(homeIntent);
     }

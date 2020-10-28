@@ -186,6 +186,7 @@ public class S_Communication extends IntentService {
                 if (socketDevice.isConnected()) {
                     try {
                         Log.d(TAG, "closing ");
+                        socketDevice.shutdownInput();
                         socketDevice.close();
                         Log.d(TAG, "closed ");
                     } catch (IOException e) {
