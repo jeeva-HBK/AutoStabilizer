@@ -1,5 +1,6 @@
 package com.rax.autostabilizer.Activities;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -27,6 +28,7 @@ import com.rax.autostabilizer.Fragments.DialogFragment;
 import com.rax.autostabilizer.Fragments.SmartConfigFragment;
 import com.rax.autostabilizer.Models.Stabilizer;
 import com.rax.autostabilizer.R;
+import com.rax.autostabilizer.Utilities.S_Communication;
 import com.rax.autostabilizer.databinding.ActivityStabilizerListBinding;
 
 import java.util.ArrayList;
@@ -40,12 +42,6 @@ import static com.rax.autostabilizer.Utilities.S_Communication.mPortNumber;
 
 public class StabilizerListActivity extends AppCompatActivity implements StabilizerListAdapter.ClickListener {
 
-    ActivityStabilizerListBinding mBinding;
-    StabilizerListAdapter mAdapter;
-    Repository mRepo;
-    private Context mContext;
-    private ApplicationClass mAppClass;
-    private boolean isFabOpen = false;
     private static final Pattern IP_ADDRESS
             = Pattern.compile(
             "((25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9])\\.(25[0-5]|2[0-4]"
@@ -53,6 +49,12 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
                     + "[0-9]{2}|[1-9][0-9]|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}"
                     + "|[1-9][0-9]|[0-9]))");
     private static final String TAG = "StabilizerListActivity";
+    ActivityStabilizerListBinding mBinding;
+    StabilizerListAdapter mAdapter;
+    Repository mRepo;
+    private Context mContext;
+    private ApplicationClass mAppClass;
+    private boolean isFabOpen = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +67,7 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
         mBinding.rvStabilizerList.setLayoutManager(new LinearLayoutManager(mContext));
         mBinding.rvStabilizerList.setAdapter(mAdapter);
 
+        requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 111);
 
         mBinding.fabAddExisting.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,10 +114,16 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
         }
     }
 
+    private void closeTelnet() {
+        S_Communication communication = new S_Communication();
+        communication.stop();
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
         refreshData();
+        closeTelnet();
     }
 
     private void showAddDialog() {
@@ -278,6 +287,7 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
 
     @Override
     public void onBackPressed() {
+        dismissProgress();
         new MaterialAlertDialogBuilder(mContext)
                 .setTitle("Exit")
                 .setMessage("Are You Sure, You Want To Exit ?")
