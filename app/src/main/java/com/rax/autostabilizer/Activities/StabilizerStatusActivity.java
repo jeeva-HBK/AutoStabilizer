@@ -282,4 +282,5 @@ public class StabilizerStatusActivity extends AppCompatActivity implements Appli
         startActivity(homeIntent);
     }
 }
+
 /*Version; v1.0.6|Date: 11/11/2020*/
