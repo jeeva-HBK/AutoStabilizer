@@ -57,8 +57,6 @@ public class S_Communication extends IntentService {
         intentResponse.putExtra(RECEIVED_DATA, message);
         sendBroadcast(intentResponse);
     }
-
-
 //    public void framepack(String pack) {
 //        packetBuffer = packetBuffer.append(pack);
 //        int indexOfEnd = 0;
@@ -70,7 +68,6 @@ public class S_Communication extends IntentService {
 //            packetBuffer.setLength(0);
 //        }
 //    }
-
     class SendToDevice implements Runnable {
         private String m_command;
 
@@ -105,7 +102,7 @@ public class S_Communication extends IntentService {
 
                 out0.println(Packet);
 
-                Log.d(TAG, "Send: " + Packet);
+                Log.d(TAG, "RAXLOGSend: " + Packet);
 
                 return true;
             } catch (Exception e) {

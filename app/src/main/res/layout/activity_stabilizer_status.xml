@@ -23,20 +23,30 @@
 
         </RelativeLayout>
 
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="Stabilizer Status"
+            app:titleTextColor="@color/white" />
+
         <TextView
             android:id="@+id/text1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:gravity="center"
-            android:paddingTop="10dp"
+            android:paddingTop="20dp"
             android:text="SMART Stabilizers for Air Conditioner"
             android:textColor="@android:color/black"
             android:textSize="20dp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
         <TextView
             android:id="@+id/text2"
@@ -47,9 +57,11 @@
             android:textColor="@android:color/black"
             android:textSize="16dp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@id/vertical"
-            app:layout_constraintTop_toBottomOf="@+id/text1" />
+            app:layout_constraintTop_toBottomOf="@+id/text1"
+            app:layout_constraintVertical_bias="0.06" />
 
         <TextView
             android:id="@+id/text3"
@@ -60,9 +72,11 @@
             android:textColor="@android:color/black"
             android:textSize="16dp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@id/vertical"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text1" />
+            app:layout_constraintTop_toBottomOf="@+id/text1"
+            app:layout_constraintVertical_bias="0.06" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/vertical"
@@ -103,26 +117,37 @@
             android:id="@+id/text4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Power On/Off"
+            android:layout_marginTop="20dp"
+            android:text="Output Status"
             android:textColor="@android:color/black"
             android:textSize="18dp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/swtPower"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="@id/vertical"
+            app:layout_constraintEnd_toEndOf="@+id/txtInputVoltage"
             app:layout_constraintStart_toStartOf="@+id/txtInputVoltage"
-            app:layout_constraintTop_toTopOf="@+id/swtPower" />
+            app:layout_constraintTop_toBottomOf="@+id/txtInputVoltage" />
 
-        <com.google.android.material.switchmaterial.SwitchMaterial
+        <!--    <com.google.android.material.switchmaterial.SwitchMaterial
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="20dp"
+          android:layout_marginTop="30dp"
+          android:enabled="false"
+          app:layout_constraintLeft_toRightOf="@id/vertical"
+          app:layout_constraintStart_toStartOf="@+id/txtOutputVoltage"
+          app:layout_constraintTop_toBottomOf="@id/txtOutputVoltage" />-->
+
+        <ToggleButton
             android:id="@+id/swtPower"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="30dp"
-            android:enabled="false"
-            app:layout_constraintLeft_toRightOf="@id/vertical"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/ic_power_null"
+            android:textOff=""
+            android:textOn=""
+            app:layout_constraintEnd_toEndOf="@+id/txtOutputVoltage"
             app:layout_constraintStart_toStartOf="@+id/txtOutputVoltage"
-            app:layout_constraintTop_toBottomOf="@id/txtOutputVoltage" />
+            app:layout_constraintTop_toBottomOf="@+id/txtOutputVoltage" />
 
         <TextView
             android:id="@+id/text5"
@@ -157,6 +182,7 @@
             android:textColor="@android:color/black"
             android:textSize="18dp"
             android:textStyle="bold"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/swtTimeDelay"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="@id/vertical"
@@ -169,38 +195,37 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:enabled="false"
+            android:visibility="gone"
             app:layout_constraintLeft_toRightOf="@id/vertical"
             app:layout_constraintStart_toStartOf="@+id/swtWifi"
             app:layout_constraintTop_toBottomOf="@id/swtWifi" />
 
         <TextView
             android:id="@+id/text7"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Fault Alert"
             android:textColor="@android:color/black"
             android:textSize="18dp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/txtFaultAlert"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/vertical"
-            app:layout_constraintStart_toStartOf="@+id/text6"
-            app:layout_constraintTop_toTopOf="@id/txtFaultAlert" />
+            app:layout_constraintBottom_toBottomOf="@+id/txtFaultAlert"
+            app:layout_constraintEnd_toEndOf="@+id/text4"
+            app:layout_constraintStart_toStartOf="@+id/text4"
+            app:layout_constraintTop_toTopOf="@+id/txtFaultAlert" />
 
         <TextView
             android:id="@+id/txtFaultAlert"
             android:layout_width="150dp"
             android:layout_height="40dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="25dp"
             android:background="@drawable/round_corner"
             android:gravity="center"
             android:text="N/A"
             android:textColor="@color/colorBlack"
             android:textSize="20sp"
-            app:layout_constraintLeft_toRightOf="@+id/text7"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/vertical"
-            app:layout_constraintTop_toBottomOf="@+id/swtTimeDelay" />
+            app:layout_constraintEnd_toEndOf="@+id/txtOutputVoltage"
+            app:layout_constraintStart_toStartOf="@+id/txtOutputVoltage"
+            app:layout_constraintTop_toBottomOf="@+id/swtPower" />
 
         <ImageView
             android:id="@+id/imageView"
@@ -219,7 +244,7 @@
             android:layout_marginBottom="10dp"
             android:src="@drawable/make_in_india_logo"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"/>
+            app:layout_constraintRight_toRightOf="parent" />
 
         <TextView
             android:id="@+id/textView"

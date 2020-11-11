@@ -19,7 +19,6 @@ import com.rax.autostabilizer.databinding.ActivityStabilizerStatusBinding;
 
 import static com.rax.autostabilizer.Utilities.S_Communication.CONNECTED;
 
-//NEWONE
 public class StabilizerStatusActivity extends AppCompatActivity implements ApplicationClass.TCPDataListener {
 
     private static final String TAG = "StabilizerStatusActivit";
@@ -32,8 +31,7 @@ public class StabilizerStatusActivity extends AppCompatActivity implements Appli
     CountDownTimer keepAliveHandler;
     String packetToSend;
     boolean isViewVisible = false;
-
-    //  Handler keepAliveHandler;
+    //Handler keepAliveHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +42,8 @@ public class StabilizerStatusActivity extends AppCompatActivity implements Appli
             @Override
             public void onClick(View view) {
                 showProgress();
-                stopKeepAlive();
+                //stopKeepAlive();
+                restartKeepAlive();
                 //closeTelnet();
                 if (mBinding.swtPower.isChecked()) {
                     sendPacket("*A#");
@@ -52,15 +51,19 @@ public class StabilizerStatusActivity extends AppCompatActivity implements Appli
                     sendPacket("*B#");
                 }
             }
+
         });
+
         keepAliveHandler = new CountDownTimer(5000, 5000) {
             @Override
             public void onTick(long l) {
-
+                //mBinding.swtPower.setClickable(true);
             }
 
             @Override
             public void onFinish() {
+                Log.d(TAG, "RAXLOG: CountDownTimer ENDED");
+                //mBinding.swtPower.setClickable(false);
                 sendKeepAlive();
             }
         };
@@ -119,10 +122,16 @@ public class StabilizerStatusActivity extends AppCompatActivity implements Appli
 
     @Override
     public void OnDataReceive(String data) {
-        Log.d(TAG, "OnDataReceive: " + data);
+        Log.d(TAG, "RAXLOGtelnetData: " + data);
         if (data.contains("\r") || data.contains("\n")) {
             data = data.replace("\r", "");
             data = data.replace("\n", "");
+        }
+        if (data.equals("timeOut") || data.equals("FailedToConnect")) {
+            dismissProgress();
+            Log.d(TAG, "OnDataReceive: log1");
+            Toast.makeText(mAppClass, "Please restart and try again", Toast.LENGTH_SHORT).show();
+            onBackPressed();
         }
         if (data.contains(CONNECTED)) {
             new Handler().postDelayed(new Runnable() {
@@ -143,7 +152,7 @@ public class StabilizerStatusActivity extends AppCompatActivity implements Appli
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Log.d(TAG, "run: "+keepAliveNackCount);
+                            Log.d(TAG, "run: " + keepAliveNackCount);
                             Toast.makeText(mContext, "Please restart and try again", Toast.LENGTH_SHORT).show();
                             onBackPressed();
                         }
@@ -155,6 +164,7 @@ public class StabilizerStatusActivity extends AppCompatActivity implements Appli
                     retryLastSentPacket();
                 } else {
                     powerPacketNackCount = 0;
+                    Log.d(TAG, "OnDataReceive: log2");
                     dismissProgress();
                     sendKeepAlive();
                     if (packetToSend.contains("A")) {
@@ -177,7 +187,8 @@ public class StabilizerStatusActivity extends AppCompatActivity implements Appli
                 }
             }
         } else if (data.contains(";")) {
-            dismissProgress();
+           // dismissProgress();
+            Log.d(TAG, "OnDataReceive: log3");
             keepAliveNackCount = 0;
             String[] splitData = data.split(";");
             if (splitData[1].equals("5")) {
@@ -185,43 +196,54 @@ public class StabilizerStatusActivity extends AppCompatActivity implements Appli
                     case "01":
                         mBinding.txtFaultAlert.setText("Low");
                         mBinding.swtPower.setEnabled(false);
+                        mBinding.swtPower.setBackgroundResource(R.drawable.ic_power_off);
                         break;
                     case "02":
                         mBinding.txtFaultAlert.setText("High");
                         mBinding.swtPower.setEnabled(false);
+                        mBinding.swtPower.setBackgroundResource(R.drawable.ic_power_off);
                         break;
                     case "03":
                         mBinding.txtFaultAlert.setText("Time delay");
                         mBinding.swtPower.setEnabled(false);
                         mBinding.swtTimeDelay.setChecked(true);
+                        mBinding.swtPower.setBackgroundResource(R.drawable.ic_power_off);
                         break;
                     case "04":
                         mBinding.txtFaultAlert.setText("Normal");
                         mBinding.swtPower.setEnabled(true);
                         break;
                 }
+                String[] powerStatus = splitData[3].split(",");
                 String[] inputVolt = splitData[4].split(",");
                 String[] outputVolt = splitData[5].split(",");
 
-                String[] powerStatus = splitData[3].split(",");
-
                 if (powerStatus[1].equals("1")) {
                     mBinding.swtPower.setChecked(true);
+                    mBinding.swtPower.setBackgroundResource(R.drawable.ic_power_on);
+                    mBinding.text4.setText("Output ON");
                 } else if (powerStatus[1].equals("0")) {
                     mBinding.swtPower.setChecked(false);
+                    mBinding.text4.setText("Output OFF");
+                    mBinding.swtPower.setBackgroundResource(R.drawable.ic_power_off);
                 }
                 mBinding.txtInputVoltage.setText(inputVolt[1] + "v");
                 mBinding.txtOutputVoltage.setText(outputVolt[1] + "v");
                 restartKeepAlive();
+                dismissProgress();
             } else if (splitData[1].equals("6")) {
                 powerPacketNackCount = 0;
                 if (splitData[2].equals("01")) {
                     if (splitData[3].equals("ACK")) {
                         mBinding.swtPower.setChecked(true);
+                        mBinding.text4.setText("Output ON");
+                        //mBinding.swtPower.setBackgroundResource(R.drawable.ic_power_on);
                     }
                 } else if (splitData[2].equals("02")) {
                     if (splitData[3].equals("ACK")) {
                         mBinding.swtPower.setChecked(false);
+                        mBinding.text4.setText("Output OFF");
+                        //mBinding.swtPower.setBackgroundResource(R.drawable.ic_power_off);
                     }
                 }
                 restartKeepAlive();
@@ -245,18 +267,19 @@ public class StabilizerStatusActivity extends AppCompatActivity implements Appli
         keepAliveNackCount = 0;
         powerPacketNackCount = 0;
         isViewVisible = true;
+        sendPacket("*S#");
     }
 
     @Override
     public void onBackPressed() {
         closeTelnet();
         dismissProgress();
-      /*  startActivity(new Intent(StabilizerStatusActivity.this,StabilizerListActivity.class));
+        /*  startActivity(new Intent(StabilizerStatusActivity.this,StabilizerListActivity.class));
         finish();*/
-
         Intent homeIntent = new Intent(StabilizerStatusActivity.this, StabilizerListActivity.class);
         //  homeIntent.addCategory( Intent.CATEGORY_HOME );
         homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(homeIntent);
     }
 }
+/*Version; v1.0.6|Date: 11/11/2020*/
