@@ -6,11 +6,14 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.rax.autostabilizer.ApplicationClass;
 import com.rax.autostabilizer.R;
@@ -31,52 +34,62 @@ public class StabilizerStatusActivity extends AppCompatActivity implements Appli
     CountDownTimer keepAliveHandler;
     String packetToSend;
     boolean isViewVisible = false;
-    //Handler keepAliveHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_stabilizer_status);
         mAppClass = (ApplicationClass) getApplication();
-        mBinding.swtPower.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showProgress();
-                //stopKeepAlive();
-                restartKeepAlive();
-                //closeTelnet();
-                if (mBinding.swtPower.isChecked()) {
-                    sendPacket("*A#");
-                } else {
-                    sendPacket("*B#");
-                }
-            }
+        Log.d(TAG, "onCreate: 5/12");
 
+        mBinding.toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.menu_schedule) {
+                    startActivity(new Intent(StabilizerStatusActivity.this, ScheduleActivity.class));
+                }
+                return false;
+            }
         });
 
-        keepAliveHandler = new CountDownTimer(5000, 5000) {
-            @Override
-            public void onTick(long l) {
-                //mBinding.swtPower.setClickable(true);
-            }
-
-            @Override
-            public void onFinish() {
-                Log.d(TAG, "RAXLOG: CountDownTimer ENDED");
-                //mBinding.swtPower.setClickable(false);
-                sendKeepAlive();
-            }
-        };
-        showProgress();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                packetToSend = "*S#";
-                mAppClass.sendPacket(StabilizerStatusActivity.this, "*S#");
-            }
-        }, 500);
+        //        mBinding.swtPower.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                showProgress();
+//                //stopKeepAlive();
+//                restartKeepAlive();
+//                //closeTelnet();
+//                if (mBinding.swtPower.isChecked()) {
+//                    sendPacket("*A#");
+//                } else {
+//                    sendPacket("*B#");
+//                }
+//            }
+//
+//        });
+//
+//        keepAliveHandler = new CountDownTimer(5000, 5000) {
+//            @Override
+//            public void onTick(long l) {
+//                //mBinding.swtPower.setClickable(true);
+//            }
+//
+//            @Override
+//            public void onFinish() {
+//                Log.d(TAG, "RAXLOG: CountDownTimer ENDED");
+//                //mBinding.swtPower.setClickable(false);
+//                sendKeepAlive();
+//            }
+//        };
+//        showProgress();
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                packetToSend = "*S#";
+//                mAppClass.sendPacket(StabilizerStatusActivity.this, "*S#");
+//            }
+//        }, 500);
     }
-
     private void showProgress() {
         mBinding.progressCircular.setVisibility(View.VISIBLE);
     }
@@ -187,7 +200,7 @@ public class StabilizerStatusActivity extends AppCompatActivity implements Appli
                 }
             }
         } else if (data.contains(";")) {
-           // dismissProgress();
+            // dismissProgress();
             Log.d(TAG, "OnDataReceive: log3");
             keepAliveNackCount = 0;
             String[] splitData = data.split(";");
@@ -272,15 +285,16 @@ public class StabilizerStatusActivity extends AppCompatActivity implements Appli
 
     @Override
     public void onBackPressed() {
-        closeTelnet();
+       /* closeTelnet();
         dismissProgress();
-        /*  startActivity(new Intent(StabilizerStatusActivity.this,StabilizerListActivity.class));
-        finish();*/
+        startActivity(new Intent(StabilizerStatusActivity.this, StabilizerListActivity.class));
+        finish();
         Intent homeIntent = new Intent(StabilizerStatusActivity.this, StabilizerListActivity.class);
         //  homeIntent.addCategory( Intent.CATEGORY_HOME );
         homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(homeIntent);
+        startActivity(homeIntent);*/
+
     }
 }
 
-/*Version; v1.0.6|Date: 11/11/2020*/
+/*Version: N/A | Phase 2*/

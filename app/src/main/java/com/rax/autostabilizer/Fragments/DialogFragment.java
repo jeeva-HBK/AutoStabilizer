@@ -99,4 +99,5 @@ public class DialogFragment extends androidx.fragment.app.DialogFragment {
     public interface OnDismissListener {
         void OnDismiss();
     }
+
 }

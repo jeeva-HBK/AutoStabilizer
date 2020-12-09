@@ -26,6 +26,7 @@ public class ApplicationClass extends Application {
     BroadcastReceiver mTCPDataReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+
             try {
                 String data;
                 data = intent.getStringExtra(RECEIVED_DATA);
@@ -60,6 +61,7 @@ public class ApplicationClass extends Application {
                 Toast.makeText(mContext, e.getMessage(), Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
+
         }
     };
 
@@ -154,5 +156,4 @@ public class ApplicationClass extends Application {
     public interface TCPDataListener {
         void OnDataReceive(String data);
     }
-
 }

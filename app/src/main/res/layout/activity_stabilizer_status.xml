@@ -31,7 +31,8 @@
             android:background="@color/colorPrimary"
             app:layout_constraintTop_toTopOf="parent"
             app:title="Stabilizer Status"
-            app:titleTextColor="@color/white" />
+            app:titleTextColor="@color/white"
+            app:menu="@menu/status" />
 
         <TextView
             android:id="@+id/text1"
@@ -145,8 +146,8 @@
             android:background="@drawable/ic_power_null"
             android:textOff=""
             android:textOn=""
-            app:layout_constraintEnd_toEndOf="@+id/txtOutputVoltage"
-            app:layout_constraintStart_toStartOf="@+id/txtOutputVoltage"
+            app:layout_constraintEnd_toEndOf="@+id/txtFaultAlert"
+            app:layout_constraintStart_toStartOf="@+id/txtFaultAlert"
             app:layout_constraintTop_toBottomOf="@+id/txtOutputVoltage" />
 
         <TextView
@@ -226,6 +227,32 @@
             app:layout_constraintEnd_toEndOf="@+id/txtOutputVoltage"
             app:layout_constraintStart_toStartOf="@+id/txtOutputVoltage"
             app:layout_constraintTop_toBottomOf="@+id/swtPower" />
+
+         <!--Phase II-->
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Sleep Mode"
+            android:textColor="@android:color/black"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/cbSleepMode"
+            app:layout_constraintEnd_toEndOf="@+id/text7"
+            app:layout_constraintStart_toStartOf="@+id/text7"
+            app:layout_constraintTop_toTopOf="@+id/cbSleepMode" />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/cbSleepMode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="17dp"
+            android:layout_marginTop="25dp"
+            app:layout_constraintBottom_toTopOf="@+id/imageView2"
+            app:layout_constraintEnd_toEndOf="@+id/swtPower"
+            app:layout_constraintStart_toStartOf="@+id/swtPower"
+            app:layout_constraintTop_toBottomOf="@+id/txtFaultAlert"
+            app:layout_constraintVertical_bias="0" />
+
 
         <ImageView
             android:id="@+id/imageView"
