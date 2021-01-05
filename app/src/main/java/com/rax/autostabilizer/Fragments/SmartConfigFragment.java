@@ -16,12 +16,15 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -125,6 +128,16 @@ public class SmartConfigFragment extends Fragment {
         } else {
             registerBroadcastReceiver();
         }
+        binding.edtNAME.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if (i == EditorInfo.IME_ACTION_NEXT){
+                    binding.edtPass.requestFocus();
+                }
+                return false;
+            }
+        });
+
         binding.btnSearch.setOnClickListener(v -> {
 
             if (binding.edtSSID.getText().toString().equals("")) {
@@ -135,17 +148,14 @@ public class SmartConfigFragment extends Fragment {
                 Toast.makeText(mContext, "Unknown BSSID", Toast.LENGTH_SHORT).show();
                 return;
             }
-
             if (binding.edtNAME.getText().toString().equals("")) {
                 Toast.makeText(mContext, "Enter Name", Toast.LENGTH_SHORT).show();
                 return;
             }
-
             if (binding.edtPass.getText().toString().equals("")) {
                 Toast.makeText(mContext, "Enter password", Toast.LENGTH_SHORT).show();
                 return;
             }
-
 
             byte[] ssid = binding.edtSSID.getTag() == null ? ByteUtil.getBytesByString(binding.edtSSID.getText().toString())
                     : (byte[]) binding.edtSSID.getTag();
@@ -449,9 +459,8 @@ public class SmartConfigFragment extends Fragment {
                     .show();
             Repository repository = new Repository();
             repository.saveStabilizer(mActivity.get().getActivity(),
-                    new Stabilizer(mActivity.get().binding.edtNAME.getText().toString(), mActivity.get().mIPAddress, 5000, mActivity.get().mDeviceMac));
+                    new Stabilizer(mActivity.get().binding.edtNAME.getText().toString(), mActivity.get().mIPAddress, 6000, mActivity.get().mDeviceMac));
 
         }
     }
-
 }

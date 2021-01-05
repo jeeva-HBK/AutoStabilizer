@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/cod"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:focusableInTouchMode="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -17,8 +17,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:title="Auto Stabilizer"
+                app:title="Stabilizer Configuration"
                 app:titleTextColor="@color/white" />
 
             <View
@@ -36,7 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:text="Dummy Text"
+                android:text="Auto Stabilizer"
                 android:textColor="@color/white"
                 android:textSize="25dp"
                 android:textStyle="bold"
@@ -47,9 +48,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Dummy Dummy"
+                android:text="v1.0.0"
                 android:textColor="@color/white"
-                android:textSize="15dp"
+                android:textSize="12dp"
                 app:layout_constraintEnd_toEndOf="@+id/textView3"
                 app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
@@ -71,6 +72,68 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.5" />
+
+                    <EditText
+                        android:id="@+id/edtPirTimeDelay"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/round_corner"
+                        android:digits="0123456789"
+                        android:gravity="center"
+                        android:hint="Pir Time Delay"
+                        android:textSize="18dp"
+                        android:imeOptions="actionDone"
+                        android:cursorVisible="false"
+                        android:inputType="number"
+                        android:maxLength="2"
+                        app:layout_constraintBottom_toBottomOf="@+id/pirCb"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/guideline2"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textView9"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="in sec"
+                        app:layout_constraintStart_toStartOf="@+id/edtPirTimeDelay"
+                        app:layout_constraintTop_toBottomOf="@+id/edtPirTimeDelay" />
+
+                    <!--
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_name"
+                        android:theme="@style/edt"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        app:boxBackgroundColor="@android:color/transparent"
+                        app:layout_constraintBottom_toBottomOf="@+id/pirCb"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/guideline2"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edtPirTimeDelay"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:drawablePadding="10dp"
+                            android:hint="PIR TimeDelay"
+                            android:background="@drawable/round_corner"
+                            android:imeOptions="actionNext"
+                            android:inputType="number"
+                            android:maxLength="30"
+                            android:maxLines="1" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+-->
+
                     <TextView
                         android:id="@+id/PirTv"
                         android:layout_width="0dp"
@@ -78,7 +141,7 @@
                         android:paddingRight="10dp"
                         android:text="PIR Sensor"
                         android:textColor="@android:color/black"
-                        android:textSize="18dp"
+                        android:textSize="16dp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="@+id/pirCb"
                         app:layout_constraintStart_toStartOf="@+id/ScheduleTv"
@@ -88,24 +151,22 @@
                         android:id="@+id/pirCb"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:layout_constraintBottom_toTopOf="@+id/ScheduleTv"
                         app:layout_constraintEnd_toStartOf="@+id/vertical"
-                        app:layout_constraintStart_toEndOf="@+id/PirTv" />
+                        app:layout_constraintStart_toEndOf="@+id/PirTv"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/ScheduleTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="left"
-                        android:paddingRight="10dp"
-                        android:text="Schedules"
+                        android:gravity="start"
+                        android:text="Schedule Configuration"
                         android:textColor="@android:color/black"
-                        android:textSize="18dp"
+                        android:textSize="20sp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toTopOf="@+id/schedule1_cb"
-                        app:layout_constraintEnd_toEndOf="@+id/textView4"
-                        app:layout_constraintStart_toStartOf="@+id/textView4" />
-
+                        app:layout_constraintStart_toStartOf="@+id/textView4"
+                        app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
                     <TextView
                         android:id="@+id/textView4"
@@ -116,7 +177,7 @@
                         android:paddingRight="10dp"
                         android:text="Schedule 1"
                         android:textColor="@android:color/black"
-                        android:textSize="18dp"
+                        android:textSize="16dp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="@+id/schedule1_cb"
                         app:layout_constraintStart_toStartOf="parent"
@@ -137,8 +198,6 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
-                        android:layout_weight="1"
-                        android:background="?attr/selectableItemBackgroundBorderless"
                         android:foreground="@drawable/round_corner"
                         android:gravity="center"
                         android:padding="5dp"
@@ -153,8 +212,6 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
-                        android:layout_weight="1"
-                        android:background="?attr/selectableItemBackgroundBorderless"
                         android:foreground="@drawable/round_corner"
                         android:gravity="center"
                         android:padding="5dp"
@@ -174,7 +231,7 @@
                         android:paddingRight="10dp"
                         android:text="Schedule 2"
                         android:textColor="@android:color/black"
-                        android:textSize="18dp"
+                        android:textSize="16dp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="@+id/schedule2_cb"
                         app:layout_constraintStart_toStartOf="parent"
@@ -195,8 +252,6 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
-                        android:layout_weight="1"
-                        android:background="?attr/selectableItemBackgroundBorderless"
                         android:foreground="@drawable/round_corner"
                         android:gravity="center"
                         android:padding="5dp"
@@ -211,8 +266,6 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
-                        android:layout_weight="1"
-                        android:background="?attr/selectableItemBackgroundBorderless"
                         android:foreground="@drawable/round_corner"
                         android:gravity="center"
                         android:padding="5dp"
@@ -232,7 +285,7 @@
                         android:paddingRight="10dp"
                         android:text="Schedule 3"
                         android:textColor="@android:color/black"
-                        android:textSize="18dp"
+                        android:textSize="16dp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="@+id/schedule3_cb"
                         app:layout_constraintStart_toStartOf="parent"
@@ -253,8 +306,6 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
-                        android:layout_weight="1"
-                        android:background="?attr/selectableItemBackgroundBorderless"
                         android:foreground="@drawable/round_corner"
                         android:gravity="center"
                         android:padding="5dp"
@@ -269,8 +320,6 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
-                        android:layout_weight="1"
-                        android:background="?attr/selectableItemBackgroundBorderless"
                         android:foreground="@drawable/round_corner"
                         android:gravity="center"
                         android:padding="5dp"
@@ -290,7 +339,7 @@
                         android:paddingRight="10dp"
                         android:text="Schedule 4"
                         android:textColor="@android:color/black"
-                        android:textSize="18dp"
+                        android:textSize="16dp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="@+id/schedule4_cb"
                         app:layout_constraintStart_toStartOf="parent"
@@ -311,8 +360,6 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
-                        android:layout_weight="1"
-                        android:background="?attr/selectableItemBackgroundBorderless"
                         android:foreground="@drawable/round_corner"
                         android:gravity="center"
                         android:padding="5dp"
@@ -327,7 +374,6 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
-                        android:layout_weight="1"
                         android:foreground="@drawable/round_corner"
                         android:gravity="center"
                         android:padding="5dp"
@@ -342,11 +388,11 @@
                         android:id="@+id/schSave"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="save"
+                        android:layout_margin="15dp"
+                        android:text="save configuration"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        android:layout_margin="10dp"/>
+                        app:layout_constraintStart_toStartOf="parent" />
 
                     <androidx.constraintlayout.widget.Guideline
                         android:id="@+id/vertical"
@@ -358,6 +404,23 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.cardview.widget.CardView>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" >
+
+                <ProgressBar
+                    android:id="@+id/progress_circular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true" />
+
+            </RelativeLayout>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

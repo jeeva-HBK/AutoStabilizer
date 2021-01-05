@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,11 +24,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.rax.autostabilizer.Adapters.StabilizerListAdapter;
 import com.rax.autostabilizer.ApplicationClass;
+import com.rax.autostabilizer.ConnectionMode;
+import com.rax.autostabilizer.DataReceiveCallback;
 import com.rax.autostabilizer.Database.Repository;
 import com.rax.autostabilizer.Fragments.DialogFragment;
 import com.rax.autostabilizer.Fragments.SmartConfigFragment;
 import com.rax.autostabilizer.Models.Stabilizer;
 import com.rax.autostabilizer.R;
+import com.rax.autostabilizer.Utilities.AWSIoT;
 import com.rax.autostabilizer.Utilities.S_Communication;
 import com.rax.autostabilizer.databinding.ActivityStabilizerListBinding;
 
@@ -36,6 +40,9 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.rax.autostabilizer.ApplicationClass.macAddress;
+import static com.rax.autostabilizer.Utilities.AWSIoT.AWS_CONNECTED;
+import static com.rax.autostabilizer.Utilities.AWSIoT.AWS_NOT_CONNECTED;
 import static com.rax.autostabilizer.Utilities.S_Communication.CONNECTED;
 import static com.rax.autostabilizer.Utilities.S_Communication.mIPAddress;
 import static com.rax.autostabilizer.Utilities.S_Communication.mPortNumber;
@@ -56,6 +63,10 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
     private ApplicationClass mAppClass;
     private boolean isFabOpen = false;
 
+    //Phase II
+    CountDownTimer networkChecker;
+
+    // macAddress = "246F287A003C"
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +79,7 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
         mBinding.rvStabilizerList.setAdapter(mAdapter);
 
         requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 111);
+
 
         mBinding.fabAddExisting.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,6 +116,24 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
         });
     }
 
+    // To check wheather MobileData or Wifi turned On
+
+    private void networkCountDownTimer() {
+        networkChecker = new CountDownTimer(5000, 5000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                // checkNetwork();
+                networkChecker.start();
+            }
+        }.start();
+
+    }
+
     private void refreshData() {
         List<Stabilizer> list = mRepo.getStabilizerList(this);
         if (list.size() == 0) {
@@ -123,7 +153,7 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
     protected void onResume() {
         super.onResume();
         refreshData();
-        closeTelnet();
+        //closeTelnet();
     }
 
     private void showAddDialog() {
@@ -270,19 +300,47 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
 
     @Override
     public void OnStabilizerClicked(Stabilizer stabilizer) {
-        // startActivity(new Intent(StabilizerListActivity.this, StabilizerStatusActivity.class));
         mIPAddress = stabilizer.getIPAddress();
         mPortNumber = stabilizer.getPort();
-        showProgress();
-        mAppClass.sendPacket(data -> {
-            dismissProgress();
-            Log.d(TAG, "OnStabilizerClicked: " + data);
-            if (data.equals(CONNECTED)) {
-                startActivity(new Intent(StabilizerListActivity.this, StabilizerStatusActivity.class));
-                return;
-            }
-            Toast.makeText(mContext, data, Toast.LENGTH_SHORT).show();
-        }, "");
+        macAddress = stabilizer.getMacAddress().toUpperCase();
+        Log.e(TAG, "OnStabilizerClicked: " + mAppClass.checkNetwork().toString());
+        switch (mAppClass.checkNetwork()) {
+            case TCP:
+                showProgress();
+                mAppClass.sendPacket(data -> {
+                    dismissProgress();
+                    if (data.equals(CONNECTED)) {
+                        closeTelnet();
+                        startActivity(new Intent(StabilizerListActivity.this, StabilizerStatusActivityV2.class));
+                        return;
+                    }
+                    Toast.makeText(mContext, data, Toast.LENGTH_SHORT).show();
+                }, "");
+                break;
+            case AWSIoT:
+                showProgress();
+                AWSIoT.getInstance(mContext, data -> {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            dismissProgress();
+                            Log.d(TAG, "OnStabilizerClicked: " + macAddress);
+                            if (mAppClass.checkNetwork() == ConnectionMode.AWSIoT) {
+                                if (data.equals(AWS_NOT_CONNECTED)) {
+                                    Toast.makeText(mContext, "Unable to reach server", Toast.LENGTH_SHORT).show();
+
+                                } else if (data.equals(AWS_CONNECTED)) {
+                                    startActivity(new Intent(StabilizerListActivity.this, StabilizerStatusActivityV2.class));
+                                }
+                            }
+                        }
+                    });
+                });
+                break;
+            case NONE:
+                mAppClass.showConnectionPop(StabilizerListActivity.this);
+                break;
+        }
     }
 
     @Override
@@ -306,4 +364,16 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
                 })
                 .show();
     }
+
+    //AWS
+    private void publish(String publishTopic, String subscribeTopic, String packet) {
+        mAppClass.subscribe(subscribeTopic);
+        mAppClass.publish(packet, publishTopic, new DataReceiveCallback() {
+            @Override
+            public void OnAWSDataReceive(String data) {
+                Log.d(TAG, "OnAWSDataReceive: 1.1) AWS received--> " + data);
+            }
+        });
+    }
+
 }

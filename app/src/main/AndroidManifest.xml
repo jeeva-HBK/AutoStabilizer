@@ -9,6 +9,8 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
+    <uses-permission android:name="android.permission.EXPAND_STATUS_BAR" />
+
     <application
         android:name=".ApplicationClass"
         android:allowBackup="true"
@@ -18,19 +20,29 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".Activities.ScheduleActivity">
+
         </activity>
+
         <activity android:name=".Activities.StabilizerListActivity">
         </activity>
+
         <activity
             android:name=".Activities.SplashActivity"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
-        </activity>
-        <activity android:name=".Activities.StabilizerStatusActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".Activities.StabilizerStatusActivity">
+
+        </activity>
+
+        <activity android:name=".Activities.StabilizerStatusActivityV2">
+
+        </activity>
+
         <service android:name=".Utilities.S_Communication" />
     </application>
 

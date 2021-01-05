@@ -14,7 +14,8 @@ import java.util.ArrayList;
 
 public class Repository {
     private static String PREF_KEY = "StabilizerDB";
-    private static String STAB_NAME = "StabilizerName", STAB_IP = "StabilizerIP", STAB_PORT = "StabilizerPort", STAB_MAC = "StabilizerMAC";
+    private static String STAB_NAME = "StabilizerName", STAB_IP = "StabilizerIP",
+            STAB_PORT = "StabilizerPort", STAB_MAC = "StabilizerMAC";
 
     public boolean saveStabilizer(Activity mActivity, Stabilizer stabilizer) {
         try {

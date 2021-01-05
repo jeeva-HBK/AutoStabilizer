@@ -2,6 +2,7 @@ package com.rax.autostabilizer.Utilities;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.os.CountDownTimer;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -23,10 +24,23 @@ public class S_Communication extends IntentService {
 
     public static final String ACTION_MyIntentService = "com.example.w.RESPONSE", CONNECTED = "Connected", RECEIVED_DATA = "ReceivedData";
     private static final String TAG = "S_Communication";
+    private static final String TAG_1 = "S_Communication_Data";
     public static Socket socketDevice = null;
     public static BufferedReader _inputSteam;
     public static String Packet, mIPAddress;
     public static int mPortNumber;
+    CountDownTimer packetTimeroutTimer = new CountDownTimer(5000, 1000) {
+        @Override
+        public void onTick(long l) {
+
+        }
+
+        @Override
+        public void onFinish() {
+            Log.d(TAG_1, "run: Timeout");
+            stop();
+        }
+    };
 
 
     public S_Communication() {
@@ -46,17 +60,21 @@ public class S_Communication extends IntentService {
     }
 
     public void stop() {
-        SendToDevice STD = new SendToDevice(null);
+        //  Log.d(TAG_1, "stop: Close called");
+        SendToDevice STD = new SendToDevice(Packet);
         STD.close();
     }
 
     private void intentMessage(String message) {
+
         Intent intentResponse = new Intent();
         intentResponse.setAction(ACTION_MyIntentService);
         intentResponse.addCategory(Intent.CATEGORY_DEFAULT);
         intentResponse.putExtra(RECEIVED_DATA, message);
         sendBroadcast(intentResponse);
     }
+
+
 //    public void framepack(String pack) {
 //        packetBuffer = packetBuffer.append(pack);
 //        int indexOfEnd = 0;
@@ -68,6 +86,7 @@ public class S_Communication extends IntentService {
 //            packetBuffer.setLength(0);
 //        }
 //    }
+
     class SendToDevice implements Runnable {
         private String m_command;
 
@@ -79,6 +98,12 @@ public class S_Communication extends IntentService {
         public void run() {
 
             try {
+                try {
+                    // Log.d(TAG_1, "run: Before connect");
+                    stop();
+                } catch (Exception e) {
+                    // Ignored
+                }
                 if (Connect()) {
                     if (!Packet.equals("")) {
                         if (send()) {
@@ -102,8 +127,10 @@ public class S_Communication extends IntentService {
 
                 out0.println(Packet);
 
-                Log.d(TAG, "RAXLOGSend: " + Packet);
-
+                Log.e("TCP", "send: -> " + Packet);
+                Log.d(TAG_1, "Send: " + Packet);
+                packetTimeroutTimer.cancel();
+                packetTimeroutTimer.start();
                 return true;
             } catch (Exception e) {
                 intentMessage("sendCatch");
@@ -121,11 +148,14 @@ public class S_Communication extends IntentService {
                 char[] buffer = new char[2048];
                 int charsRead = 0;
                 while ((charsRead = _inputSteam.read(buffer)) != -1) {
+                    //Log.d(TAG_1, "run: OnReceive");
+                    stop();
+                    packetTimeroutTimer.cancel();
                     String message = new String(buffer).substring(0, charsRead);
                     if (!message.isEmpty()) {
                         dataReceived = true;
                         data = message;
-                        Log.e("SR1COMM", "Receive  " + message);
+                        Log.e("TCP", "Receive <- " + message);
                     } else {
                         Log.d("Receive Error Message", message);
                     }
@@ -143,8 +173,9 @@ public class S_Communication extends IntentService {
                 Log.d(TAG, e1.getMessage());
                 Log.d(TAG, "restart");
             }
-            close();
+
             Log.d(TAG, "Receive: " + data);
+            Log.d(TAG_1, "Receive: " + data);
             intentMessage(data);
         }
 
@@ -159,9 +190,11 @@ public class S_Communication extends IntentService {
                     _inputSteam = new BufferedReader(new InputStreamReader(socketDevice.getInputStream()));
                     socketDevice.setKeepAlive(true);
                     socketDevice.setSoLinger(true, 1);
-                    intentMessage("Connected");
+                    intentMessage(CONNECTED);
+
                     Log.d(TAG, "Device Connected");
                 }
+                Log.d(TAG_1, "Connect: Success");
                 return true;
             } catch (UnknownHostException e1) {
                 intentMessage("UnknownHostException");
@@ -175,6 +208,7 @@ public class S_Communication extends IntentService {
             } catch (Exception e) {
                 socketDevice = null;
             }
+            Log.d(TAG_1, "Connect: Failed");
             return false;
         }
 
@@ -197,4 +231,3 @@ public class S_Communication extends IntentService {
         }
     }
 }
-
