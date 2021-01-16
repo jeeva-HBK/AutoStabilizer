@@ -31,16 +31,25 @@ import java.lang.reflect.Method;
 import static com.rax.autostabilizer.Utilities.S_Communication.ACTION_MyIntentService;
 import static com.rax.autostabilizer.Utilities.S_Communication.RECEIVED_DATA;
 
-@AcraMailSender(mailTo = "jeeva.raxtech@gmail.com")
-@AcraToast(resText = R.string.CrashReportMessage,
-        length = Toast.LENGTH_LONG)
+@AcraMailSender(mailTo = "jeeva@gbc.co.in")
+@AcraToast(resText = R.string.CrashReportMessage)
 
+// Created by Loki
+// Edited by jeeva
 public class ApplicationClass extends Application {
     Context mContext;
     DataListener mTCPTCPDataListener;
     CountDownTimer mPacketTimeout;
+    // Static Strings
+    public static String macAddress,
 
-    public static String macAddress;
+            startPacket = "SST#",
+            endPacket = "#ED",
+
+            topic = "topic/",
+            pubTopic = "/app2irc",
+            subTopic = "/irc2app"
+                    ;
 
     BroadcastReceiver mTCPDataReceiver = new BroadcastReceiver() {
         @Override
@@ -132,9 +141,6 @@ public class ApplicationClass extends Application {
         });
     }
 
-    public void sendData() {
-    }
-
     public void sendPacket(final DataListener listener, String packet) {
         this.mTCPTCPDataListener = listener;
         if (mPacketTimeout != null) {
@@ -148,7 +154,7 @@ public class ApplicationClass extends Application {
 
             @Override
             public void onFinish() {
-                Toast.makeText(mContext, "Request timeout", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, R.string.requestTimeOut, Toast.LENGTH_SHORT).show();
                 listener.OnDataReceived("timeOut");
             }
         };
@@ -172,12 +178,10 @@ public class ApplicationClass extends Application {
     }
 
     public String framePack(String packet) {
-        return "SST#" + packet + "#ED";
+        return startPacket + packet + endPacket;
     }
 
-    public interface DataListener {
-        void OnDataReceived(String data);
-    }
+    public interface DataListener { void OnDataReceived(String data);}
 
     public ConnectionMode checkNetwork() {
         if (mobileDataCheck(getApplicationContext())) {
@@ -195,12 +199,10 @@ public class ApplicationClass extends Application {
         try {
             Class cmClass = Class.forName(cm.getClass().getName());
             Method method = cmClass.getDeclaredMethod("getMobileDataEnabled");
-            method.setAccessible(true); // Make the method callable
-            // get the setting for "mobile data"
+            method.setAccessible(true);
             mobileDataEnabled = (Boolean) method.invoke(cm);
         } catch (Exception e) {
             mobileDataEnabled = false;
-            //e.printStackTrace();
         }
         return mobileDataEnabled;
     }

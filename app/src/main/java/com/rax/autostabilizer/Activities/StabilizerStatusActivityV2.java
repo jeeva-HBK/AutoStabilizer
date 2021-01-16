@@ -18,12 +18,15 @@ import com.rax.autostabilizer.Utilities.S_Communication;
 import com.rax.autostabilizer.databinding.ActivityStabilizerStatusBinding;
 
 import static com.rax.autostabilizer.ApplicationClass.macAddress;
+import static com.rax.autostabilizer.ApplicationClass.pubTopic;
+import static com.rax.autostabilizer.ApplicationClass.subTopic;
+import static com.rax.autostabilizer.ApplicationClass.topic;
 import static com.rax.autostabilizer.Utilities.AWSIoT.AWS_CONNECTED;
 import static com.rax.autostabilizer.Utilities.AWSIoT.AWS_NOT_CONNECTED;
 
 public class StabilizerStatusActivityV2 extends AppCompatActivity implements ApplicationClass.DataListener {
 
-    private static final String TAG = "Gva";
+    private static final String TAG = "Stabilizer Status";
     ApplicationClass mAppClass;
     Context mContext = this;
     ActivityStabilizerStatusBinding mBinding;
@@ -54,7 +57,7 @@ public class StabilizerStatusActivityV2 extends AppCompatActivity implements App
                     awsIoT.publish(packetToSend, publishTopic, StabilizerStatusActivityV2.this);
                     break;
                 case NONE:
-                    mAppClass.showSnackBar("No Connection", mBinding.cod);
+                    mAppClass.showSnackBar(getString(R.string.noConnection), mBinding.cod);
                     mAppClass.showConnectionPop(StabilizerStatusActivityV2.this);
                     break;
             }
@@ -67,10 +70,9 @@ public class StabilizerStatusActivityV2 extends AppCompatActivity implements App
     };
 
     AWSIoT awsIoT;
-
-    //  AWS
-    private String publishTopic = "topic/" + macAddress + "/app2irc",
-            subscribeTopic = "topic/" + macAddress + "/irc2app";
+    //  AWS Topics
+    private String publishTopic = topic + macAddress + pubTopic,
+            subscribeTopic = topic + macAddress + subTopic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -191,7 +193,7 @@ public class StabilizerStatusActivityV2 extends AppCompatActivity implements App
                 }
                 break;
             case NONE:
-                mAppClass.showSnackBar("No Connection", mBinding.cod);
+                mAppClass.showSnackBar(getString(R.string.noConnection), mBinding.cod);
                 mAppClass.showConnectionPop(StabilizerStatusActivityV2.this);
                 break;
         }
@@ -229,7 +231,7 @@ public class StabilizerStatusActivityV2 extends AppCompatActivity implements App
             public void run() {
                 if (mAppClass.checkNetwork() == ConnectionMode.AWSIoT) {
                     if (data.equals(AWS_NOT_CONNECTED)) {
-                        mAppClass.showSnackBar("Unable To Reach Server", mBinding.cod);
+                        mAppClass.showSnackBar(getString(R.string.unableToReachServer), mBinding.cod);
                         onBackPressed();
                     } else if (data.equals(AWS_CONNECTED)) {
                         awsIoT.subscribe(subscribeTopic);
@@ -248,7 +250,7 @@ public class StabilizerStatusActivityV2 extends AppCompatActivity implements App
         } else if (data.equals("NACK")) {
             mNackCount++;
             if (mNackCount > 3) {
-                mAppClass.showSnackBar("Operation Failed, Restart Stabilizer and try again", mBinding.cod);
+                mAppClass.showSnackBar(getString(R.string.operationFailed), mBinding.cod);
                 onBackPressed();
             }
         } else {
@@ -257,32 +259,35 @@ public class StabilizerStatusActivityV2 extends AppCompatActivity implements App
     }
 
     private void handleData(String data) {
-        // Status-read- data = "ST#6#01;5;XX;20,X;21,XXX;22,XXX;23,XX;24,X;FF#ED";
-        // OutPut ON - responce = "ST#7#01;6;01;ACK;D7#ED";
-        // OutPut OFF - responce =  "ST#8#01;6;02;ACK;AC#ED";
-        // SleepMode On - responce = "ST#3#RECEIVED,C#ED";
-        // SleepMode OFF - responce = "ST#3#RECEIVED,D#ED";
-        // SleepMode Reade- responce = "ST#4#C/D#ED";
+         /* Status-read- data = "ST#6#01;5;XX;20,X;21,XXX;22,XXX;23,XX;24,X;FF#ED";
+         OutPut ON - responce = "ST#7#01;6;01;ACK;D7#ED";
+         OutPut OFF - responce =  "ST#8#01;6;02;ACK;AC#ED";
+         SleepMode On - responce = "ST#3#RECEIVED,C#ED";
+         SleepMode OFF - responce = "ST#3#RECEIVED,D#ED";
+         SleepMode Reade- responce = "ST#4#C/D#ED"; */
+
         String[] handleData = data.split("#");
         if (handleData[1].equals("6")) {
             keepAliveNackCount = 0;
             String[] splitData = data.split(";");
+            // ST#6#01;5;04;20,1;21,330;22,227;23,14;24,0;FF#ED
+
             if (splitData[1].equals("5")) {
                 switch (splitData[2]) {
                     case "01":
-                        mBinding.txtFaultAlert.setText("Low");
+                        mBinding.txtFaultAlert.setText(R.string.low);
                         mBinding.swtPower.setEnabled(false);
                         mBinding.view5.setBackgroundResource(R.drawable.red_circle_bg);
                         mBinding.swtPower.setBackgroundResource(R.drawable.ic_power_off);
                         break;
                     case "02":
-                        mBinding.txtFaultAlert.setText("High");
+                        mBinding.txtFaultAlert.setText(R.string.high);
                         mBinding.swtPower.setEnabled(false);
                         mBinding.view5.setBackgroundResource(R.drawable.red_circle_bg);
                         mBinding.swtPower.setBackgroundResource(R.drawable.ic_power_off);
                         break;
                     case "03":
-                        mBinding.txtFaultAlert.setText("Time delay");
+                        mBinding.txtFaultAlert.setText(R.string.timeDelay);
                         isTimeDelay = true;
                         mBinding.swtPower.setEnabled(false);
                         mBinding.TgSleepMode.setChecked(true);
@@ -290,7 +295,7 @@ public class StabilizerStatusActivityV2 extends AppCompatActivity implements App
                         mBinding.swtPower.setBackgroundResource(R.drawable.ic_power_time_delay);
                         break;
                     case "04":
-                        mBinding.txtFaultAlert.setText("Normal");
+                        mBinding.txtFaultAlert.setText(R.string.normal);
                         isTimeDelay = false;
                         mBinding.view5.setBackgroundResource(R.drawable.green_circle_bg);
                         mBinding.swtPower.setEnabled(true);
@@ -300,7 +305,7 @@ public class StabilizerStatusActivityV2 extends AppCompatActivity implements App
                 String[] inputVolt = splitData[4].split(",");
                 String[] outputVolt = splitData[5].split(",");
                 String[] ampVolt = splitData[6].split(",");
-                // ST#6#01;5;03;20,0;21,266;22,185;23,08;24,0;FF#ED
+
                 if (powerStatus[1].equals("1")) {
                     mBinding.swtPower.setChecked(true);
                     mBinding.swtPower.setBackgroundResource(R.drawable.ic_power_on);
@@ -326,23 +331,23 @@ public class StabilizerStatusActivityV2 extends AppCompatActivity implements App
                 mBinding.txtOutputVoltage.setText(outputVolt[1] + "v");
             }
             dismissProgress();
+
             // OutPut ON - responce = "ST#7#01;6;01;ACK;D7#ED";
         } else if (handleData[1].equals("7")) { // On
             powerPacketNackCount = 0;
             mBinding.swtPower.setChecked(true);
-            mBinding.txtPower.setText("Output ON");
+            mBinding.txtPower.setText(R.string.outputOn);
             mBinding.swtPower.setBackgroundResource(R.drawable.ic_power_on);
-            // OutPut OFF - responce =  "ST#8#01;6;02;ACK;AC#ED";
 
+            // OutPut OFF - responce =  "ST#8#01;6;02;ACK;AC#ED";
         } else if (handleData[1].equals("8")) { // OFF
             powerPacketNackCount = 0;
             mBinding.swtPower.setChecked(false);
-            mBinding.txtPower.setText("Output OFF");
+            mBinding.txtPower.setText(R.string.outputOff);
             mBinding.swtPower.setBackgroundResource(R.drawable.ic_power_time_delay);
-            //  ST#4#C/D#ED -- sleepRead
 
+            //  ST#4#C/D#ED -- sleepRead
         } else if (handleData[1].contains("4")) {
-            // ST#4#D#ED
             String[] spiltData = data.split("#");
             if (spiltData[1].equals("4")) {
                 if (spiltData[2].equals("C")) {

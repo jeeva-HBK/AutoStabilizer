@@ -61,8 +61,6 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
     private ApplicationClass mAppClass;
     private boolean isFabOpen = false;
 
-    // Phase II
-    CountDownTimer networkChecker;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,12 +74,9 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
 
         requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 111);
 
-        mBinding.fabAddExisting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                closeFab();
-                showAddDialog();
-            }
+        mBinding.fabAddExisting.setOnClickListener(view -> {
+            closeFab();
+            showAddDialog();
         });
 
         mBinding.fabAddNew.setOnClickListener(new View.OnClickListener() {
@@ -94,7 +89,7 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
                         refreshData();
                     }
                 });
-                dialog.setFragment(new SmartConfigFragment(dialog), "Add Stabilizer");
+                dialog.setFragment(new SmartConfigFragment(dialog), getString(R.string.addStabilizer));
                 dialog.show(getSupportFragmentManager(), null);
             }
         });
@@ -109,23 +104,6 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
                 }
             }
         });
-    }
-
-    // To check wheather MobileData or Wifi turned On
-    private void networkCountDownTimer() {
-        networkChecker = new CountDownTimer(5000, 5000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-
-            }
-
-            @Override
-            public void onFinish() {
-                // checkNetwork();
-                networkChecker.start();
-            }
-        }.start();
-
     }
 
     private void refreshData() {
@@ -152,12 +130,12 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
 
     private void showAddDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Add Stablizer");
+        builder.setTitle(getString(R.string.addStabilizer));
         View dialogView = getLayoutInflater()
                 .inflate(R.layout.dialog_add_existing, null);
         builder.setView(dialogView);
-        builder.setPositiveButton("Save", null);
-        builder.setNegativeButton("Cancel", null);
+        builder.setPositiveButton(R.string.save, null);
+        builder.setNegativeButton(R.string.cancel, null);
         AlertDialog dialog = builder.create();
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
@@ -173,27 +151,26 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
                         macAddress = dialogView.findViewById(R.id.dialogMacEt);
                         Matcher matcher = IP_ADDRESS.matcher(ipAddress.getText().toString());
                         if (name.getText().toString().trim().equals("")) {
-                            name.setError("Enter Name");
+                            name.setError(getString(R.string.enterName));
                             return;
                         }
                         if (ipAddress.getText().toString().trim().equals("")) {
-                            ipAddress.setError("Enter ip");
+                            ipAddress.setError(getString(R.string.enterIp));
                             return;
                         } else if (!matcher.matches()) {
-                            ipAddress.setError("Enter a valid Ip Address");
+                            ipAddress.setError(getString(R.string.enterAValidIpAddress));
                             return;
                         }
                         if (macAddress.getText().toString().trim().equals("")) {
-                            macAddress.setError("Enter mac address");
+                            macAddress.setError(getString(R.string.enterMacAdress));
                             return;
                         }
-                        //jeeva
                         Stabilizer stabilizer = new Stabilizer(name.getText().toString()
                                 , ipAddress.getText().toString(), 5000
                                 , macAddress.getText().toString());
                         Repository repo = new Repository();
                         repo.saveStabilizer(StabilizerListActivity.this, stabilizer);
-                        mAppClass.showSnackBar("Complete !", mBinding.cod);
+                        mAppClass.showSnackBar(getString(R.string.complete), mBinding.cod);
                         closeFab();
                         dialogInterface.dismiss();
                         refreshData();
@@ -222,7 +199,7 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
         mBinding.fabAddExisting.show();
         mBinding.fabAddNew.show();
     }
-
+    // MacAddress Validation
     /*   public boolean isValidMac(String mac) {
         Pattern p = Pattern.compile("^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$");
         Matcher m = p.matcher(mac);
@@ -261,19 +238,19 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
             public boolean onMenuItemClick(MenuItem item) {
                 new MaterialAlertDialogBuilder(mContext)
                         .setTitle(getResources().getString(R.string.app_name))
-                        .setMessage("Are you sure you want to delete " + stabilizer.getName() + "?")
-                        .setPositiveButton("DELETE", new DialogInterface.OnClickListener() {
+                        .setMessage(getString(R.string.DeleteConfirmation) + stabilizer.getName() + "?")
+                        .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 if (!mRepo.deleteStabilizer(StabilizerListActivity.this, stabilizer.getMacAddress())) {
-                                    mAppClass.showSnackBar("Delete Failed", mBinding.cod);
+                                    mAppClass.showSnackBar(getString(R.string.deleteFailed), mBinding.cod);
                                     return;
                                 }
                                 mAdapter.mStabilizerList.remove(pos);
                                 mAdapter.notifyItemRemoved(pos);
                             }
                         })
-                        .setNegativeButton("Cancel", null)
+                        .setNegativeButton(getString(R.string.cancel), null)
                         .show();
                 return true;
             }
@@ -321,7 +298,7 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
                             Log.d(TAG, "OnStabilizerClicked: " + macAddress);
                             if (mAppClass.checkNetwork() == ConnectionMode.AWSIoT) {
                                 if (data.equals(AWS_NOT_CONNECTED)) {
-                                    mAppClass.showSnackBar("Unable to Reach Server",mBinding.cod);
+                                    mAppClass.showSnackBar(getString(R.string.unableToReachServer), mBinding.cod);
 
                                 } else if (data.equals(AWS_CONNECTED)) {
                                     startActivity(new Intent(StabilizerListActivity.this, StabilizerStatusActivityV2.class));
@@ -341,16 +318,16 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
     public void onBackPressed() {
         dismissProgress();
         new MaterialAlertDialogBuilder(mContext)
-                .setTitle("Exit")
-                .setMessage("Are You Sure, You Want To Exit ?")
+                .setTitle(R.string.exit)
+                .setMessage(R.string.exitConfirmation)
                 .setCancelable(false)
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.dismiss();
                     }
                 })
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         finish();
@@ -358,16 +335,5 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
                 })
                 .show();
     }
-
-  /*  //AWS
-    private void publish(String publishTopic, String subscribeTopic, String packet) {
-        mAppClass.subscribe(subscribeTopic);
-        mAppClass.publish(packet, publishTopic, new DataReceiveCallback() {
-            @Override
-            public void OnAWSDataReceive(String data) {
-                Log.d(TAG, "OnAWSDataReceive: 1.1) AWS received--> " + data);
-            }
-        });
-    }*/
 
 }

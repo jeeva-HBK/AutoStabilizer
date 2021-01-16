@@ -1,4 +1,47 @@
 <resources>
     <string name="app_name">Auto Stabilizer</string>
+
+    <!--AppTexts-->
     <string name="CrashReportMessage">Sorry! AutoStabilizer is Crashed, Please Send Us The Crash Report...</string>
+    <string name="requestTimeOut">Request timeout</string>
+    <string name="addStabilizer">Add Stabilizer</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="enterName">Enter Name</string>
+    <string name="enterIp">Enter ip</string>
+    <string name="enterAValidIpAddress">Enter a valid Ip Address</string>
+    <string name="enterMacAdress">Enter mac address</string>
+    <string name="complete">Complete !</string>
+    <string name="DeleteConfirmation">Are you sure you want to delete</string>
+    <string name="delete">DELETE</string>
+    <string name="deleteFailed">Delete Failed</string>
+    <string name="unableToReachServer">Unable to Reach Server</string>
+    <string name="exit">Exit</string>
+    <string name="exitConfirmation">Are You Sure, You Want To Exit ?</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+    <string name="noStabilizersAdded">No Stabilizers Added</string>
+    <string name="connectingPleaseWait">Connecting\nPlease Wait</string>
+    <string name="addNew">Add New</string>
+    <string name="addExisting">Add Existing</string>
+    <string name="noConnection">No Connection</string>
+    <string name="operationFailed">Operation Failed, Restart Stabilizer and try again</string>
+    <string name="low">Low</string>
+    <string name="high">High</string>
+    <string name="timeDelay">Time delay</string>
+    <string name="normal">Normal</string>
+    <string name="outputOn">Output ON</string>
+    <string name="outputOff">Output OFF</string>
+    <string name="stabilizerStatus">Stabilizer Status</string>
+    <string name="alfo_india_company">AlFO India Company©</string>
+    <string name="NA">N/A</string>
+    <string name="output">Output</string>
+    <string name="input">Input</string>
+    <string name="ampere">Ampere</string>
+    <string name="status">Status</string>
+    <string name="schedule">Schedule</string>
+    <string name="sleepMode">Sleep Mode</string>
+    <string name="off">OFF</string>
+    <string name="on">ON</string>
+
 </resources>

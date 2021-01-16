@@ -3,13 +3,13 @@
     <color name="colorPrimary">#212121</color>
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#484848</color>
-
+    <!--RawColors-->
     <color name="colorBlack">#000</color>
     <color name="colorGreen">#009999</color>
     <color name="colorRed">#DB4437</color>
     <color name="white">#fff</color>
     <color name="colorYellow">#FFD600</color>
-
+    <!--CustomColors-->
     <color name="tfe_semi_transparent">#66000000</color>
     <color name="colorNavigation">#fff</color>
     <color name="colorNavigationDivider">#E0E0E0</color>
@@ -18,5 +18,6 @@
     <color name="colorGray">#757575</color>
     <color name="colorSelectedItem">#E8F0FE</color>
     <color name="colorDisabled">#808080</color>
+    <color name="colorBlurBackground">#70E8F0FE</color>
 
 </resources>

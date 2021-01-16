@@ -33,7 +33,7 @@
                 android:layout_below="@id/img"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="5dp"
-                android:text="No Stabilizers Added" />
+                android:text="@string/noStabilizersAdded" />
 
         </RelativeLayout>
 
@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
             app:layout_constraintTop_toTopOf="parent"
-            app:title="Auto Stabilizer"
+            app:title="@string/app_name"
             app:titleTextColor="@color/white" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -57,7 +57,7 @@
             android:id="@+id/progressbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#70E8F0FE"
+            android:background="@color/colorBlurBackground"
             android:clickable="true"
             android:elevation="3dp"
             android:focusable="true"
@@ -76,7 +76,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:text="Connecting\nPlease Wait"
+                android:text="@string/connectingPleaseWait"
                 android:textColor="@color/colorBlack" />
 
         </RelativeLayout>
@@ -124,7 +124,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
-            android:text="Add New"
+            android:text="@string/addNew"
             android:visibility="gone"
             android:elevation="12dp"
             app:layout_constraintBottom_toBottomOf="@+id/fabAddNew"
@@ -136,7 +136,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
-            android:text="Add Existing"
+            android:text="@string/addExisting"
             android:elevation="12dp"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/fabAddExisting"
