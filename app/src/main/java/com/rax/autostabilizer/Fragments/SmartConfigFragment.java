@@ -40,6 +40,7 @@ import com.espressif.iot.esptouch.IEsptouchTask;
 import com.espressif.iot.esptouch.util.ByteUtil;
 import com.espressif.iot.esptouch.util.TouchNetUtil;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.rax.autostabilizer.ApplicationClass;
 import com.rax.autostabilizer.Database.Repository;
 import com.rax.autostabilizer.Models.Stabilizer;
 import com.rax.autostabilizer.R;
@@ -64,6 +65,7 @@ public class SmartConfigFragment extends Fragment {
     public DialogFragment parentDialog;
     private EspSmartConfig mTask;
     private boolean mDestroyed = false;
+    ApplicationClass mAppClass;
     private BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -115,6 +117,7 @@ public class SmartConfigFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
         mContext = getContext();
+        mAppClass = (ApplicationClass) getActivity().getApplication();
 
         if (isSDKAtLeastP()) {
             if (getActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -131,7 +134,7 @@ public class SmartConfigFragment extends Fragment {
         binding.edtNAME.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                if (i == EditorInfo.IME_ACTION_NEXT){
+                if (i == EditorInfo.IME_ACTION_NEXT) {
                     binding.edtPass.requestFocus();
                 }
                 return false;
@@ -141,19 +144,23 @@ public class SmartConfigFragment extends Fragment {
         binding.btnSearch.setOnClickListener(v -> {
 
             if (binding.edtSSID.getText().toString().equals("")) {
-                Toast.makeText(mContext, "Connect to wifi network", Toast.LENGTH_SHORT).show();
+                mAppClass.showSnackBar("Connect to Wifi Network", binding.cod);
                 return;
             }
             if (binding.edtBSSID.getText().toString().equals("")) {
-                Toast.makeText(mContext, "Unknown BSSID", Toast.LENGTH_SHORT).show();
+                mAppClass.showSnackBar("UnKnown BSSID", binding.cod);
                 return;
             }
             if (binding.edtNAME.getText().toString().equals("")) {
-                Toast.makeText(mContext, "Enter Name", Toast.LENGTH_SHORT).show();
+                mAppClass.showSnackBar("Enter Name", binding.cod);
+                binding.edtNAME.setError("Field Empty");
+                binding.edtNAME.requestFocus();
                 return;
             }
             if (binding.edtPass.getText().toString().equals("")) {
-                Toast.makeText(mContext, "Enter password", Toast.LENGTH_SHORT).show();
+                mAppClass.showSnackBar("Enter WiFi Password", binding.cod);
+                binding.edtPass.setError("Field Empty");
+                binding.edtPass.requestFocus();
                 return;
             }
 
@@ -205,7 +212,7 @@ public class SmartConfigFragment extends Fragment {
         if (disconnected) {
             binding.edtSSID.setText("");
             binding.edtSSID.setTag(null);
-            Toast.makeText(mContext, "No Wifi Connection", Toast.LENGTH_SHORT).show();
+            mAppClass.showSnackBar("No WiFi Connection", binding.cod);
             binding.btnSearch.setEnabled(false);
             if (isSDKAtLeastP()) {
                 checkLocation();
@@ -255,7 +262,7 @@ public class SmartConfigFragment extends Fragment {
         LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         enable = locationManager != null && LocationManagerCompat.isLocationEnabled(locationManager);
         if (!enable) {
-            Toast.makeText(mContext, "Location(GPS) is disabled", Toast.LENGTH_SHORT).show();
+            mAppClass.showSnackBar("Location(GPS) is disabled", binding.cod);
         }
     }
 

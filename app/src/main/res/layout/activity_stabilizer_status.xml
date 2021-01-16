@@ -2,300 +2,315 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/cod"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <RelativeLayout
-            android:id="@+id/progress_circular"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#7AFFFFFF"
-            android:clickable="true"
-            android:elevation="1dp"
-            android:focusable="true"
-            android:visibility="gone">
+            android:background="@color/colorPrimary">
+            <!--progressCircle-->
+            <RelativeLayout
+                android:id="@+id/progress_circular"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#7AFFFFFF"
+                android:clickable="true"
+                android:elevation="1dp"
+                android:focusable="true"
+                android:visibility="gone">
 
-            <ProgressBar
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true" />
+
+            </RelativeLayout>
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                app:layout_constraintTop_toTopOf="parent"
+                app:title="Stabilizer Status"
+                app:titleTextColor="@color/white" />
+
+            <!--  <ImageView
+                  android:id="@+id/imageView"
+                  android:layout_width="300dp"
+                  android:layout_height="50dp"
+                  android:src="@color/colorRed"
+                  app:layout_constraintEnd_toEndOf="parent"
+                  app:layout_constraintStart_toStartOf="parent"
+                  app:layout_constraintTop_toBottomOf="@+id/toolbar"
+                  android:layout_marginTop="10dp" />-->
+
+            <TextView
+                android:id="@+id/imageView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:src="@color/colorRed"
+                android:text="AlFO India Company©"
+                android:textColor="@color/white"
+                android:textSize="30sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="250dp"
+                android:layout_height="70dp"
+                android:layout_marginTop="5dp"
+                android:src="@drawable/logo"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+            <!--outPut-->
+            <View
+                android:id="@+id/view2"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="@drawable/circle_bg"
+                app:layout_constraintEnd_toEndOf="@+id/imageView3"
+                app:layout_constraintStart_toStartOf="@+id/imageView3"
+                app:layout_constraintTop_toTopOf="@+id/guideline3" />
+
+            <TextView
+                android:id="@+id/txtOutputVoltage"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:text="N/A"
+                android:textColor="@color/white"
+                android:textSize="22sp"
+                app:layout_constraintBottom_toBottomOf="@+id/view2"
+                app:layout_constraintEnd_toEndOf="@+id/view2"
+                app:layout_constraintStart_toStartOf="@+id/view2"
+                app:layout_constraintTop_toTopOf="@+id/view2" />
+
+            <TextView
+                android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true" />
+                android:layout_marginTop="5dp"
+                android:text="Output"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="@+id/view2"
+                app:layout_constraintStart_toStartOf="@+id/view2"
+                app:layout_constraintTop_toBottomOf="@+id/view2" />
 
-        </RelativeLayout>
+            <!--input-->
+            <View
+                android:id="@+id/view3"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="@drawable/circle_bg"
+                app:layout_constraintEnd_toStartOf="@+id/view2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/guideline3" />
 
+            <TextView
+                android:id="@+id/txtInputVoltage"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:text="N/A"
+                android:textColor="@color/white"
+                android:textSize="22sp"
+                app:layout_constraintBottom_toBottomOf="@+id/view3"
+                app:layout_constraintEnd_toEndOf="@+id/view3"
+                app:layout_constraintStart_toStartOf="@+id/view3"
+                app:layout_constraintTop_toTopOf="@+id/view3" />
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            app:layout_constraintTop_toTopOf="parent"
-            app:title="Stabilizer Status"
-            app:titleTextColor="@color/white"
-            app:menu="@menu/status" />
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Input"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="@+id/view3"
+                app:layout_constraintStart_toStartOf="@+id/view3"
+                app:layout_constraintTop_toBottomOf="@+id/view3" />
 
-        <TextView
-            android:id="@+id/text1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:gravity="center"
-            android:paddingTop="20dp"
-            android:text="SMART Stabilizers for Air Conditioner"
-            android:textColor="@android:color/black"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar" />
+            <!--Ampere-->
+            <View
+                android:id="@+id/view4"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="@drawable/circle_bg"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/view2"
+                app:layout_constraintTop_toTopOf="@+id/guideline3" />
 
-        <TextView
-            android:id="@+id/text2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="I/P VOLTAGE"
-            android:textColor="@android:color/black"
-            android:textSize="16dp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/vertical"
-            app:layout_constraintTop_toBottomOf="@+id/text1"
-            app:layout_constraintVertical_bias="0.06" />
+            <TextView
+                android:id="@+id/txtAmpere"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:text="N/A"
+                android:textColor="@color/white"
+                android:textSize="22sp"
+                app:layout_constraintBottom_toBottomOf="@+id/view4"
+                app:layout_constraintEnd_toEndOf="@+id/view4"
+                app:layout_constraintStart_toStartOf="@+id/view4"
+                app:layout_constraintTop_toTopOf="@+id/view4" />
 
-        <TextView
-            android:id="@+id/text3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="O/P VOLTAGE"
-            android:textColor="@android:color/black"
-            android:textSize="16dp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/vertical"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text1"
-            app:layout_constraintVertical_bias="0.06" />
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Ampere"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="@+id/view4"
+                app:layout_constraintStart_toStartOf="@+id/view4"
+                app:layout_constraintTop_toBottomOf="@+id/view4" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.5" />
+            <!--Status-->
+            <View
+                android:id="@+id/view5"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:background="@drawable/circle_bg"
+                app:layout_constraintEnd_toEndOf="@+id/view3"
+                app:layout_constraintStart_toStartOf="@+id/view3"
+                app:layout_constraintTop_toTopOf="@+id/guideline4" />
 
-        <TextView
-            android:id="@+id/txtInputVoltage"
-            android:layout_width="160dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/round_corner"
-            android:gravity="center"
-            android:text="N/A"
-            android:textColor="@color/colorBlack"
-            android:textSize="30sp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/vertical"
-            app:layout_constraintTop_toBottomOf="@+id/text2" />
+            <TextView
+                android:id="@+id/txtFaultAlert"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:text="N/A"
+                android:textColor="@color/colorBlack"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="@+id/view5"
+                app:layout_constraintEnd_toEndOf="@+id/view5"
+                app:layout_constraintStart_toStartOf="@+id/view5"
+                app:layout_constraintTop_toTopOf="@+id/view5" />
 
-        <TextView
-            android:id="@+id/txtOutputVoltage"
-            android:layout_width="160dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/round_corner"
-            android:gravity="center"
-            android:text="N/A"
-            android:textColor="@color/colorBlack"
-            android:textSize="30sp"
-            app:layout_constraintLeft_toLeftOf="@id/vertical"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/text3" />
-
-        <TextView
-            android:id="@+id/text4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="Output Status"
-            android:textColor="@android:color/black"
-            android:textSize="18dp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/swtPower"
-            app:layout_constraintEnd_toEndOf="@+id/txtInputVoltage"
-            app:layout_constraintStart_toStartOf="@+id/txtInputVoltage"
-            app:layout_constraintTop_toBottomOf="@+id/txtInputVoltage" />
-
-        <!--    <com.google.android.material.switchmaterial.SwitchMaterial
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginStart="20dp"
-          android:layout_marginTop="30dp"
-          android:enabled="false"
-          app:layout_constraintLeft_toRightOf="@id/vertical"
-          app:layout_constraintStart_toStartOf="@+id/txtOutputVoltage"
-          app:layout_constraintTop_toBottomOf="@id/txtOutputVoltage" />-->
-
-        <ToggleButton
-            android:id="@+id/swtPower"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/ic_power_off"
-            android:textOff=""
-            android:textOn=""
-            app:layout_constraintEnd_toEndOf="@+id/txtFaultAlert"
-            app:layout_constraintStart_toStartOf="@+id/txtFaultAlert"
-            app:layout_constraintTop_toBottomOf="@+id/txtOutputVoltage" />
-
-        <TextView
-            android:id="@+id/text5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Wifi On/Off"
-            android:textColor="@android:color/black"
-            android:textSize="18dp"
-            android:textStyle="bold"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/swtWifi"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="@id/vertical"
-            app:layout_constraintStart_toStartOf="@+id/text4"
-            app:layout_constraintTop_toTopOf="@+id/swtWifi" />
-
-        <com.google.android.material.switchmaterial.SwitchMaterial
-            android:id="@+id/swtWifi"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:visibility="gone"
-            app:layout_constraintLeft_toRightOf="@id/vertical"
-            app:layout_constraintStart_toStartOf="@+id/swtPower"
-            app:layout_constraintTop_toBottomOf="@id/swtPower" />
-
-        <TextView
-            android:id="@+id/text6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Time Delay"
-            android:textColor="@android:color/black"
-            android:textSize="18dp"
-            android:textStyle="bold"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/swtTimeDelay"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="@id/vertical"
-            app:layout_constraintStart_toStartOf="@+id/text5"
-            app:layout_constraintTop_toTopOf="@+id/swtTimeDelay" />
-
-        <com.google.android.material.switchmaterial.SwitchMaterial
-            android:id="@+id/swtTimeDelay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:enabled="false"
-            android:visibility="gone"
-            app:layout_constraintLeft_toRightOf="@id/vertical"
-            app:layout_constraintStart_toStartOf="@+id/swtWifi"
-            app:layout_constraintTop_toBottomOf="@id/swtWifi" />
-
-        <TextView
-            android:id="@+id/text7"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Fault Alert"
-            android:textColor="@android:color/black"
-            android:textSize="18dp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/txtFaultAlert"
-            app:layout_constraintEnd_toEndOf="@+id/text4"
-            app:layout_constraintStart_toStartOf="@+id/text4"
-            app:layout_constraintTop_toTopOf="@+id/txtFaultAlert" />
-
-        <TextView
-            android:id="@+id/txtFaultAlert"
-            android:layout_width="150dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="25dp"
-            android:background="@drawable/round_corner"
-            android:gravity="center"
-            android:text="N/A"
-            android:textColor="@color/colorBlack"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="@+id/txtOutputVoltage"
-            app:layout_constraintStart_toStartOf="@+id/txtOutputVoltage"
-            app:layout_constraintTop_toBottomOf="@+id/swtPower" />
-
-         <!--Phase II-->
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Sleep Mode"
-            android:textColor="@android:color/black"
-            android:textSize="18dp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/cbSleepMode"
-            app:layout_constraintEnd_toStartOf="@+id/vertical"
-            app:layout_constraintStart_toStartOf="@+id/text7"
-            app:layout_constraintTop_toTopOf="@+id/cbSleepMode" />
-
-        <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/cbSleepMode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="17dp"
-            android:layout_marginTop="25dp"
-            app:layout_constraintBottom_toTopOf="@+id/imageView2"
-            app:layout_constraintEnd_toEndOf="@+id/swtPower"
-            app:layout_constraintStart_toStartOf="@+id/swtPower"
-            app:layout_constraintTop_toBottomOf="@+id/txtFaultAlert"
-            app:layout_constraintVertical_bias="0" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Status"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="@+id/view5"
+                app:layout_constraintStart_toStartOf="@+id/view5"
+                app:layout_constraintTop_toBottomOf="@+id/view5" />
 
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="140dp"
-            android:layout_height="80dp"
-            android:src="@drawable/logo"
-            app:layout_constraintBottom_toTopOf="@+id/textView"
-            app:layout_constraintEnd_toEndOf="@+id/textView"
-            app:layout_constraintStart_toStartOf="@+id/textView" />
+            <View
+                android:id="@+id/VwSchedule"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:background="@drawable/circle_bg"
+                app:layout_constraintEnd_toEndOf="@+id/view4"
+                app:layout_constraintStart_toStartOf="@+id/view4"
+                app:layout_constraintTop_toTopOf="@+id/guideline4" />
 
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_margin="10dp"
-            android:layout_marginBottom="10dp"
-            android:src="@drawable/make_in_india_logo"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Schedule"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="@+id/VwSchedule"
+                app:layout_constraintStart_toStartOf="@+id/VwSchedule"
+                app:layout_constraintTop_toBottomOf="@+id/VwSchedule" />
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:text="C ALFO INDIA COMPANY"
-            android:textColor="@color/colorBlack"
-            app:layout_constraintBottom_toTopOf="@+id/textView2"
-            app:layout_constraintEnd_toStartOf="@+id/imageView2"
-            app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintStart_toStartOf="parent" />
+            <!--Sleep Mode-->
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_alarm"
+                app:layout_constraintBottom_toBottomOf="@+id/VwSchedule"
+                app:layout_constraintEnd_toEndOf="@+id/VwSchedule"
+                app:layout_constraintStart_toStartOf="@+id/VwSchedule"
+                app:layout_constraintTop_toTopOf="@+id/guideline4" />
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:autoLink="web"
-            android:text="www.senseasia.in"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/textView"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/textView" />
+            <ToggleButton
+                android:id="@+id/TgSleepMode"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:background="@drawable/circle_bg"
+                android:textColor="@color/white"
+                android:textOff="OFF"
+                android:textOn="ON"
+                app:layout_constraintEnd_toEndOf="@+id/view2"
+                app:layout_constraintStart_toStartOf="@+id/view2"
+                app:layout_constraintTop_toTopOf="@+id/guideline4" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Sleep Mode"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="@+id/TgSleepMode"
+                app:layout_constraintStart_toStartOf="@+id/TgSleepMode"
+                app:layout_constraintTop_toBottomOf="@+id/TgSleepMode" />
+
+            <ToggleButton
+                android:id="@+id/swtPower"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                android:background="@drawable/ic_power_off"
+                android:textOff=""
+                android:textOn=""
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/TgSleepMode"
+                app:layout_constraintStart_toStartOf="@+id/TgSleepMode"
+                app:layout_constraintTop_toBottomOf="@+id/textView11"
+                app:layout_constraintVertical_bias=".4" />
+
+            <TextView
+                android:id="@+id/txtPower"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:text="Output"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/swtPower" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.5" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.69" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

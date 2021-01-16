@@ -2,13 +2,14 @@ package com.rax.autostabilizer.Activities;
 
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -76,7 +77,14 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
         mBinding.sch4et.setOnClickListener(this);
 
         mBinding.schSave.setOnClickListener(this);
-
+        try {
+            PackageInfo pInfo = mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0);
+            String version = pInfo.versionName;
+            mBinding.TxtAppVersion.setText("v" + version);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            mBinding.TxtAppVersion.setText("Version_Error");
+        }
        /* awsIoT = AWSIoT.getInstance(mContext, this);
         awsIoT.subscribe(subscribeTopic);
         sendData("2");*/
@@ -100,7 +108,7 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
                 awsIoT.publish(packetToSend, publishTopic, ScheduleActivity.this);
                 break;
             case NONE:
-                Toast.makeText(mContext, "No Connection", Toast.LENGTH_SHORT).show();
+                mAppClass.showSnackBar("No Connection", mBinding.cod);
                 mAppClass.showConnectionPop(ScheduleActivity.this);
                 break;
         }
@@ -321,13 +329,13 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
         Log.d(TAG, "validate: timeStart " + timeStart + "| timeEnd | " + timeEnd);
 
         if (starTime.equals("Start Time") || endTime.equals("End Time")) {
-            showSnackBar("Choose Schedule Time !");
+            mAppClass.showSnackBar("Choose Schedule Time !", mBinding.cod);
             scheduleCb.setChecked(false);
             return;
         }
 
         if (starTime.equals(endTime)) {
-            showSnackBar("StartTime and EndTime should not be Same !");
+            mAppClass.showSnackBar("StartTime and EndTime should not be Same !", mBinding.cod);
             end.setText("End Time");
             return;
         }
@@ -342,7 +350,7 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
 //            }
 //        } else {
         if (timeEnd.before(timeStart)) {
-            showSnackBar("Time validation failure !");
+            mAppClass.showSnackBar("Time validation failure !", mBinding.cod);
             scheduleCb.setChecked(false);
         }
 //           }
@@ -366,66 +374,62 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
 
         if (mBinding.schedule1Cb.isChecked()) {
             if (end.before(start)) {
-                showSnackBar("Time validation failure !");
+                mAppClass.showSnackBar("Time validation failure !", mBinding.cod);
                 mBinding.schedule1Cb.setChecked(false);
             }
             if (start.equals(end)) {
-                showSnackBar("Start Time & End Time Should not be Same ! ");
+                mAppClass.showSnackBar("Start Time & End Time Should not be Same ! ", mBinding.cod);
                 mBinding.schedule1Cb.setChecked(false);
             }
         }
 
         if (mBinding.schedule2Cb.isChecked()) {
             if (start2.before(end)) {
-                showSnackBar("schedule 2 start validation failure !");
+                mAppClass.showSnackBar("schedule 2 start validation failure !", mBinding.cod);
                 mBinding.schedule2Cb.setChecked(false);
             }
 
             if (end2.before(start2)) {
-                showSnackBar("schedule 2 end validation failure !");
+                mAppClass.showSnackBar("schedule 2 end validation failure !", mBinding.cod);
                 mBinding.schedule2Cb.setChecked(false);
             }
             if (start2.equals(end2)) {
-                showSnackBar("Start Time & End Time Should not be Same ! ");
+                mAppClass.showSnackBar("Start Time & End Time Should not be Same ! ", mBinding.cod);
                 mBinding.schedule2Cb.setChecked(false);
             }
         }
 
         if (mBinding.schedule3Cb.isChecked()) {
             if (start3.before(end2)) {
-                showSnackBar("schedule 3 start validation failure !");
+                mAppClass.showSnackBar("schedule 3 start validation failure !", mBinding.cod);
                 mBinding.schedule3Cb.setChecked(false);
             }
 
             if (end3.before(start3)) {
-                showSnackBar("schedule 3 end validation failure !");
+                mAppClass.showSnackBar("schedule 3 end validation failure !", mBinding.cod);
                 mBinding.schedule3Cb.setChecked(false);
             }
             if (start3.equals(end3)) {
-                showSnackBar("Start Time & End Time Should not be Same ! ");
+                mAppClass.showSnackBar("Start Time & End Time Should not be Same ! ", mBinding.cod);
                 mBinding.schedule3Cb.setChecked(false);
             }
         }
 
         if (mBinding.schedule4Cb.isChecked()) {
             if (start4.before(end3)) {
-                showSnackBar("schedule 4 start validation failure !");
+                mAppClass.showSnackBar("schedule 4 start validation failure !", mBinding.cod);
                 mBinding.schedule4Cb.setChecked(false);
             }
 
             if (end4.before(start4)) {
-                showSnackBar("schedule 4 end validation failure !");
+                mAppClass.showSnackBar("schedule 4 end validation failure !", mBinding.cod);
                 mBinding.schedule4Cb.setChecked(false);
             }
             if (start4.equals(end4)) {
-                showSnackBar("Start Time & End Time Should not be Same ! ");
+                mAppClass.showSnackBar("Start Time & End Time Should not be Same ! ", mBinding.cod);
                 mBinding.schedule4Cb.setChecked(false);
             }
         }
-    }
-
-    private void showSnackBar(String message) {
-        Snackbar.make(mBinding.cod, message, Snackbar.LENGTH_SHORT).show();
     }
 
     private String pickTimeDialog(String title, TextView txtView) {
@@ -460,7 +464,7 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
                         AM_PM = "PM";
                     }
                     Date newTime = formatDate(sHour + ":" + sMinute);
-                    showSnackBar(twelve.format(newTime));
+                    mAppClass.showSnackBar(twelve.format(newTime), mBinding.cod);
                     txtView.setTag(AM_PM);
                     txtView.setText(sHour + ":" + sMinute);
 
@@ -515,7 +519,6 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        closeConnectivity();
         dismissProgress();
         finish();
       /*  if (nothingChanged()) {
@@ -544,10 +547,6 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
         }*/
     }
 
-    private void closeConnectivity() {
-        mAppClass.AWSDisConnect();
-    }
-
     private void handleData(String data) {
         if (data.contains("ST#")) {
 
@@ -574,58 +573,58 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
                 String[] sch1Time, sch2Time, sch3Time, sch4Time;
 
                 sch1Time = schedule1Data.split("");
-                sch1St = sch1Time[1] + sch1Time[2] + ":" + sch1Time[3] + sch1Time[4];
-                sch1Et = sch1Time[5] + sch1Time[6] + ":" + sch1Time[7] + sch1Time[8];
+                sch1St = sch1Time[2] + sch1Time[3] + ":" + sch1Time[4] + sch1Time[5];
+                sch1Et = sch1Time[6] + sch1Time[7] + ":" + sch1Time[8] + sch1Time[9];
 
                 mBinding.sch1st.setText(sch1St);
                 mBinding.sch1et.setText(sch1Et);
 
-                if (sch1Time[0].equals("1")) {
+                if (sch1Time[1].equals("1")) {
                     mBinding.schedule1Cb.setChecked(true);
-                } else if (sch1Time[0].equals("0")) {
+                } else if (sch1Time[1].equals("0")) {
                     mBinding.schedule1Cb.setChecked(false);
                 }
                 // ST#2#1#65#4#101100200#102200245#103120506#106291015#ED-- read
 
                 sch2Time = schedule2Data.split("");
-                sch2St = sch2Time[1] + sch2Time[2] + ":" + sch2Time[3] + sch2Time[4];
-                sch2Et = sch2Time[5] + sch2Time[6] + ":" + sch2Time[7] + sch2Time[8];
+                sch2St = sch2Time[2] + sch2Time[3] + ":" + sch2Time[4] + sch2Time[5];
+                sch2Et = sch2Time[6] + sch2Time[7] + ":" + sch2Time[8] + sch2Time[9];
                 mBinding.sch2st.setText(sch2St);
                 mBinding.sch2et.setText(sch2Et);
 
-                if (sch2Time[0].equals("1")) {
+                if (sch2Time[1].equals("1")) {
                     mBinding.schedule2Cb.setChecked(true);
-                } else if (sch2Time[0].equals("0")) {
+                } else if (sch2Time[1].equals("0")) {
                     mBinding.schedule2Cb.setChecked(false);
                 }
 
                 sch3Time = schedule3Data.split("");
-                sch3St = sch3Time[1] + sch3Time[2] + ":" + sch3Time[3] + sch3Time[4];
-                sch3Et = sch3Time[5] + sch3Time[6] + ":" + sch3Time[7] + sch3Time[8];
+                sch3St = sch3Time[2] + sch3Time[3] + ":" + sch3Time[4] + sch3Time[5];
+                sch3Et = sch3Time[6] + sch3Time[7] + ":" + sch3Time[8] + sch3Time[9];
                 mBinding.sch3st.setText(sch3St);
                 mBinding.sch3et.setText(sch3Et);
 
-                if (sch3Time[0].equals("1")) {
+                if (sch3Time[1].equals("1")) {
                     mBinding.schedule3Cb.setChecked(true);
-                } else if (sch3Time[0].equals("0")) {
+                } else if (sch3Time[1].equals("0")) {
                     mBinding.schedule3Cb.setChecked(false);
                 }
 
                 sch4Time = schedule4Data.split("");
-                sch4St = sch4Time[1] + sch4Time[2] + ":" + sch4Time[3] + sch4Time[4];
-                sch4Et = sch4Time[5] + sch4Time[6] + ":" + sch4Time[7] + sch4Time[8];
+                sch4St = sch4Time[2] + sch4Time[3] + ":" + sch4Time[4] + sch4Time[5];
+                sch4Et = sch4Time[6] + sch4Time[7] + ":" + sch4Time[8] + sch4Time[9];
                 mBinding.sch4st.setText(sch4St);
                 mBinding.sch4et.setText(sch4Et);
 
-                if (sch4Time[0].equals("1")) {
+                if (sch4Time[1].equals("1")) {
                     mBinding.schedule4Cb.setChecked(true);
-                } else if (sch4Time[0].equals("0")) {
+                } else if (sch4Time[1].equals("0")) {
                     mBinding.schedule4Cb.setChecked(false);
                 }
 
             } else if (spiltData[1].equals("1")) {
-                if (spiltData[2].equals("RECEIVED")){
-                    Toast.makeText(mContext, "Schedule Updated Successfully !", Toast.LENGTH_SHORT).show();
+                if (spiltData[2].equals("RECEIVED")) {
+                    mAppClass.showSnackBar("Schedule Update SuccessFully !", mBinding.cod);
                 }
             }
             dismissProgress();
@@ -640,36 +639,11 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
         } else if (data.equals("NACK")) {
             mNackCount++;
             if (mNackCount > 2) {
-                Toast.makeText(mContext, "Operation failed \n Restart Stabilizer and try again", Toast.LENGTH_SHORT).show();
+                mAppClass.showSnackBar("Operation Failed, Restart Stabilizer and Try Again !", mBinding.cod);
                 onBackPressed();
             }
         } else {
             Log.e("V2Error ", "OnDataReceive: " + data);
-            // Toast.makeText(mContext, data, Toast.LENGTH_SHORT).show();
         }
     }
-
-    /* 30/12/2020 */
-
-    /*Log.d(TAG, "OnDataReceive: 26-12-2020 ->receive " + data);
-        if (data.contains("\r") || data.contains("\n")) {
-            data = data.replace("\r", "");
-            data = data.replace("\n", "");
-        } else if (data.equals("timeOut") || data.equals("FailedToConnect")) {
-            Toast.makeText(mAppClass, "Please restart and try again", Toast.LENGTH_SHORT).show();
-            onBackPressed();
-        } else if (data.contains(CONNECTED)) {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (!isViewVisible) {
-                        return;
-                    }
-                    mAppClass.sendPacket(ScheduleActivity.this, packetToSend);
-                }
-            }, 500);
-        } else if (data.contains("ST#")) {
-            handleData(data, 0);
-        }*/
-
 }

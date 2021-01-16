@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -55,7 +54,7 @@ public class StabilizerStatusActivityV2 extends AppCompatActivity implements App
                     awsIoT.publish(packetToSend, publishTopic, StabilizerStatusActivityV2.this);
                     break;
                 case NONE:
-                    Toast.makeText(mContext, "No Connection", Toast.LENGTH_SHORT).show();
+                    mAppClass.showSnackBar("No Connection", mBinding.cod);
                     mAppClass.showConnectionPop(StabilizerStatusActivityV2.this);
                     break;
             }
@@ -80,14 +79,18 @@ public class StabilizerStatusActivityV2 extends AppCompatActivity implements App
                 this, R.layout.activity_stabilizer_status);
         mAppClass = (ApplicationClass) getApplication();
 
-        mBinding.toolbar.setOnMenuItemClickListener(item -> {
+      /*  mBinding.toolbar.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.menu_schedule) {
                 startActivity(new Intent(StabilizerStatusActivityV2.this, ScheduleActivity.class));
             }
             return false;
+        });*/
+
+        mBinding.VwSchedule.setOnClickListener(view -> {
+            startActivity(new Intent(StabilizerStatusActivityV2.this, ScheduleActivity.class));
         });
-        mBinding.cbSleepMode.setOnClickListener(view -> {
-            if (mBinding.cbSleepMode.isChecked()) {
+        mBinding.TgSleepMode.setOnClickListener(view -> {
+            if (mBinding.TgSleepMode.isChecked()) {
                 turnOnSleepMode();
             } else {
                 turnOffSleepMode();
@@ -188,7 +191,7 @@ public class StabilizerStatusActivityV2 extends AppCompatActivity implements App
                 }
                 break;
             case NONE:
-                Toast.makeText(mContext, "No Connection", Toast.LENGTH_SHORT).show();
+                mAppClass.showSnackBar("No Connection", mBinding.cod);
                 mAppClass.showConnectionPop(StabilizerStatusActivityV2.this);
                 break;
         }
@@ -226,7 +229,7 @@ public class StabilizerStatusActivityV2 extends AppCompatActivity implements App
             public void run() {
                 if (mAppClass.checkNetwork() == ConnectionMode.AWSIoT) {
                     if (data.equals(AWS_NOT_CONNECTED)) {
-                        Toast.makeText(mContext, "Unable to reach server", Toast.LENGTH_SHORT).show();
+                        mAppClass.showSnackBar("Unable To Reach Server", mBinding.cod);
                         onBackPressed();
                     } else if (data.equals(AWS_CONNECTED)) {
                         awsIoT.subscribe(subscribeTopic);
@@ -245,12 +248,11 @@ public class StabilizerStatusActivityV2 extends AppCompatActivity implements App
         } else if (data.equals("NACK")) {
             mNackCount++;
             if (mNackCount > 3) {
-                Toast.makeText(mContext, "Operation failed, Restart Stabilizer and try again", Toast.LENGTH_SHORT).show();
+                mAppClass.showSnackBar("Operation Failed, Restart Stabilizer and try again", mBinding.cod);
                 onBackPressed();
             }
         } else {
             Log.e("V2Error ", "OnDataReceive: " + data);
-            // Toast.makeText(mContext, data, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -270,46 +272,56 @@ public class StabilizerStatusActivityV2 extends AppCompatActivity implements App
                     case "01":
                         mBinding.txtFaultAlert.setText("Low");
                         mBinding.swtPower.setEnabled(false);
+                        mBinding.view5.setBackgroundResource(R.drawable.red_circle_bg);
                         mBinding.swtPower.setBackgroundResource(R.drawable.ic_power_off);
                         break;
                     case "02":
                         mBinding.txtFaultAlert.setText("High");
                         mBinding.swtPower.setEnabled(false);
+                        mBinding.view5.setBackgroundResource(R.drawable.red_circle_bg);
                         mBinding.swtPower.setBackgroundResource(R.drawable.ic_power_off);
                         break;
                     case "03":
                         mBinding.txtFaultAlert.setText("Time delay");
                         isTimeDelay = true;
                         mBinding.swtPower.setEnabled(false);
-                        mBinding.swtTimeDelay.setChecked(true);
+                        mBinding.TgSleepMode.setChecked(true);
+                        mBinding.view5.setBackgroundResource(R.drawable.yellow_circle_bg);
                         mBinding.swtPower.setBackgroundResource(R.drawable.ic_power_time_delay);
                         break;
                     case "04":
                         mBinding.txtFaultAlert.setText("Normal");
                         isTimeDelay = false;
+                        mBinding.view5.setBackgroundResource(R.drawable.green_circle_bg);
                         mBinding.swtPower.setEnabled(true);
                         break;
                 }
                 String[] powerStatus = splitData[3].split(",");
                 String[] inputVolt = splitData[4].split(",");
                 String[] outputVolt = splitData[5].split(",");
+                String[] ampVolt = splitData[6].split(",");
                 // ST#6#01;5;03;20,0;21,266;22,185;23,08;24,0;FF#ED
                 if (powerStatus[1].equals("1")) {
                     mBinding.swtPower.setChecked(true);
                     mBinding.swtPower.setBackgroundResource(R.drawable.ic_power_on);
-                    mBinding.cbSleepMode.setEnabled(true);
-                    mBinding.text4.setText("Output ON");
+                    mBinding.TgSleepMode.setEnabled(true);
+                    // mBinding.txtPower.setText("Output ON");
                 } else if (powerStatus[1].equals("0")) {
                     mBinding.swtPower.setChecked(false);
-                    mBinding.text4.setText("Output OFF");
-                    mBinding.cbSleepMode.setEnabled(true);
+                    // mBinding.txtPower.setText("Output OFF");
+                    mBinding.TgSleepMode.setEnabled(true);
                     if (isTimeDelay) {
                         mBinding.swtPower.setBackgroundResource(R.drawable.ic_power_time_delay);
-                        mBinding.cbSleepMode.setEnabled(false);
+                        mBinding.TgSleepMode.setEnabled(false);
                     } else if (!isTimeDelay) {
                         mBinding.swtPower.setBackgroundResource(R.drawable.ic_power_off);
                     }
                 }
+                //Amp Decimal
+                /*  ampVolt[1] = "456";
+                String[] ampValue = ampVolt[1].split("");
+                mBinding.txtAmpere.setText(ampValue[1] + ampValue[2] + "." + ampValue[3] + "A");*/
+                mBinding.txtAmpere.setText(ampVolt[1] + "A");
                 mBinding.txtInputVoltage.setText(inputVolt[1] + "v");
                 mBinding.txtOutputVoltage.setText(outputVolt[1] + "v");
             }
@@ -318,14 +330,14 @@ public class StabilizerStatusActivityV2 extends AppCompatActivity implements App
         } else if (handleData[1].equals("7")) { // On
             powerPacketNackCount = 0;
             mBinding.swtPower.setChecked(true);
-            mBinding.text4.setText("Output ON");
+            mBinding.txtPower.setText("Output ON");
             mBinding.swtPower.setBackgroundResource(R.drawable.ic_power_on);
             // OutPut OFF - responce =  "ST#8#01;6;02;ACK;AC#ED";
 
         } else if (handleData[1].equals("8")) { // OFF
             powerPacketNackCount = 0;
             mBinding.swtPower.setChecked(false);
-            mBinding.text4.setText("Output OFF");
+            mBinding.txtPower.setText("Output OFF");
             mBinding.swtPower.setBackgroundResource(R.drawable.ic_power_time_delay);
             //  ST#4#C/D#ED -- sleepRead
 
@@ -334,9 +346,9 @@ public class StabilizerStatusActivityV2 extends AppCompatActivity implements App
             String[] spiltData = data.split("#");
             if (spiltData[1].equals("4")) {
                 if (spiltData[2].equals("C")) {
-                    mBinding.cbSleepMode.setChecked(true);
+                    mBinding.TgSleepMode.setChecked(true);
                 } else if (spiltData[2].equals("D")) {
-                    mBinding.cbSleepMode.setChecked(false);
+                    mBinding.TgSleepMode.setChecked(false);
                 }
             }
 
@@ -345,13 +357,12 @@ public class StabilizerStatusActivityV2 extends AppCompatActivity implements App
             String[] sleepMode = handleData[2].split(",");
             if (sleepMode[0].equals("RECEIVED")) {
                 if (sleepMode[1].equals("C")) {
-                    mBinding.cbSleepMode.setChecked(true);
+                    mBinding.TgSleepMode.setChecked(true);
                 } else if (sleepMode[1].equals("D")) {
-                    mBinding.cbSleepMode.setChecked(false);
+                    mBinding.TgSleepMode.setChecked(false);
                 }
             }
         }
     }
 }
 /*Version: 1.0.8 | Phase II*/
-

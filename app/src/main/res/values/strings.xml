@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Auto Stabilizer</string>
+    <string name="CrashReportMessage">Sorry! AutoStabilizer is Crashed, Please Send Us The Crash Report...</string>
 </resources>

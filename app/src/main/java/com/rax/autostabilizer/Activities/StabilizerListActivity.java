@@ -13,7 +13,6 @@ import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupMenu;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,7 +24,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.rax.autostabilizer.Adapters.StabilizerListAdapter;
 import com.rax.autostabilizer.ApplicationClass;
 import com.rax.autostabilizer.ConnectionMode;
-import com.rax.autostabilizer.DataReceiveCallback;
 import com.rax.autostabilizer.Database.Repository;
 import com.rax.autostabilizer.Fragments.DialogFragment;
 import com.rax.autostabilizer.Fragments.SmartConfigFragment;
@@ -63,10 +61,8 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
     private ApplicationClass mAppClass;
     private boolean isFabOpen = false;
 
-    //Phase II
+    // Phase II
     CountDownTimer networkChecker;
-
-    // macAddress = "246F287A003C"
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,7 +75,6 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
         mBinding.rvStabilizerList.setAdapter(mAdapter);
 
         requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 111);
-
 
         mBinding.fabAddExisting.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,7 +112,6 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
     }
 
     // To check wheather MobileData or Wifi turned On
-
     private void networkCountDownTimer() {
         networkChecker = new CountDownTimer(5000, 5000) {
             @Override
@@ -199,7 +193,7 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
                                 , macAddress.getText().toString());
                         Repository repo = new Repository();
                         repo.saveStabilizer(StabilizerListActivity.this, stabilizer);
-                        Toast.makeText(mContext, "Complete !", Toast.LENGTH_SHORT).show();
+                        mAppClass.showSnackBar("Complete !", mBinding.cod);
                         closeFab();
                         dialogInterface.dismiss();
                         refreshData();
@@ -272,7 +266,7 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 if (!mRepo.deleteStabilizer(StabilizerListActivity.this, stabilizer.getMacAddress())) {
-                                    Toast.makeText(mContext, "Delete failed", Toast.LENGTH_SHORT).show();
+                                    mAppClass.showSnackBar("Delete Failed", mBinding.cod);
                                     return;
                                 }
                                 mAdapter.mStabilizerList.remove(pos);
@@ -314,7 +308,7 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
                         startActivity(new Intent(StabilizerListActivity.this, StabilizerStatusActivityV2.class));
                         return;
                     }
-                    Toast.makeText(mContext, data, Toast.LENGTH_SHORT).show();
+                    mAppClass.showSnackBar(data, mBinding.cod);
                 }, "");
                 break;
             case AWSIoT:
@@ -327,7 +321,7 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
                             Log.d(TAG, "OnStabilizerClicked: " + macAddress);
                             if (mAppClass.checkNetwork() == ConnectionMode.AWSIoT) {
                                 if (data.equals(AWS_NOT_CONNECTED)) {
-                                    Toast.makeText(mContext, "Unable to reach server", Toast.LENGTH_SHORT).show();
+                                    mAppClass.showSnackBar("Unable to Reach Server",mBinding.cod);
 
                                 } else if (data.equals(AWS_CONNECTED)) {
                                     startActivity(new Intent(StabilizerListActivity.this, StabilizerStatusActivityV2.class));
@@ -365,7 +359,7 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
                 .show();
     }
 
-    //AWS
+  /*  //AWS
     private void publish(String publishTopic, String subscribeTopic, String packet) {
         mAppClass.subscribe(subscribeTopic);
         mAppClass.publish(packet, publishTopic, new DataReceiveCallback() {
@@ -374,6 +368,6 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
                 Log.d(TAG, "OnAWSDataReceive: 1.1) AWS received--> " + data);
             }
         });
-    }
+    }*/
 
 }

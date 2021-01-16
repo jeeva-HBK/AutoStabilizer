@@ -35,15 +35,10 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Activities.StabilizerStatusActivity">
-
-        </activity>
-
         <activity android:name=".Activities.StabilizerStatusActivityV2">
 
         </activity>
 
         <service android:name=".Utilities.S_Communication" />
     </application>
-
 </manifest>
