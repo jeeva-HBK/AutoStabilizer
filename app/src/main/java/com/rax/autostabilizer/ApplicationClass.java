@@ -42,10 +42,11 @@ public class ApplicationClass extends Application {
     CountDownTimer mPacketTimeout;
     // Static Strings
     public static String macAddress,
-
+            // Packet Strucure
             startPacket = "SST#",
             endPacket = "#ED",
 
+            // MqttTopics
             topic = "topic/",
             pubTopic = "/app2irc",
             subTopic = "/irc2app"

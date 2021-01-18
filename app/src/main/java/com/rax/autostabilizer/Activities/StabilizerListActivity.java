@@ -4,6 +4,8 @@ import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -16,6 +18,9 @@ import android.widget.PopupMenu;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.ViewCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -198,7 +203,12 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
         rotateFab(mBinding.fabAddStabilizer, isFabOpen);
         mBinding.fabAddExisting.show();
         mBinding.fabAddNew.show();
+        ColorStateList csl = AppCompatResources.getColorStateList(this, R.color.colorRed);
+        Drawable drawable = DrawableCompat.wrap(mBinding.fabAddStabilizer.getDrawable());
+        DrawableCompat.setTintList(drawable, csl);
+        mBinding.fabAddStabilizer.setImageDrawable(drawable);
     }
+
     // MacAddress Validation
     /*   public boolean isValidMac(String mac) {
         Pattern p = Pattern.compile("^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$");
@@ -214,6 +224,10 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
         rotateFab(mBinding.fabAddStabilizer, isFabOpen);
         mBinding.fabAddExisting.hide();
         mBinding.fabAddNew.hide();
+        ColorStateList csl = AppCompatResources.getColorStateList(this, R.color.white);
+        Drawable drawable = DrawableCompat.wrap(mBinding.fabAddStabilizer.getDrawable());
+        DrawableCompat.setTintList(drawable, csl);
+        mBinding.fabAddStabilizer.setImageDrawable(drawable);
     }
 
     private void rotateFab(final View v, boolean rotate) {

@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.widget.Toast;
 
 import com.rax.autostabilizer.Models.Stabilizer;
+import com.rax.autostabilizer.R;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -50,7 +51,7 @@ public class Repository {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(mActivity, "Error occurred", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mActivity, R.string.errorOccurred, Toast.LENGTH_SHORT).show();
             return false;
         }
     }
@@ -78,7 +79,7 @@ public class Repository {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(mActivity, "Error occurred", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mActivity, R.string.errorOccurred, Toast.LENGTH_SHORT).show();
             return new ArrayList<>();
         }
     }
@@ -105,7 +106,7 @@ public class Repository {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(mActivity, "Error occurred", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mActivity, R.string.errorOccurred, Toast.LENGTH_SHORT).show();
             return false;
         }
     }

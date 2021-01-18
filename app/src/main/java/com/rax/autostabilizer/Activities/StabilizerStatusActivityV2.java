@@ -264,7 +264,7 @@ public class StabilizerStatusActivityV2 extends AppCompatActivity implements App
          OutPut OFF - responce =  "ST#8#01;6;02;ACK;AC#ED";
          SleepMode On - responce = "ST#3#RECEIVED,C#ED";
          SleepMode OFF - responce = "ST#3#RECEIVED,D#ED";
-         SleepMode Reade- responce = "ST#4#C/D#ED"; */
+         SleepMode Read - responce = "ST#4#C/D#ED"; */
 
         String[] handleData = data.split("#");
         if (handleData[1].equals("6")) {
@@ -323,10 +323,9 @@ public class StabilizerStatusActivityV2 extends AppCompatActivity implements App
                     }
                 }
                 //Amp Decimal
-                /*  ampVolt[1] = "456";
                 String[] ampValue = ampVolt[1].split("");
-                mBinding.txtAmpere.setText(ampValue[1] + ampValue[2] + "." + ampValue[3] + "A");*/
-                mBinding.txtAmpere.setText(ampVolt[1] + "A");
+                mBinding.txtAmpere.setText(ampValue[0] + ampValue[1] + "." + ampValue[2] + "A");
+                // mBinding.txtAmpere.setText(ampVolt[1] + "A");
                 mBinding.txtInputVoltage.setText(inputVolt[1] + "v");
                 mBinding.txtOutputVoltage.setText(outputVolt[1] + "v");
             }
@@ -352,8 +351,10 @@ public class StabilizerStatusActivityV2 extends AppCompatActivity implements App
             if (spiltData[1].equals("4")) {
                 if (spiltData[2].equals("C")) {
                     mBinding.TgSleepMode.setChecked(true);
+                    mBinding.TgSleepMode.setBackground(getResources().getDrawable(R.drawable.simens_circle_bg,null));
                 } else if (spiltData[2].equals("D")) {
                     mBinding.TgSleepMode.setChecked(false);
+                    mBinding.TgSleepMode.setBackground(getResources().getDrawable(R.drawable.transparent_circle_bg,null));
                 }
             }
 
@@ -363,8 +364,10 @@ public class StabilizerStatusActivityV2 extends AppCompatActivity implements App
             if (sleepMode[0].equals("RECEIVED")) {
                 if (sleepMode[1].equals("C")) {
                     mBinding.TgSleepMode.setChecked(true);
+                    mBinding.TgSleepMode.setBackground(getResources().getDrawable(R.drawable.simens_circle_bg,null));
                 } else if (sleepMode[1].equals("D")) {
                     mBinding.TgSleepMode.setChecked(false);
+                    mBinding.TgSleepMode.setBackground(getResources().getDrawable(R.drawable.transparent_circle_bg,null));
                 }
             }
         }

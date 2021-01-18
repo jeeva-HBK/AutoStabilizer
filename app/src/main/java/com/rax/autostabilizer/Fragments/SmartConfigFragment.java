@@ -144,22 +144,22 @@ public class SmartConfigFragment extends Fragment {
         binding.btnSearch.setOnClickListener(v -> {
 
             if (binding.edtSSID.getText().toString().equals("")) {
-                mAppClass.showSnackBar("Connect to Wifi Network", binding.cod);
+                mAppClass.showSnackBar(getString(R.string.connectToWifi), binding.cod);
                 return;
             }
             if (binding.edtBSSID.getText().toString().equals("")) {
-                mAppClass.showSnackBar("UnKnown BSSID", binding.cod);
+                mAppClass.showSnackBar(getString(R.string.unknownBSSID), binding.cod);
                 return;
             }
             if (binding.edtNAME.getText().toString().equals("")) {
-                mAppClass.showSnackBar("Enter Name", binding.cod);
-                binding.edtNAME.setError("Field Empty");
+                mAppClass.showSnackBar(getString(R.string.enterName), binding.cod);
+                binding.edtNAME.setError(getString(R.string.fieldEmpty));
                 binding.edtNAME.requestFocus();
                 return;
             }
             if (binding.edtPass.getText().toString().equals("")) {
-                mAppClass.showSnackBar("Enter WiFi Password", binding.cod);
-                binding.edtPass.setError("Field Empty");
+                mAppClass.showSnackBar(getString(R.string.enterWifiPassword), binding.cod);
+                binding.edtPass.setError(getString(R.string.fieldEmpty));
                 binding.edtPass.requestFocus();
                 return;
             }
@@ -212,7 +212,7 @@ public class SmartConfigFragment extends Fragment {
         if (disconnected) {
             binding.edtSSID.setText("");
             binding.edtSSID.setTag(null);
-            mAppClass.showSnackBar("No WiFi Connection", binding.cod);
+            mAppClass.showSnackBar(getString(R.string.noWifiConnection), binding.cod);
             binding.btnSearch.setEnabled(false);
             if (isSDKAtLeastP()) {
                 checkLocation();
@@ -221,7 +221,7 @@ public class SmartConfigFragment extends Fragment {
                 mTask.cancelEsptouch();
                 mTask = null;
                 new AlertDialog.Builder(mContext)
-                        .setMessage("Wifi disconnected or changed")
+                        .setMessage(R.string.wifiDisconnectedOrChanged)
                         .setNegativeButton(android.R.string.cancel, null)
                         .show();
             }
@@ -262,7 +262,7 @@ public class SmartConfigFragment extends Fragment {
         LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         enable = locationManager != null && LocationManagerCompat.isLocationEnabled(locationManager);
         if (!enable) {
-            mAppClass.showSnackBar("Location(GPS) is disabled", binding.cod);
+            mAppClass.showSnackBar(getString(R.string.locationIsDisabled), binding.cod);
         }
     }
 
@@ -310,18 +310,19 @@ public class SmartConfigFragment extends Fragment {
                         mActivity.get().dismissProgress();
                         // Save Device here
                         new MaterialAlertDialogBuilder(mActivity.get().mContext)
-                                .setTitle("Stabilizer Configured")
+                                .setTitle(R.string.StabilizerConfigured)
                                 .setMessage("IP Address: " + mActivity.get().mIPAddress + "\n" + "MAC: " + mActivity.get().mDeviceMac)
-                                .setPositiveButton("OK", null)
+                                .setPositiveButton(R.string.ok, null)
                                 .show();
                     } else if (data.contains("NOT OK")) {
                         mActivity.get().dismissProgress();
-                        new MaterialAlertDialogBuilder(mActivity.get().mContext).setTitle("Commissioning failed").
-                                setMessage("Stabilizer responded with error code").show();
+                        new MaterialAlertDialogBuilder(mActivity.get().mContext)
+                                .setTitle(R.string.commissioningFailed).
+                                setMessage(R.string.stabilizerRespondWithErrorCode).show();
                     }
                 } catch (Exception e) {
                     mActivity.get().dismissProgress();
-                    Toast.makeText(context, "Error occurred", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.errorOccured, Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                 }
 
@@ -370,7 +371,7 @@ public class SmartConfigFragment extends Fragment {
         protected void onPreExecute() {
             Activity activity = mActivity.get().getActivity();
             mProgressDialog = new ProgressDialog(activity);
-            mProgressDialog.setMessage("Stabilizer is being configured…");
+            mProgressDialog.setMessage(activity.getString(R.string.stabilizerIsBeingConfigured));
             mProgressDialog.setCanceledOnTouchOutside(false);
             mProgressDialog.setOnCancelListener(dialog -> {
                 synchronized (mLock) {
@@ -427,7 +428,7 @@ public class SmartConfigFragment extends Fragment {
             mProgressDialog.dismiss();
             if (result == null) {
                 mResultDialog = new AlertDialog.Builder(activity.getActivity())
-                        .setMessage("Unable to start config process")
+                        .setMessage(R.string.unableToStartConfigProcess)
                         .setPositiveButton(android.R.string.ok, null)
                         .show();
                 mResultDialog.setCanceledOnTouchOutside(false);
@@ -446,7 +447,7 @@ public class SmartConfigFragment extends Fragment {
 
             if (!firstResult.isSuc()) {
                 mResultDialog = new AlertDialog.Builder(activity.getActivity())
-                        .setMessage("Config failed")
+                        .setMessage(R.string.configFailed)
                         .setPositiveButton(android.R.string.ok, null)
                         .show();
                 mResultDialog.setCanceledOnTouchOutside(false);
@@ -456,9 +457,9 @@ public class SmartConfigFragment extends Fragment {
             mActivity.get().mIPAddress = firstResult.getInetAddress().getHostAddress();
             mActivity.get().mDeviceMac = firstResult.getBssid();
             new MaterialAlertDialogBuilder(mActivity.get().mContext)
-                    .setTitle("Stabilizer Configured")
+                    .setTitle(R.string.stabilizerConfigured)
                     .setMessage("IP Address: " + mActivity.get().mIPAddress + "\n" + "MAC: " + mActivity.get().mDeviceMac)
-                    .setPositiveButton("OK", (dialogInterface, i) -> {
+                    .setPositiveButton(activity.getString(R.string.ok), (dialogInterface, i) -> {
                         if (mActivity.get().parentDialog != null) {
                             mActivity.get().parentDialog.dismiss();
                         }

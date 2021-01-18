@@ -19,5 +19,6 @@
     <color name="colorSelectedItem">#E8F0FE</color>
     <color name="colorDisabled">#808080</color>
     <color name="colorBlurBackground">#70E8F0FE</color>
+    <color name="transparent">#00FFFFFF</color>
 
 </resources>
