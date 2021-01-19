@@ -324,7 +324,7 @@ public class StabilizerStatusActivityV2 extends AppCompatActivity implements App
                 }
                 //Amp Decimal
                 String[] ampValue = ampVolt[1].split("");
-                mBinding.txtAmpere.setText(ampValue[0] + ampValue[1] + "." + ampValue[2] + "A");
+                mBinding.txtAmpere.setText(ampValue[1] + ampValue[2] + "." + ampValue[3] + "A");
                 // mBinding.txtAmpere.setText(ampVolt[1] + "A");
                 mBinding.txtInputVoltage.setText(inputVolt[1] + "v");
                 mBinding.txtOutputVoltage.setText(outputVolt[1] + "v");
@@ -373,4 +373,4 @@ public class StabilizerStatusActivityV2 extends AppCompatActivity implements App
         }
     }
 }
-/*Version: 1.0.8 | Phase II*/
+/*Version: 1.0.9 | Phase II*/
