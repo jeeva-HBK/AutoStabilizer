@@ -54,7 +54,11 @@ public class StabilizerStatusActivityV2 extends AppCompatActivity implements App
                     mAppClass.sendPacket(StabilizerStatusActivityV2.this, packetToSend);
                     break;
                 case AWSIoT:
-                    awsIoT.publish(packetToSend, publishTopic, StabilizerStatusActivityV2.this);
+                    if (awsIoT!=null){
+                        awsIoT.publish(packetToSend, publishTopic, StabilizerStatusActivityV2.this);
+                    }else {
+                        mAppClass.showSnackBar("Network Changed, Please Restart !", mBinding.cod);
+                    }
                     break;
                 case NONE:
                     mAppClass.showSnackBar(getString(R.string.noConnection), mBinding.cod);
@@ -70,6 +74,7 @@ public class StabilizerStatusActivityV2 extends AppCompatActivity implements App
     };
 
     AWSIoT awsIoT;
+
     //  AWS Topics
     private String publishTopic = topic + macAddress + pubTopic,
             subscribeTopic = topic + macAddress + subTopic;
@@ -91,6 +96,7 @@ public class StabilizerStatusActivityV2 extends AppCompatActivity implements App
         mBinding.VwSchedule.setOnClickListener(view -> {
             startActivity(new Intent(StabilizerStatusActivityV2.this, ScheduleActivity.class));
         });
+
         mBinding.TgSleepMode.setOnClickListener(view -> {
             if (mBinding.TgSleepMode.isChecked()) {
                 turnOnSleepMode();
@@ -190,6 +196,9 @@ public class StabilizerStatusActivityV2 extends AppCompatActivity implements App
             case AWSIoT:
                 if (awsIoT != null) {
                     awsIoT.publish(mAppClass.framePack("6#S"), publishTopic, StabilizerStatusActivityV2.this);
+                }else{
+                    mAppClass.showSnackBar("Network Changed, Please Restart !",mBinding.cod);
+                    onBackPressed();
                 }
                 break;
             case NONE:
@@ -290,7 +299,7 @@ public class StabilizerStatusActivityV2 extends AppCompatActivity implements App
                         mBinding.txtFaultAlert.setText(R.string.timeDelay);
                         isTimeDelay = true;
                         mBinding.swtPower.setEnabled(false);
-                        mBinding.TgSleepMode.setChecked(true);
+                        // mBinding.TgSleepMode.setChecked(true);
                         mBinding.view5.setBackgroundResource(R.drawable.yellow_circle_bg);
                         mBinding.swtPower.setBackgroundResource(R.drawable.ic_power_time_delay);
                         break;
@@ -310,10 +319,10 @@ public class StabilizerStatusActivityV2 extends AppCompatActivity implements App
                     mBinding.swtPower.setChecked(true);
                     mBinding.swtPower.setBackgroundResource(R.drawable.ic_power_on);
                     mBinding.TgSleepMode.setEnabled(true);
-                    // mBinding.txtPower.setText("Output ON");
+                    mBinding.txtPower.setText(R.string.outputOn);
                 } else if (powerStatus[1].equals("0")) {
                     mBinding.swtPower.setChecked(false);
-                    // mBinding.txtPower.setText("Output OFF");
+                    mBinding.txtPower.setText(R.string.outputOff);
                     mBinding.TgSleepMode.setEnabled(true);
                     if (isTimeDelay) {
                         mBinding.swtPower.setBackgroundResource(R.drawable.ic_power_time_delay);
@@ -351,10 +360,10 @@ public class StabilizerStatusActivityV2 extends AppCompatActivity implements App
             if (spiltData[1].equals("4")) {
                 if (spiltData[2].equals("C")) {
                     mBinding.TgSleepMode.setChecked(true);
-                    mBinding.TgSleepMode.setBackground(getResources().getDrawable(R.drawable.simens_circle_bg,null));
+                    //  mBinding.TgSleepMode.setBackground(getResources().getDrawable(R.drawable.simens_circle_bg,null));
                 } else if (spiltData[2].equals("D")) {
                     mBinding.TgSleepMode.setChecked(false);
-                    mBinding.TgSleepMode.setBackground(getResources().getDrawable(R.drawable.transparent_circle_bg,null));
+                    //    mBinding.TgSleepMode.setBackground(getResources().getDrawable(R.drawable.transparent_circle_bg,null));
                 }
             }
 
@@ -364,13 +373,13 @@ public class StabilizerStatusActivityV2 extends AppCompatActivity implements App
             if (sleepMode[0].equals("RECEIVED")) {
                 if (sleepMode[1].equals("C")) {
                     mBinding.TgSleepMode.setChecked(true);
-                    mBinding.TgSleepMode.setBackground(getResources().getDrawable(R.drawable.simens_circle_bg,null));
+                    //   mBinding.TgSleepMode.setBackground(getResources().getDrawable(R.drawable.simens_circle_bg,null));
                 } else if (sleepMode[1].equals("D")) {
                     mBinding.TgSleepMode.setChecked(false);
-                    mBinding.TgSleepMode.setBackground(getResources().getDrawable(R.drawable.transparent_circle_bg,null));
+                    //  mBinding.TgSleepMode.setBackground(getResources().getDrawable(R.drawable.transparent_circle_bg,null));
                 }
             }
         }
     }
 }
-/*Version: 1.0.9 | Phase II*/
+/*Version: 1.1.0 | Phase II*/

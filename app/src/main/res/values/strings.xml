@@ -28,7 +28,7 @@
     <string name="operationFailed">Operation Failed, Restart Stabilizer and try again</string>
     <string name="low">Low</string>
     <string name="high">High</string>
-    <string name="timeDelay">Time delay</string>
+    <string name="timeDelay">Time \n delay</string>
     <string name="normal">Normal</string>
     <string name="outputOn">Output ON</string>
     <string name="outputOff">Output OFF</string>
@@ -37,7 +37,7 @@
     <string name="NA">N/A</string>
     <string name="output">Output</string>
     <string name="input">Input</string>
-    <string name="ampere">Ampere</string>
+    <string name="ampere">Current</string>
     <string name="status">Status</string>
     <string name="schedule">Schedule</string>
     <string name="sleepMode">Sleep Mode</string>

@@ -53,7 +53,6 @@
                 android:id="@+id/imageView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:gravity="center"
                 android:src="@color/colorRed"
                 android:text="@string/alfo_india_company"
@@ -72,6 +71,14 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="70dp"
+                android:src="@drawable/make_in_india_logo"
+                app:layout_constraintEnd_toEndOf="@+id/imageView3"
+                app:layout_constraintStart_toStartOf="@+id/imageView3"
+                app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
             <!--outPut-->
             <View
@@ -181,8 +188,8 @@
             <!--Status-->
             <View
                 android:id="@+id/view5"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:background="@drawable/circle_bg"
                 app:layout_constraintEnd_toEndOf="@+id/view3"
                 app:layout_constraintStart_toStartOf="@+id/view3"
@@ -215,8 +222,8 @@
 
             <View
                 android:id="@+id/VwSchedule"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:background="@drawable/circle_bg"
                 app:layout_constraintEnd_toEndOf="@+id/view4"
                 app:layout_constraintStart_toStartOf="@+id/view4"
@@ -246,9 +253,9 @@
 
             <ToggleButton
                 android:id="@+id/TgSleepMode"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:background="@drawable/circle_bg"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="@drawable/sleep_check"
                 android:textColor="@color/white"
                 android:textStyle="bold"
                 android:textOff="@string/off"
@@ -271,31 +278,29 @@
 
             <ToggleButton
                 android:id="@+id/swtPower"
-                android:layout_width="65dp"
-                android:layout_height="65dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:background="@drawable/ic_power_off"
                 android:textOff=""
                 android:textOn=""
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/TgSleepMode"
                 app:layout_constraintStart_toStartOf="@+id/TgSleepMode"
-                app:layout_constraintTop_toBottomOf="@+id/textView11"
-                app:layout_constraintVertical_bias=".4" />
+                app:layout_constraintTop_toBottomOf="@+id/guideline5" />
 
             <TextView
                 android:id="@+id/txtPower"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="10dp"
                 android:gravity="center"
+                android:layout_marginTop="5dp"
                 android:text="@string/output"
                 android:textColor="@color/white"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/swtPower" />
+                app:layout_constraintEnd_toEndOf="@+id/swtPower"
+                app:layout_constraintStart_toStartOf="@+id/swtPower"
+                app:layout_constraintTop_toBottomOf="@+id/swtPower"
+                app:layout_constraintVertical_bias="0"/>
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline3"
@@ -309,7 +314,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.69" />
+                app:layout_constraintGuide_percent="0.66" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.85" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

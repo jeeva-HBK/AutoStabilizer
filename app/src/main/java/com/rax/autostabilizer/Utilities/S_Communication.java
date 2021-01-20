@@ -74,7 +74,6 @@ public class S_Communication extends IntentService {
         sendBroadcast(intentResponse);
     }
 
-
 //    public void framepack(String pack) {
 //        packetBuffer = packetBuffer.append(pack);
 //        int indexOfEnd = 0;
