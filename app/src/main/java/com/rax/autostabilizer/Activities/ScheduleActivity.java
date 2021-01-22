@@ -176,7 +176,7 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
                 break;
 
             case R.id.schSave:
-              //  validateAll();
+                // validateAll();
                 if (!checkBoxCheck()) {
                     Snackbar.make(mBinding.cod, R.string.selectAnyOneOfTheSchedule, Snackbar.LENGTH_SHORT).show();
                     return;
@@ -204,7 +204,6 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
         packet = "1#" + packet + getSentTime(); //scheduleTime
         return packet;
     }
-
     private String getSentTime() {
         String time = null;
         if (mBinding.schedule1Cb.isChecked()) {
@@ -256,7 +255,7 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-       /* switch (compoundButton.getId()) {
+        switch (compoundButton.getId()) {
             case R.id.schedule1_cb:
                 if (mBinding.schedule1Cb.isChecked()) {
                     validate(mBinding.sch1st, mBinding.sch1et, mBinding.schedule1Cb);
@@ -284,7 +283,7 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
                     return;
                 }
                 break;
-        }*/
+        }
     /* if (mBinding.schedule1Cb.isChecked()) {
             validate(mBinding.sch1st, mBinding.sch1et, mBinding.schedule1Cb);
             return;
@@ -326,6 +325,7 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
 
         Date timeStart = formatDate((String) start.getText()),
                 timeEnd = formatDate((String) end.getText());
+
         /* if (start.getTag().equals("AM")) {
             timeStart =;
         } else if (start.getTag().equals("PM")) {
@@ -337,6 +337,7 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
         } else if (end.getTag().equals("PM")) {
             timeEnd = formatDate((String) end.getText());
         }*/
+
         String starTime = start.getText().toString(), endTime = end.getText().toString();
         Log.d(TAG, "validate: timeStart " + timeStart + "| timeEnd | " + timeEnd);
 

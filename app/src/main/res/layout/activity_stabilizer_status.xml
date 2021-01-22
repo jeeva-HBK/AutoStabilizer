@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -7,28 +8,29 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <!--progressCircle-->
+
+        <RelativeLayout
+            android:id="@+id/progress_circular"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#7AFFFFFF"
+            android:clickable="true"
+            android:elevation="1dp"
+            android:focusable="true"
+            android:visibility="gone">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true" />
+
+        </RelativeLayout>
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/colorPrimary">
-
-            <!--progressCircle-->
-            <RelativeLayout
-                android:id="@+id/progress_circular"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#7AFFFFFF"
-                android:clickable="true"
-                android:elevation="1dp"
-                android:focusable="true"
-                android:visibility="gone">
-
-                <ProgressBar
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true" />
-
-            </RelativeLayout>
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -73,6 +75,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
             <ImageView
+                android:id="@+id/imageView4"
                 android:layout_width="100dp"
                 android:layout_height="70dp"
                 android:src="@drawable/make_in_india_logo"
@@ -257,9 +260,9 @@
                 android:layout_height="80dp"
                 android:background="@drawable/sleep_check"
                 android:textColor="@color/white"
-                android:textStyle="bold"
                 android:textOff="@string/off"
                 android:textOn="@string/on"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="@+id/view2"
                 app:layout_constraintStart_toStartOf="@+id/view2"
                 app:layout_constraintTop_toTopOf="@+id/guideline4" />
@@ -291,8 +294,8 @@
                 android:id="@+id/txtPower"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:layout_marginTop="5dp"
+                android:gravity="center"
                 android:text="@string/output"
                 android:textColor="@color/white"
                 android:textSize="12sp"
@@ -300,7 +303,7 @@
                 app:layout_constraintEnd_toEndOf="@+id/swtPower"
                 app:layout_constraintStart_toStartOf="@+id/swtPower"
                 app:layout_constraintTop_toBottomOf="@+id/swtPower"
-                app:layout_constraintVertical_bias="0"/>
+                app:layout_constraintVertical_bias="0" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline3"

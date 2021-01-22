@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,7 +18,6 @@ import android.widget.PopupMenu;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
-import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.ViewCompat;
 import androidx.databinding.DataBindingUtil;
@@ -77,7 +75,9 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
         mBinding.rvStabilizerList.setLayoutManager(new LinearLayoutManager(mContext));
         mBinding.rvStabilizerList.setAdapter(mAdapter);
 
-        requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 111);
+        requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE}, 111);
 
         mBinding.fabAddExisting.setOnClickListener(view -> {
             closeFab();
@@ -155,9 +155,19 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
                         ipAddress = dialogView.findViewById(R.id.dialogIpEt);
                         macAddress = dialogView.findViewById(R.id.dialogMacEt);
                         Matcher matcher = IP_ADDRESS.matcher(ipAddress.getText().toString());
+                        Repository repo = new Repository();
+                        List<Stabilizer> stabilizerList = repo.getStabilizerList(StabilizerListActivity.this);
+
                         if (name.getText().toString().trim().equals("")) {
                             name.setError(getString(R.string.enterName));
                             return;
+                        } else {
+                            for (int i = 0; i < stabilizerList.size(); i++) {
+                                if (name.getText().toString().trim().equals(stabilizerList.get(i).getName())) {
+                                    name.setError(getString(R.string.nameExist));
+                                    return;
+                                }
+                            }
                         }
                         if (ipAddress.getText().toString().trim().equals("")) {
                             ipAddress.setError(getString(R.string.enterIp));
@@ -165,15 +175,28 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
                         } else if (!matcher.matches()) {
                             ipAddress.setError(getString(R.string.enterAValidIpAddress));
                             return;
+                        } else {
+                            for (int i = 0; i < stabilizerList.size(); i++) {
+                                if (ipAddress.getText().toString().trim().equals(stabilizerList.get(i).getIPAddress())) {
+                                    ipAddress.setError(getString(R.string.ipExist));
+                                    return;
+                                }
+                            }
                         }
                         if (macAddress.getText().toString().trim().equals("")) {
                             macAddress.setError(getString(R.string.enterMacAdress));
                             return;
+                        } else {
+                            for (int i = 0; i < stabilizerList.size(); i++) {
+                                if (macAddress.getText().toString().trim().equals(stabilizerList.get(i).getMacAddress())) {
+                                    macAddress.setError(getString(R.string.MACexist));
+                                    return;
+                                }
+                            }
                         }
                         Stabilizer stabilizer = new Stabilizer(name.getText().toString()
-                                , ipAddress.getText().toString(), 5000
+                                , ipAddress.getText().toString(), 6000
                                 , macAddress.getText().toString());
-                        Repository repo = new Repository();
                         repo.saveStabilizer(StabilizerListActivity.this, stabilizer);
                         mAppClass.showSnackBar(getString(R.string.complete), mBinding.cod);
                         closeFab();
@@ -181,12 +204,12 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
                         refreshData();
                     }
                 });
+                // bStabilizer IP: 192.168.6.56 | MAC: 10521c5136a4
                 N.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         dialogInterface.dismiss();
                         closeFab();
-
                     }
                 });
             }
@@ -270,7 +293,6 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
             }
         });
         popup.show();
-
     }
 
     private void showProgress() {
@@ -296,7 +318,7 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
                     dismissProgress();
                     if (data.equals(CONNECTED)) {
                         closeTelnet();
-                        startActivity(new Intent(StabilizerListActivity.this, StabilizerStatusActivityV2.class));
+                        startActivity(new Intent(StabilizerListActivity.this, StabilizerStatusActivity.class));
                         return;
                     }
                     mAppClass.showSnackBar(data, mBinding.cod);
@@ -315,7 +337,7 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
                                     mAppClass.showSnackBar(getString(R.string.unableToReachServer), mBinding.cod);
 
                                 } else if (data.equals(AWS_CONNECTED)) {
-                                    startActivity(new Intent(StabilizerListActivity.this, StabilizerStatusActivityV2.class));
+                                    startActivity(new Intent(StabilizerListActivity.this, StabilizerStatusActivity.class));
                                 }
                             }
                         }

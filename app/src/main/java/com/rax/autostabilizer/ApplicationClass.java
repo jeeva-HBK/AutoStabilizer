@@ -11,7 +11,9 @@ import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Environment;
 import android.provider.Settings;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,12 +28,14 @@ import org.acra.ACRA;
 import org.acra.annotation.AcraMailSender;
 import org.acra.annotation.AcraToast;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Method;
 
 import static com.rax.autostabilizer.Utilities.S_Communication.ACTION_MyIntentService;
 import static com.rax.autostabilizer.Utilities.S_Communication.RECEIVED_DATA;
 
-@AcraMailSender(mailTo = "jeeva@gbc.co.in")
+@AcraMailSender(mailTo = "jeeva.raxtech@gmail.com")
 @AcraToast(resText = R.string.CrashReportMessage)
 
 // Created by Loki
@@ -41,16 +45,16 @@ public class ApplicationClass extends Application {
     DataListener mTCPTCPDataListener;
     CountDownTimer mPacketTimeout;
     // Static Strings
+    private static final String TAG = "ApplicationClass";
     public static String macAddress,
-            // Packet Strucure
-            startPacket = "SST#",
+    // Packet Strucure
+    startPacket = "SST#",
             endPacket = "#ED",
 
-            // MqttTopics
-            topic = "topic/",
+    // MqttTopics
+    topic = "topic/",
             pubTopic = "/app2irc",
-            subTopic = "/irc2app"
-                    ;
+            subTopic = "/irc2app";
 
     BroadcastReceiver mTCPDataReceiver = new BroadcastReceiver() {
         @Override
@@ -140,6 +144,58 @@ public class ApplicationClass extends Application {
 
             }
         });
+        // TEMP
+        if (isExternalStorageWritable()) {
+            File appDirectory = new File(Environment.getExternalStorageDirectory() + "/AutoStabilizer");
+            File logDirectory = new File(appDirectory + "/logs");
+            File logFile = new File(logDirectory, "logcat_" + System.currentTimeMillis() + ".txt");
+
+            // create app folder
+            if (!appDirectory.exists()) {
+                appDirectory.mkdir();
+            }
+
+            // create log folder
+            if (!logDirectory.exists()) {
+                logDirectory.mkdir();
+            }
+
+            // clear the previous logcat and then write the new one to the file
+            try {
+                Process process = Runtime.getRuntime().exec("logcat -c");
+                process = Runtime.getRuntime().exec("logcat -f " + logFile);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        } else if (isExternalStorageReadable()) {
+              //  only readable
+             //  Toast.makeText(mContext, "only Read", Toast.LENGTH_SHORT).show();
+            Log.e(TAG, "only Read");
+        } else {
+            // not accessible
+            Log.e(TAG, "not accesible");
+        }
+    }
+
+    /* Checks if external storage is available for read and write */
+    public boolean isExternalStorageWritable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            return true;
+        }
+        return false;
+    }
+
+    /* Checks if external storage is available to at least read */
+    public boolean isExternalStorageReadable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state) ||
+                Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+            return true;
+        }
+        return false;
+        // TEMP
     }
 
     public void sendPacket(final DataListener listener, String packet) {
@@ -182,7 +238,9 @@ public class ApplicationClass extends Application {
         return startPacket + packet + endPacket;
     }
 
-    public interface DataListener { void OnDataReceived(String data);}
+    public interface DataListener {
+        void OnDataReceived(String data);
+    }
 
     public ConnectionMode checkNetwork() {
         if (mobileDataCheck(getApplicationContext())) {
@@ -223,14 +281,16 @@ public class ApplicationClass extends Application {
                 .setPositiveButton("mobile Data", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Toast.makeText(mContext, "mobile Data", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(android.provider.Settings.ACTION_SETTINGS));
+                        Intent myIntent = new Intent(Settings.ACTION_SETTINGS);
+                        mContext.startActivity(myIntent);
+                        Toast.makeText(mContext, "mobileData_Intent | Navigated to Settings", Toast.LENGTH_SHORT).show();
                     }
                 }).setNegativeButton("Wifi", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Toast.makeText(mContext, "Wifi", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+                Intent myIntent = new Intent(Settings.ACTION_SETTINGS);
+                mContext.startActivity(myIntent);
+                Toast.makeText(mContext, "Wifi_Intent | Navigated to Settings", Toast.LENGTH_SHORT).show();
             }
         }).setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
@@ -251,5 +311,6 @@ public class ApplicationClass extends Application {
         super.attachBaseContext(baseContext);
         ACRA.init(this);
     }
-
 }
+
+/*Version: 1.1.2 | Phase II*/

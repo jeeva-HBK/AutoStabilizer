@@ -99,16 +99,13 @@ public class SmartConfigFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
         return super.onOptionsItemSelected(item);
-
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.fragment_smart_config, container, false);
-
         return binding.getRoot();
     }
 
@@ -133,14 +130,18 @@ public class SmartConfigFragment extends Fragment {
         }
         binding.edtNAME.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                if (i == EditorInfo.IME_ACTION_NEXT) {
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                boolean handled = false;
+                if (actionId == EditorInfo.IME_ACTION_NEXT) {
                     binding.edtPass.requestFocus();
+                    handled = true;
                 }
-                return false;
+                return handled;
             }
         });
 
+        Repository repo = new Repository();
+        List<Stabilizer> stabilizerList = repo.getStabilizerList(getActivity());
         binding.btnSearch.setOnClickListener(v -> {
 
             if (binding.edtSSID.getText().toString().equals("")) {
@@ -156,6 +157,13 @@ public class SmartConfigFragment extends Fragment {
                 binding.edtNAME.setError(getString(R.string.fieldEmpty));
                 binding.edtNAME.requestFocus();
                 return;
+            } else {
+                for (int i = 0; i < stabilizerList.size(); i++) {
+                    if (binding.edtNAME.getText().toString().trim().equals(stabilizerList.get(i).getName())) {
+                        binding.edtNAME.setError(getString(R.string.nameExist));
+                        return;
+                    }
+                }
             }
             if (binding.edtPass.getText().toString().equals("")) {
                 mAppClass.showSnackBar(getString(R.string.enterWifiPassword), binding.cod);
@@ -344,7 +352,6 @@ public class SmartConfigFragment extends Fragment {
                 context.registerReceiver(receiver, intentFilter);
                 isReceiverRegistered = true;
             }
-
         }
 
         void unregisterReceiver() {

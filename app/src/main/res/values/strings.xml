@@ -72,18 +72,21 @@
     <string name="schedule4StartValidation">schedule 4 start validation failure !</string>
     <string name="schedule4EndValidation">schedule 4 end validation failure !</string>
     <string name="time">Time</string>
-    <string name="scheduleUpdateSuccessfully">Schedule Update SuccessFully !</string>
+    <string name="scheduleUpdateSuccessfully">Schedule Updated Successfully !</string>
     <string name="stabilizerConfiguration">Configuration</string>
     <string name="schedule2StartValidation">schedule 2 start validation failure !</string>
     <string name="schedule2EndValidation">schedule 2 end validation failure !</string>
     <string name="schedule3StartValidation">schedule 3 start validation failure !</string>
     <string name="schedule3EndValidation">schedule 3 end validation failure !</string>
-    <string name="pir_time_delay">Pir Time Delay</string>
+    <string name="pir_time_delay">PIR Time Delay</string>
     <string name="start_time">Start Time</string>
     <string name="end_time">End Time</string>
     <string name="save_configuration">save configuration</string>
     <string name="note">Note :</string>
     <string name="compressor_delay_time_3_minutes">Compressor Delay Time 3 Minutes</string>
     <string name="errorOccurred">Error occurred</string>
+    <string name="nameExist">Name Already Exist</string>
+    <string name="ipExist">IP Already Exist</string>
+    <string name="MACexist">MAC Already Exist</string>
 
 </resources>

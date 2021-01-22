@@ -24,7 +24,7 @@ import static com.rax.autostabilizer.ApplicationClass.topic;
 import static com.rax.autostabilizer.Utilities.AWSIoT.AWS_CONNECTED;
 import static com.rax.autostabilizer.Utilities.AWSIoT.AWS_NOT_CONNECTED;
 
-public class StabilizerStatusActivityV2 extends AppCompatActivity implements ApplicationClass.DataListener {
+public class StabilizerStatusActivity extends AppCompatActivity implements ApplicationClass.DataListener {
 
     private static final String TAG = "Stabilizer Status";
     ApplicationClass mAppClass;
@@ -34,6 +34,8 @@ public class StabilizerStatusActivityV2 extends AppCompatActivity implements App
     String packetToSend;
     boolean isTimeDelay = false;
     private int mNackCount = 0;
+
+    // Don't change the TimeInterval of this CountDownTimer.
     CountDownTimer keepAliveHandler = new CountDownTimer(Long.MAX_VALUE, 5000) {
         @Override
         public void onTick(long l) {
@@ -51,18 +53,18 @@ public class StabilizerStatusActivityV2 extends AppCompatActivity implements App
         public void onTick(long millisUntilFinished) {
             switch (mAppClass.checkNetwork()) {
                 case TCP:
-                    mAppClass.sendPacket(StabilizerStatusActivityV2.this, packetToSend);
+                    mAppClass.sendPacket(StabilizerStatusActivity.this, packetToSend);
                     break;
                 case AWSIoT:
-                    if (awsIoT!=null){
-                        awsIoT.publish(packetToSend, publishTopic, StabilizerStatusActivityV2.this);
-                    }else {
+                    if (awsIoT != null) {
+                        awsIoT.publish(packetToSend, publishTopic, StabilizerStatusActivity.this);
+                    } else {
                         mAppClass.showSnackBar("Network Changed, Please Restart !", mBinding.cod);
                     }
                     break;
                 case NONE:
                     mAppClass.showSnackBar(getString(R.string.noConnection), mBinding.cod);
-                    mAppClass.showConnectionPop(StabilizerStatusActivityV2.this);
+                    mAppClass.showConnectionPop(StabilizerStatusActivity.this);
                     break;
             }
         }
@@ -94,7 +96,7 @@ public class StabilizerStatusActivityV2 extends AppCompatActivity implements App
         });*/
 
         mBinding.VwSchedule.setOnClickListener(view -> {
-            startActivity(new Intent(StabilizerStatusActivityV2.this, ScheduleActivity.class));
+            startActivity(new Intent(StabilizerStatusActivity.this, ScheduleActivity.class));
         });
 
         mBinding.TgSleepMode.setOnClickListener(view -> {
@@ -188,22 +190,28 @@ public class StabilizerStatusActivityV2 extends AppCompatActivity implements App
         mBinding.progressCircular.setVisibility(View.GONE);
     }
 
+    private void disableButtons(){
+        mBinding.TgSleepMode.setEnabled(false);
+        mBinding.swtPower.setEnabled(false);
+    }
+
+
     private void sendKeepAlive() {
         switch (mAppClass.checkNetwork()) {
             case TCP:
-                mAppClass.sendPacket(StabilizerStatusActivityV2.this, mAppClass.framePack("6#S"));
+                mAppClass.sendPacket(StabilizerStatusActivity.this, mAppClass.framePack("6#S"));
                 break;
             case AWSIoT:
                 if (awsIoT != null) {
-                    awsIoT.publish(mAppClass.framePack("6#S"), publishTopic, StabilizerStatusActivityV2.this);
-                }else{
-                    mAppClass.showSnackBar("Network Changed, Please Restart !",mBinding.cod);
+                    awsIoT.publish(mAppClass.framePack("6#S"), publishTopic, StabilizerStatusActivity.this);
+                } else {
+                    mAppClass.showSnackBar("Network Changed, Please Restart !", mBinding.cod);
                     onBackPressed();
                 }
                 break;
             case NONE:
                 mAppClass.showSnackBar(getString(R.string.noConnection), mBinding.cod);
-                mAppClass.showConnectionPop(StabilizerStatusActivityV2.this);
+                mAppClass.showConnectionPop(StabilizerStatusActivity.this);
                 break;
         }
     }
@@ -228,7 +236,7 @@ public class StabilizerStatusActivityV2 extends AppCompatActivity implements App
         dismissProgress();
         finish();
         stopKeepAlive();
-        Intent homeIntent = new Intent(StabilizerStatusActivityV2.this, StabilizerListActivity.class);
+        Intent homeIntent = new Intent(StabilizerStatusActivity.this, StabilizerListActivity.class);
         homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(homeIntent);
     }
@@ -285,12 +293,14 @@ public class StabilizerStatusActivityV2 extends AppCompatActivity implements App
                 switch (splitData[2]) {
                     case "01":
                         mBinding.txtFaultAlert.setText(R.string.low);
+                        isTimeDelay = true;
                         mBinding.swtPower.setEnabled(false);
                         mBinding.view5.setBackgroundResource(R.drawable.red_circle_bg);
                         mBinding.swtPower.setBackgroundResource(R.drawable.ic_power_off);
                         break;
                     case "02":
                         mBinding.txtFaultAlert.setText(R.string.high);
+                        isTimeDelay = true;
                         mBinding.swtPower.setEnabled(false);
                         mBinding.view5.setBackgroundResource(R.drawable.red_circle_bg);
                         mBinding.swtPower.setBackgroundResource(R.drawable.ic_power_off);
@@ -382,4 +392,3 @@ public class StabilizerStatusActivityV2 extends AppCompatActivity implements App
         }
     }
 }
-/*Version: 1.1.0 | Phase II*/
