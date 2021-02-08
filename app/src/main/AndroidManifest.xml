@@ -23,23 +23,31 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.ScheduleActivity">
 
-        </activity>
-
-        <activity android:name=".Activities.StabilizerListActivity"></activity>
-
+        <!--splashActivity-->
         <activity
             android:name=".Activities.SplashActivity"
-            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".Activities.StabilizerStatusActivity">
+        <!--StabilizerList-->
+        <activity android:name=".Activities.StabilizerListActivity"
+            android:screenOrientation="portrait">
+        </activity>
 
+        <!--StabilizerStatus-->
+        <activity android:name=".Activities.StabilizerStatusActivity"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <!--StabilizerSchedule-->
+        <activity android:name=".Activities.ScheduleActivity"
+            android:screenOrientation="portrait">
         </activity>
 
         <service android:name=".Utilities.S_Communication" />

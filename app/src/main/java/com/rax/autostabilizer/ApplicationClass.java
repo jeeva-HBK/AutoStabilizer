@@ -195,8 +195,8 @@ public class ApplicationClass extends Application {
             return true;
         }
         return false;
-        // TEMP
     }
+    //TEMP
 
     public void sendPacket(final DataListener listener, String packet) {
         this.mTCPTCPDataListener = listener;
@@ -312,5 +312,3 @@ public class ApplicationClass extends Application {
         ACRA.init(this);
     }
 }
-
-/*Version: 1.1.2 | Phase II*/
