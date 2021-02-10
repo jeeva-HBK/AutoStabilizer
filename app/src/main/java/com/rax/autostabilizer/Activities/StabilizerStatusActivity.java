@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -190,7 +191,7 @@ public class StabilizerStatusActivity extends AppCompatActivity implements Appli
         mBinding.progressCircular.setVisibility(View.GONE);
     }
 
-    private void disableButtons(){
+    private void disableButtons() {
         mBinding.TgSleepMode.setEnabled(false);
         mBinding.swtPower.setEnabled(false);
     }
@@ -267,7 +268,8 @@ public class StabilizerStatusActivity extends AppCompatActivity implements Appli
         } else if (data.equals("NACK")) {
             mNackCount++;
             if (mNackCount > 3) {
-                mAppClass.showSnackBar(getString(R.string.operationFailed), mBinding.cod);
+                // mAppClass.showSnackBar(getString(R.string.operationFailed), mBinding.cod);
+                Toast.makeText(mContext, getString(R.string.operationFailed), Toast.LENGTH_SHORT).show();
                 onBackPressed();
             }
         } else {

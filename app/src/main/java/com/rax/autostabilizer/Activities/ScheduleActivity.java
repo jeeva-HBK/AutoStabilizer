@@ -196,14 +196,19 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
             packet = "0";
         }
         if (!mBinding.edtPirTimeDelay.getText().toString().equals("")) {
-            packet = packet + "#" + mBinding.edtPirTimeDelay.getText().toString(); //timeDelay
+            if (mBinding.edtPirTimeDelay.getText().toString().length() == 1) {
+                packet = packet + "#" + "0" + mBinding.edtPirTimeDelay.getText().toString(); //timeDelay
+            } else {
+                packet = packet + "#" + mBinding.edtPirTimeDelay.getText().toString();
+            }
         } else {
             packet = packet + "#" + "00";
         }
-        packet = packet + "#" + checkBoxCount(); //scheduleCount
-        packet = "1#" + packet + getSentTime(); //scheduleTime
+        packet = packet + "#" + checkBoxCount(); // scheduleCount
+        packet = "1#" + packet + getSentTime(); // scheduleTime
         return packet;
     }
+
     private String getSentTime() {
         String time = null;
         if (mBinding.schedule1Cb.isChecked()) {
@@ -396,7 +401,7 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
         }
 
         if (mBinding.schedule2Cb.isChecked()) {
-            if (end!=null) {
+            if (end != null) {
                 if (start2.before(end)) {
                     mAppClass.showSnackBar(getString(R.string.schedule2StartValidation), mBinding.cod);
                     mBinding.schedule2Cb.setChecked(false);
@@ -414,7 +419,7 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
         }
 
         if (mBinding.schedule3Cb.isChecked()) {
-            if (end2!=null) {
+            if (end2 != null) {
                 if (start3.before(end2)) {
                     mAppClass.showSnackBar(getString(R.string.schedule3StartValidation), mBinding.cod);
                     mBinding.schedule3Cb.setChecked(false);
