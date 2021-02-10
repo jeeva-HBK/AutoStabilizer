@@ -88,5 +88,6 @@
     <string name="nameExist">Name Already Exist</string>
     <string name="ipExist">IP Already Exist</string>
     <string name="MACexist">MAC Already Exist</string>
+    <string name="in_min">in min</string>
 
 </resources>
