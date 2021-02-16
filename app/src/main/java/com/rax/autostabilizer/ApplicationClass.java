@@ -44,9 +44,11 @@ public class ApplicationClass extends Application {
     Context mContext;
     DataListener mTCPTCPDataListener;
     CountDownTimer mPacketTimeout;
+
     // Static Strings
     private static final String TAG = "ApplicationClass";
     public static String macAddress,
+
     // Packet Strucure
     startPacket = "SST#",
             endPacket = "#ED",

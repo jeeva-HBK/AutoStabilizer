@@ -36,7 +36,7 @@ public class StabilizerStatusActivity extends AppCompatActivity implements Appli
     boolean isTimeDelay = false;
     private int mNackCount = 0;
 
-    // Don't change the TimeInterval of this CountDownTimer.
+    // Don't change the TimeInterval of these CountDownTimer without knowing the code logic.
     CountDownTimer keepAliveHandler = new CountDownTimer(Long.MAX_VALUE, 5000) {
         @Override
         public void onTick(long l) {
@@ -60,7 +60,7 @@ public class StabilizerStatusActivity extends AppCompatActivity implements Appli
                     if (awsIoT != null) {
                         awsIoT.publish(packetToSend, publishTopic, StabilizerStatusActivity.this);
                     } else {
-                        mAppClass.showSnackBar("Network Changed, Please Restart !", mBinding.cod);
+                        mAppClass.showSnackBar(getString(R.string.networkChanged), mBinding.cod);
                     }
                     break;
                 case NONE:
@@ -73,6 +73,9 @@ public class StabilizerStatusActivity extends AppCompatActivity implements Appli
         @Override
         public void onFinish() {
             dismissProgress();
+            /* Log.e(TAG, "onFinish: static timeout" );
+            mAppClass.showSnackBar(getString(R.string.operationFailed), mBinding.cod);
+            onBackPressed();*/
         }
     };
 
@@ -196,7 +199,6 @@ public class StabilizerStatusActivity extends AppCompatActivity implements Appli
         mBinding.swtPower.setEnabled(false);
     }
 
-
     private void sendKeepAlive() {
         switch (mAppClass.checkNetwork()) {
             case TCP:
@@ -206,7 +208,7 @@ public class StabilizerStatusActivity extends AppCompatActivity implements Appli
                 if (awsIoT != null) {
                     awsIoT.publish(mAppClass.framePack("6#S"), publishTopic, StabilizerStatusActivity.this);
                 } else {
-                    mAppClass.showSnackBar("Network Changed, Please Restart !", mBinding.cod);
+                    mAppClass.showSnackBar(getString(R.string.networkChanged), mBinding.cod);
                     onBackPressed();
                 }
                 break;
@@ -278,7 +280,7 @@ public class StabilizerStatusActivity extends AppCompatActivity implements Appli
     }
 
     private void handleData(String data) {
-         /* Status-read- data = "ST#6#01;5;XX;20,X;21,XXX;22,XXX;23,XX;24,X;FF#ED";
+        /* Status-read- data = "ST#6#01;5;XX;20,X;21,XXX;22,XXX;23,XX;24,X;FF#ED";
          OutPut ON - responce = "ST#7#01;6;01;ACK;D7#ED";
          OutPut OFF - responce =  "ST#8#01;6;02;ACK;AC#ED";
          SleepMode On - responce = "ST#3#RECEIVED,C#ED";

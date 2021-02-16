@@ -89,5 +89,6 @@
     <string name="ipExist">IP Already Exist</string>
     <string name="MACexist">MAC Already Exist</string>
     <string name="in_min">in min</string>
+    <string name="networkChanged">Network Changed, Please Restart !</string>
 
 </resources>

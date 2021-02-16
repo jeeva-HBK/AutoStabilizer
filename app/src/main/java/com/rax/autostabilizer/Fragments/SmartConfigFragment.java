@@ -15,6 +15,7 @@ import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -143,7 +144,7 @@ public class SmartConfigFragment extends Fragment {
         Repository repo = new Repository();
         List<Stabilizer> stabilizerList = repo.getStabilizerList(getActivity());
         binding.btnSearch.setOnClickListener(v -> {
-        /*    LocationManager lm = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+            LocationManager lm = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
             boolean gps_enabled = false;
             try {
                 gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
@@ -167,56 +168,57 @@ public class SmartConfigFragment extends Fragment {
                         dialogInterface.dismiss();
                     }
                 }).show();
-            } else {*/
-            if (binding.edtSSID.getText().toString().equals("")) {
-                mAppClass.showSnackBar(getString(R.string.connectToWifi), binding.cod);
-                return;
-            }
-            if (binding.edtBSSID.getText().toString().equals("")) {
-                mAppClass.showSnackBar(getString(R.string.unknownBSSID), binding.cod);
-                return;
-            }
-            if (binding.edtNAME.getText().toString().equals("")) {
-                mAppClass.showSnackBar(getString(R.string.enterName), binding.cod);
-                binding.edtNAME.setError(getString(R.string.fieldEmpty));
-                binding.edtNAME.requestFocus();
-                return;
             } else {
-                for (int i = 0; i < stabilizerList.size(); i++) {
-                    if (binding.edtNAME.getText().toString().trim().equals(stabilizerList.get(i).getName())) {
-                        binding.edtNAME.setError(getString(R.string.nameExist));
-                        return;
+                if (binding.edtSSID.getText().toString().equals("")) {
+                    mAppClass.showSnackBar(getString(R.string.connectToWifi), binding.cod);
+                    return;
+                }
+                if (binding.edtBSSID.getText().toString().equals("")) {
+                    mAppClass.showSnackBar(getString(R.string.unknownBSSID), binding.cod);
+                    return;
+                }
+                if (binding.edtNAME.getText().toString().equals("")) {
+                    mAppClass.showSnackBar(getString(R.string.enterName), binding.cod);
+                    binding.edtNAME.setError(getString(R.string.fieldEmpty));
+                    binding.edtNAME.requestFocus();
+                    return;
+                } else {
+                    for (int i = 0; i < stabilizerList.size(); i++) {
+                        if (binding.edtNAME.getText().toString().trim().equals(stabilizerList.get(i).getName())) {
+                            binding.edtNAME.setError(getString(R.string.nameExist));
+                            return;
+                        }
                     }
                 }
-            }
-            if (binding.edtPass.getText().toString().equals("")) {
-                mAppClass.showSnackBar(getString(R.string.enterWifiPassword), binding.cod);
-                binding.edtPass.setError(getString(R.string.fieldEmpty));
-                binding.edtPass.requestFocus();
-                return;
-            }
+                if (binding.edtPass.getText().toString().equals("")) {
+                    mAppClass.showSnackBar(getString(R.string.enterWifiPassword), binding.cod);
+                    binding.edtPass.setError(getString(R.string.fieldEmpty));
+                    binding.edtPass.requestFocus();
+                    return;
+                }
 
-            byte[] ssid = binding.edtSSID.getTag() == null ? ByteUtil.getBytesByString(binding.edtSSID.getText().toString())
-                    : (byte[]) binding.edtSSID.getTag();
-            byte[] password = ByteUtil.getBytesByString(binding.edtPass.getText().toString());
-            byte[] bssid = TouchNetUtil.parseBssid2bytes(binding.edtBSSID.getText().toString());
-            byte[] deviceCount = "1".getBytes();
-//                byte[] broadcast = {(byte) (mPackageModeGroup.getCheckedRadioButtonId() == R.id.package_broadcast
-//                        ? 1 : 0)};
+                byte[] ssid = binding.edtSSID.getTag() == null ? ByteUtil.getBytesByString(binding.edtSSID.getText().toString())
+                        : (byte[]) binding.edtSSID.getTag();
+                byte[] password = ByteUtil.getBytesByString(binding.edtPass.getText().toString());
+                byte[] bssid = TouchNetUtil.parseBssid2bytes(binding.edtBSSID.getText().toString());
+                byte[] deviceCount = "1".getBytes();
+                // byte[] broadcast = {(byte) (mPackageModeGroup.getCheckedRadioButtonId() == R.id.package_broadcast
+                // ? 1 : 0)};
 
-            byte[] broadcast = {(byte) 1};
+                byte[] broadcast = {(byte) 1};
 
-            if (mTask != null) {
-                mTask.cancelEsptouch();
+                if (mTask != null) {
+                    mTask.cancelEsptouch();
+                }
+                mTask = new EspSmartConfig(SmartConfigFragment.this);
+                mTask.execute(ssid, bssid, password, deviceCount, broadcast);
             }
-            mTask = new EspSmartConfig(SmartConfigFragment.this);
-            mTask.execute(ssid, bssid, password, deviceCount, broadcast);
-            //  }
         });
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         if (requestCode == REQUEST_PERMISSION) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 if (!mDestroyed) {
