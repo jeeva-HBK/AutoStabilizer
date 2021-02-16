@@ -143,7 +143,31 @@ public class SmartConfigFragment extends Fragment {
         Repository repo = new Repository();
         List<Stabilizer> stabilizerList = repo.getStabilizerList(getActivity());
         binding.btnSearch.setOnClickListener(v -> {
-
+        /*    LocationManager lm = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+            boolean gps_enabled = false;
+            try {
+                gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (!gps_enabled) {
+                new MaterialAlertDialogBuilder(mContext)
+                        .setTitle("Location Disabled")
+                        .setMessage("Location(GPS) service is disabled, please turn it ON to continue Smart Config")
+                        .setCancelable(false)
+                        .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Intent myIntent = new Intent(Settings.ACTION_SETTINGS);
+                                mContext.startActivity(myIntent);
+                            }
+                        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                }).show();
+            } else {*/
             if (binding.edtSSID.getText().toString().equals("")) {
                 mAppClass.showSnackBar(getString(R.string.connectToWifi), binding.cod);
                 return;
@@ -187,6 +211,7 @@ public class SmartConfigFragment extends Fragment {
             }
             mTask = new EspSmartConfig(SmartConfigFragment.this);
             mTask.execute(ssid, bssid, password, deviceCount, broadcast);
+            //  }
         });
     }
 

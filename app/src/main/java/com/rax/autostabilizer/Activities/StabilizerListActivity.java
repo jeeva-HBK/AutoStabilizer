@@ -310,7 +310,7 @@ public class StabilizerListActivity extends AppCompatActivity implements Stabili
         mIPAddress = stabilizer.getIPAddress();
         mPortNumber = stabilizer.getPort();
         macAddress = stabilizer.getMacAddress().toUpperCase();
-        Log.e(TAG, "OnStabilizerClicked: " + mAppClass.checkNetwork().toString());
+        Log.e(TAG, "OnStabilizerClicked: " + mAppClass.checkNetwork().toString() + "MACADDRESS: " + macAddress);
         switch (mAppClass.checkNetwork()) {
             case TCP:
                 showProgress();

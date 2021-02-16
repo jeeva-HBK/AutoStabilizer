@@ -27,7 +27,7 @@ import static com.rax.autostabilizer.Utilities.AWSIoT.AWS_NOT_CONNECTED;
 
 public class StabilizerStatusActivity extends AppCompatActivity implements ApplicationClass.DataListener {
 
-    private static final String TAG = "Stabilizer Status";
+    private static final String TAG = "StabilizerStatusActivity";
     ApplicationClass mAppClass;
     Context mContext = this;
     ActivityStabilizerStatusBinding mBinding;
@@ -178,7 +178,7 @@ public class StabilizerStatusActivity extends AppCompatActivity implements Appli
 
     private void closeConnectivity() {
         if (awsIoT != null) {
-            awsIoT.disconnect();
+            awsIoT.disconnect(getApplicationContext());
         }
         closeTelnet();
     }
@@ -344,8 +344,8 @@ public class StabilizerStatusActivity extends AppCompatActivity implements Appli
                     }
                 }
                 //Amp Decimal
-                String[] ampValue = ampVolt[1].split("");
-                mBinding.txtAmpere.setText(ampValue[1] + ampValue[2] + "." + ampValue[3] + "A");
+                String[] ampValue = ampVolt[1].split("(?!^)");
+                mBinding.txtAmpere.setText(ampValue[0] + ampValue[1] + "." + ampValue[2] + "A");
                 // mBinding.txtAmpere.setText(ampVolt[1] + "A");
                 mBinding.txtInputVoltage.setText(inputVolt[1] + "v");
                 mBinding.txtOutputVoltage.setText(outputVolt[1] + "v");

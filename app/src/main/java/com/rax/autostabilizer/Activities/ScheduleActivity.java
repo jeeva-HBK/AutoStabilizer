@@ -31,7 +31,7 @@ import static com.rax.autostabilizer.ApplicationClass.pubTopic;
 import static com.rax.autostabilizer.ApplicationClass.subTopic;
 import static com.rax.autostabilizer.ApplicationClass.topic;
 
-// Created on 16 Dec by Jeeva
+// Created on 16 Dec 20 by Jeeva
 public class ScheduleActivity extends AppCompatActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener, ApplicationClass.DataListener {
 
     ActivityScheduleBinding mBinding;
@@ -595,10 +595,10 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
                         sch1St, sch1Et, sch2St, sch2Et, sch3St, sch3Et, sch4St, sch4Et;
 
                 String[] sch1Time, sch2Time, sch3Time, sch4Time;
-
-                sch1Time = schedule1Data.split("");
-                sch1St = sch1Time[2] + sch1Time[3] + ":" + sch1Time[4] + sch1Time[5];
-                sch1Et = sch1Time[6] + sch1Time[7] + ":" + sch1Time[8] + sch1Time[9];
+                Log.e("sch1Time", schedule1Data);
+                sch1Time = schedule1Data.split("(?!^)");
+                sch1St = sch1Time[1] + sch1Time[2] + ":" + sch1Time[3] + sch1Time[4];
+                sch1Et = sch1Time[5] + sch1Time[6] + ":" + sch1Time[7] + sch1Time[8];
                 if (!sch1St.equals("00:00")) {
                     mBinding.sch1st.setText(sch1St);
                 }
@@ -611,10 +611,10 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
                     mBinding.schedule1Cb.setChecked(false);
                 }
                 // ST#2#1#65#4#101100200#102200245#103120506#106291015#ED-- read
-
-                sch2Time = schedule2Data.split("");
-                sch2St = sch2Time[2] + sch2Time[3] + ":" + sch2Time[4] + sch2Time[5];
-                sch2Et = sch2Time[6] + sch2Time[7] + ":" + sch2Time[8] + sch2Time[9];
+                Log.e("sch1Time", schedule2Data);
+                sch2Time = schedule2Data.split("(?!^)");
+                sch2St = sch2Time[1] + sch2Time[2] + ":" + sch2Time[3] + sch2Time[4];
+                sch2Et = sch2Time[5] + sch2Time[6] + ":" + sch2Time[7] + sch2Time[8];
                 if (!sch2St.equals("00:00")) {
                     mBinding.sch2st.setText(sch2St);
                 }
@@ -626,10 +626,10 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
                 } else if (sch2Time[1].equals("0")) {
                     mBinding.schedule2Cb.setChecked(false);
                 }
-
-                sch3Time = schedule3Data.split("");
-                sch3St = sch3Time[2] + sch3Time[3] + ":" + sch3Time[4] + sch3Time[5];
-                sch3Et = sch3Time[6] + sch3Time[7] + ":" + sch3Time[8] + sch3Time[9];
+                Log.e("sch1Time", schedule3Data);
+                sch3Time = schedule3Data.split("(?!^)");
+                sch3St = sch3Time[1] + sch3Time[2] + ":" + sch3Time[3] + sch3Time[4];
+                sch3Et = sch3Time[5] + sch3Time[6] + ":" + sch3Time[7] + sch3Time[8];
                 if (!sch3St.equals("00:00")) {
                     mBinding.sch3st.setText(sch3St);
                 }
@@ -641,10 +641,10 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
                 } else if (sch3Time[1].equals("0")) {
                     mBinding.schedule3Cb.setChecked(false);
                 }
-
-                sch4Time = schedule4Data.split("");
-                sch4St = sch4Time[2] + sch4Time[3] + ":" + sch4Time[4] + sch4Time[5];
-                sch4Et = sch4Time[6] + sch4Time[7] + ":" + sch4Time[8] + sch4Time[9];
+                Log.e("sch1Time", schedule4Data);
+                sch4Time = schedule4Data.split("(?!^)");
+                sch4St = sch4Time[1] + sch4Time[2] + ":" + sch4Time[3] + sch4Time[4];
+                sch4Et = sch4Time[5] + sch4Time[6] + ":" + sch4Time[7] + sch4Time[8];
                 if (!sch4St.equals("00:00")) {
                     mBinding.sch4st.setText(sch4St);
                 }

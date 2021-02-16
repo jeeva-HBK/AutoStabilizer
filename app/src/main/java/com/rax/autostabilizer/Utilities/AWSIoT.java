@@ -3,13 +3,12 @@ package com.rax.autostabilizer.Utilities;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
-import com.amazonaws.mobileconnectors.iot.AWSIotMqttClientStatusCallback;
 import com.amazonaws.mobileconnectors.iot.AWSIotMqttManager;
 import com.amazonaws.mobileconnectors.iot.AWSIotMqttMessageDeliveryCallback;
-import com.amazonaws.mobileconnectors.iot.AWSIotMqttNewMessageCallback;
 import com.amazonaws.mobileconnectors.iot.AWSIotMqttQos;
 import com.amazonaws.mobileconnectors.iot.AWSIotMqttSubscriptionStatusCallback;
 import com.amazonaws.regions.Region;
@@ -24,12 +23,18 @@ import java.util.UUID;
 public class AWSIoT {
     public static AWSIoT awsIot;
     private static final String TAG = "AWSIoT";
-    public static final String clientId = UUID.randomUUID().toString();
+    /*    public static final String clientId = UUID.randomUUID().toString();
     public static final String accountID = "484643486344";
     public static final Regions region = Regions.US_EAST_1;
     public static final String endPoint = "a1i25lg7rvcymv-ats.iot.us-east-1.amazonaws.com";
     public static final String policyName = "pawsiotexpo1";
-    public static final String cognitoPoolID = "us-east-1:7a40cebf-4d98-4619-a512-7a8ef4b03449";
+    public static final String cognitoPoolID = "us-east-1:7a40cebf-4d98-4619-a512-7a8ef4b03449";*/
+    public static final String clientId = UUID.randomUUID().toString();
+    public static final String accountID = "331719479207";
+    public static final Regions region = Regions.US_EAST_2;
+    public static final String endPoint = "ar4vinaqp8t40-ats.iot.us-east-2.amazonaws.com";
+    public static final String policyName = "dynaspede_IoT_policy";
+    public static final String cognitoPoolID = "us-east-2:e7d9500a-3001-4959-a704-c0b7febc1518";
     final String publishFail = "sendFailed", connected = "Connected";
     AWSIotMqttManager awsIotMqttManager;
     CognitoCachingCredentialsProvider credentialsProvider;
@@ -80,7 +85,7 @@ public class AWSIoT {
             //Need only for authentication
 
             //DeveloperAuthenticationProvider developerProvider = new DeveloperAuthenticationProvider(mContext, accountID, cognitoPoolID, region);
-            credentialsProvider = new CognitoCachingCredentialsProvider(mContext, cognitoPoolID, Regions.US_EAST_1);
+            credentialsProvider = new CognitoCachingCredentialsProvider(mContext, cognitoPoolID, region);
             return credentialsProvider;
         } else {
             return credentialsProvider;
@@ -102,7 +107,7 @@ public class AWSIoT {
                         break;
                     case ConnectionLost:
                         isConnected = false;
-                        disconnect();
+                        disconnect(null);
                         mCallback.OnDataReceived(AWS_NOT_CONNECTED);
                         break;
                     case Reconnecting:
@@ -159,12 +164,18 @@ public class AWSIoT {
         Log.e("AWS", "Subscribe - Topic <->" + topic);
     }
 
-    public void disconnect() {
+    public void disconnect(Context context) {
         if (awsIot == null) {
             return;
         }
         awsIot = null;
-        awsIotMqttManager.disconnect();
+        if (awsIotMqttManager != null) {
+            awsIotMqttManager.disconnect();
+        } else {
+            if (context != null) {
+                Toast.makeText(context, "Please Restart the App & Stabilizer", Toast.LENGTH_SHORT).show();
+            }
+        }
         awsIotMqttManager = null;
     }
 
