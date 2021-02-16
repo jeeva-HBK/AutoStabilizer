@@ -73,15 +73,15 @@ public class StabilizerStatusActivity extends AppCompatActivity implements Appli
         @Override
         public void onFinish() {
             dismissProgress();
-            /* Log.e(TAG, "onFinish: static timeout" );
-            mAppClass.showSnackBar(getString(R.string.operationFailed), mBinding.cod);
+            /*Log.e(TAG, "onFinish: static timeout" );
+            mAppClass.showSnackBar(getString(R.string.requestTimeOut), mBinding.cod);
             onBackPressed();*/
         }
     };
 
     AWSIoT awsIoT;
 
-    //  AWS Topics
+    // AWS Topics
     private String publishTopic = topic + macAddress + pubTopic,
             subscribeTopic = topic + macAddress + subTopic;
 
@@ -91,13 +91,6 @@ public class StabilizerStatusActivity extends AppCompatActivity implements Appli
         mBinding = DataBindingUtil.setContentView(
                 this, R.layout.activity_stabilizer_status);
         mAppClass = (ApplicationClass) getApplication();
-
-      /*  mBinding.toolbar.setOnMenuItemClickListener(item -> {
-            if (item.getItemId() == R.id.menu_schedule) {
-                startActivity(new Intent(StabilizerStatusActivityV2.this, ScheduleActivity.class));
-            }
-            return false;
-        });*/
 
         mBinding.VwSchedule.setOnClickListener(view -> {
             startActivity(new Intent(StabilizerStatusActivity.this, ScheduleActivity.class));

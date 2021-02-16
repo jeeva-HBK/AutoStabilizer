@@ -74,7 +74,7 @@ public class S_Communication extends IntentService {
         sendBroadcast(intentResponse);
     }
 
-//    public void framepack(String pack) {
+    //    public void framepack(String pack) {
 //        packetBuffer = packetBuffer.append(pack);
 //        int indexOfEnd = 0;
 //        if (packetBuffer.toString().contains("#")) {
@@ -147,7 +147,7 @@ public class S_Communication extends IntentService {
                 char[] buffer = new char[2048];
                 int charsRead = 0;
                 while ((charsRead = _inputSteam.read(buffer)) != -1) {
-                    //Log.d(TAG_1, "run: OnReceive");
+                    // Log.d(TAG_1, "run: OnReceive");
                     stop();
                     packetTimeroutTimer.cancel();
                     String message = new String(buffer).substring(0, charsRead);
@@ -200,7 +200,7 @@ public class S_Communication extends IntentService {
                 Log.d(TAG, e1.getMessage());
                 socketDevice = null;
             } catch (IOException e1) {
-//                intentMessage("No Device");
+                // intentMessage("No Device");
                 intentMessage("FailedToConnect");
                 Log.d(TAG, e1.getMessage());
                 socketDevice = null;

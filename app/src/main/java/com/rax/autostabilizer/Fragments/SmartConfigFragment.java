@@ -314,7 +314,6 @@ public class SmartConfigFragment extends Fragment {
         return Build.VERSION.SDK_INT >= 28;
     }
 
-
     private void showProgress() {
         binding.progressCircular.setVisibility(View.VISIBLE);
     }
@@ -322,7 +321,6 @@ public class SmartConfigFragment extends Fragment {
     private void dismissProgress() {
         binding.progressCircular.setVisibility(View.GONE);
     }
-
 
     public void sendData(Context mContext, String message) {
         Intent mServiceIntent = new Intent(mContext,

@@ -286,24 +286,22 @@
                 android:background="@drawable/ic_power_off"
                 android:textOff=""
                 android:textOn=""
+                app:layout_constraintBottom_toTopOf="@+id/txtPower"
                 app:layout_constraintEnd_toEndOf="@+id/TgSleepMode"
-                app:layout_constraintStart_toStartOf="@+id/TgSleepMode"
-                app:layout_constraintTop_toBottomOf="@+id/guideline5" />
+                app:layout_constraintStart_toStartOf="@+id/TgSleepMode" />
 
             <TextView
                 android:id="@+id/txtPower"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginBottom="10dp"
                 android:gravity="center"
                 android:text="@string/output"
                 android:textColor="@color/white"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/swtPower"
-                app:layout_constraintStart_toStartOf="@+id/swtPower"
-                app:layout_constraintTop_toBottomOf="@+id/swtPower"
-                app:layout_constraintVertical_bias="0" />
+                app:layout_constraintStart_toStartOf="@+id/swtPower" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline3"
@@ -312,19 +310,26 @@
                 android:orientation="horizontal"
                 app:layout_constraintGuide_percent="0.5" />
 
-            <androidx.constraintlayout.widget.Guideline
+            <View
                 android:id="@+id/guideline4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/transparent"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.66" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
-            <androidx.constraintlayout.widget.Guideline
+            <!--<View
                 android:id="@+id/guideline5"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="0.1dp"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.85" />
+                app:layout_constraintBottom_toTopOf="@+id/swtPower"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView11" />-->
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
