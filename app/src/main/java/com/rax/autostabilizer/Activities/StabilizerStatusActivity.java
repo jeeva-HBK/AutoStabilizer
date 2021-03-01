@@ -33,8 +33,8 @@ public class StabilizerStatusActivity extends AppCompatActivity implements Appli
     ActivityStabilizerStatusBinding mBinding;
     int keepAliveNackCount = 0, powerPacketNackCount = 0;
     String packetToSend;
-    boolean isTimeDelay = false;
-    private int mNackCount = 0;
+    boolean isTimeDelay = false, waiTime = false;
+    private int mNackCount = 0, errorCount = 0;
 
     // Don't change the TimeInterval of these CountDownTimer without knowing the code logic.
     CountDownTimer keepAliveHandler = new CountDownTimer(Long.MAX_VALUE, 5000) {
@@ -260,6 +260,8 @@ public class StabilizerStatusActivity extends AppCompatActivity implements Appli
             packetSender.cancel();
             handleData(data);
             startKeepAlive();
+            errorCount = 0;
+            mNackCount = 0;
         } else if (data.equals("NACK")) {
             mNackCount++;
             if (mNackCount > 3) {
@@ -268,6 +270,11 @@ public class StabilizerStatusActivity extends AppCompatActivity implements Appli
                 onBackPressed();
             }
         } else {
+            errorCount++;
+            if (errorCount > 6) {
+                Toast.makeText(mContext, getString(R.string.operationFailed), Toast.LENGTH_SHORT).show();
+                onBackPressed();
+            }
             Log.e("V2Error ", "OnDataReceive: " + data);
         }
     }
@@ -341,10 +348,10 @@ public class StabilizerStatusActivity extends AppCompatActivity implements Appli
                 //Amp Decimal
                 StringBuilder ampValues = new StringBuilder();
                 char[] ampValue = ampVolt[1].toCharArray();
-                for(int i=0;i<ampValue.length;i++){
-                    if(i == 0 || i ==1) {
+                for (int i = 0; i < ampValue.length; i++) {
+                    if (i == 0 || i == 1) {
                         ampValues.append(ampValue[i]);
-                    }else{
+                    } else {
                         ampValues.append(".");
                         ampValues.append(ampValue[i]);
                         ampValues.append("A");
@@ -382,7 +389,7 @@ public class StabilizerStatusActivity extends AppCompatActivity implements Appli
                     //  mBinding.TgSleepMode.setBackground(getResources().getDrawable(R.drawable.simens_circle_bg,null));
                 } else if (spiltData[2].equals("D")) {
                     mBinding.TgSleepMode.setChecked(false);
-                    //    mBinding.TgSleepMode.setBackground(getResources().getDrawable(R.drawable.transparent_circle_bg,null));
+                    //  mBinding.TgSleepMode.setBackground(getResources().getDrawable(R.drawable.transparent_circle_bg,null));
                 }
             }
 
