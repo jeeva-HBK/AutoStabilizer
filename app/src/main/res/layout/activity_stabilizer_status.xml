@@ -295,6 +295,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
+                android:layout_marginTop="20dp"
                 android:gravity="center"
                 android:text="@string/output"
                 android:textColor="@color/white"
@@ -308,7 +309,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.5" />
+                app:layout_constraintGuide_percent="0.45" />
 
             <View
                 android:id="@+id/guideline4"

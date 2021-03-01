@@ -590,13 +590,45 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
                 }
                 //Schedule Time
                 String schedule1Data = spiltData[5], schedule2Data = spiltData[6],
-                        schedule3Data = spiltData[7], schedule4Data = spiltData[8],
-
-                        sch1St, sch1Et, sch2St, sch2Et, sch3St, sch3Et, sch4St, sch4Et;
-
-                String[] sch1Time, sch2Time, sch3Time, sch4Time;
+                        schedule3Data = spiltData[7], schedule4Data = spiltData[8];
+                        //sch1St, sch1Et, sch2St, sch2Et, sch3St, sch3Et, sch4St, sch4Et;
+                StringBuilder sch1Stt=new StringBuilder(),sch1Ett = new StringBuilder(),
+                              sch2Stt=new StringBuilder(),sch2Ett = new StringBuilder(),
+                              sch3Stt=new StringBuilder(),sch3Ett = new StringBuilder(),
+                              sch4Stt=new StringBuilder(),sch4Ett = new StringBuilder();
+                char[] sch1Timee,sch2Timee, sch3Timee, sch4Timee;
+                //String[] sch1Time, sch2Time, sch3Time, sch4Time;
                 Log.e("sch1Time", schedule1Data);
-                sch1Time = schedule1Data.split("(?!^)");
+                sch1Timee = schedule1Data.toCharArray();
+                for(int i=0;i<sch1Timee.length;i++){
+                    if(i == 1 || i == 2) {
+                            sch1Stt.append(sch1Timee[i]);
+                    }else if (i == 3){
+                        sch1Stt.append(":");
+                        sch1Stt.append(sch1Timee[i]);
+                    }else if (i == 4){
+                        sch1Stt.append(sch1Timee[i]);
+                    }else if(i == 5 || i == 6){
+                        sch1Ett.append(sch1Timee[i]);
+                    }else if (i == 7){
+                        sch1Ett.append(":");
+                        sch1Ett.append(sch1Timee[i]);
+                    }else if (i == 8){
+                        sch1Ett.append(sch1Timee[i]);
+                    }
+                }
+                if (!sch1Stt.equals("00:00")) {
+                    mBinding.sch1st.setText(sch1Stt);
+                }
+                if (!sch1Ett.equals("00:00")) {
+                    mBinding.sch1et.setText(sch1Ett);
+                }
+                if (sch1Timee.length > 0 && sch1Timee[0] == '1') {
+                    mBinding.schedule1Cb.setChecked(true);
+                } else if (sch1Timee[0] == '0') {
+                    mBinding.schedule1Cb.setChecked(false);
+                }
+                /*sch1Time = schedule1Data.split("(?<=\\G.{1})");
                 sch1St = sch1Time[1] + sch1Time[2] + ":" + sch1Time[3] + sch1Time[4];
                 sch1Et = sch1Time[5] + sch1Time[6] + ":" + sch1Time[7] + sch1Time[8];
                 if (!sch1St.equals("00:00")) {
@@ -605,14 +637,43 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
                 if (!sch1Et.equals("00:00")) {
                     mBinding.sch1et.setText(sch1Et);
                 }
-                if (sch1Time[1].equals("1")) {
+                if (sch1Time[0].equals("1")) {
                     mBinding.schedule1Cb.setChecked(true);
-                } else if (sch1Time[1].equals("0")) {
+                } else if (sch1Time[0].equals("0")) {
                     mBinding.schedule1Cb.setChecked(false);
-                }
+                }*/
                 // ST#2#1#65#4#101100200#102200245#103120506#106291015#ED-- read
                 Log.e("sch1Time", schedule2Data);
-                sch2Time = schedule2Data.split("(?!^)");
+                sch2Timee = schedule2Data.toCharArray();
+                for(int j=0;j<sch2Timee.length;j++){
+                   if(j == 1 || j == 2) {
+                        sch2Stt.append(sch2Timee[j]);
+                    }else if (j == 3){
+                        sch2Stt.append(":");
+                        sch2Stt.append(sch2Timee[j]);
+                    }else if (j == 4){
+                        sch2Stt.append(sch2Timee[j]);
+                    }else if(j == 5 || j == 6){
+                        sch2Ett.append(sch2Timee[j]);
+                    }else if (j == 7){
+                        sch2Ett.append(":");
+                        sch2Ett.append(sch2Timee[j]);
+                    }else if (j == 8){
+                        sch2Ett.append(sch2Timee[j]);
+                    }
+                }
+                if (!sch2Stt.equals("00:00")) {
+                    mBinding.sch2st.setText(sch2Stt);
+                }
+                if (!sch2Ett.equals("00:00")) {
+                    mBinding.sch2et.setText(sch2Ett);
+                }
+                if (sch2Timee.length > 0 && sch2Timee[0] == '1') {
+                    mBinding.schedule2Cb.setChecked(true);
+                } else if (sch2Timee[0] == '0') {
+                    mBinding.schedule2Cb.setChecked(false);
+                }
+                /*sch2Time = schedule2Data.split("(?<=\\G.{1})");
                 sch2St = sch2Time[1] + sch2Time[2] + ":" + sch2Time[3] + sch2Time[4];
                 sch2Et = sch2Time[5] + sch2Time[6] + ":" + sch2Time[7] + sch2Time[8];
                 if (!sch2St.equals("00:00")) {
@@ -621,13 +682,42 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
                 if (!sch2Et.equals("00:00")) {
                     mBinding.sch2et.setText(sch2Et);
                 }
-                if (sch2Time[1].equals("1")) {
+                if (sch2Time[0].equals("1")) {
                     mBinding.schedule2Cb.setChecked(true);
-                } else if (sch2Time[1].equals("0")) {
+                } else if (sch2Time[0].equals("0")) {
                     mBinding.schedule2Cb.setChecked(false);
-                }
+                }*/
                 Log.e("sch1Time", schedule3Data);
-                sch3Time = schedule3Data.split("(?!^)");
+                sch3Timee = schedule3Data.toCharArray();
+                for(int k=0;k<sch3Timee.length;k++){
+                    if(k == 1 || k == 2) {
+                        sch3Stt.append(sch3Timee[k]);
+                    }else if (k == 3){
+                        sch3Stt.append(":");
+                        sch3Stt.append(sch3Timee[k]);
+                    }else if (k == 4){
+                        sch3Stt.append(sch3Timee[k]);
+                    }else if(k == 5 || k == 6){
+                        sch3Ett.append(sch3Timee[k]);
+                    }else if (k == 7){
+                        sch3Ett.append(":");
+                        sch3Ett.append(sch3Timee[k]);
+                    }else if (k == 8){
+                        sch3Ett.append(sch3Timee[k]);
+                    }
+                }
+                if (!sch3Stt.equals("00:00")) {
+                    mBinding.sch3st.setText(sch3Stt);
+                }
+                if (!sch3Ett.equals("00:00")) {
+                    mBinding.sch3et.setText(sch3Ett);
+                }
+                if (sch3Timee.length > 0 && sch3Timee[0] == '1') {
+                    mBinding.schedule3Cb.setChecked(true);
+                } else if (sch3Timee[0] == '0') {
+                    mBinding.schedule3Cb.setChecked(false);
+                }
+                /*sch3Time = schedule3Data.split("(?<=\\G.{1})");
                 sch3St = sch3Time[1] + sch3Time[2] + ":" + sch3Time[3] + sch3Time[4];
                 sch3Et = sch3Time[5] + sch3Time[6] + ":" + sch3Time[7] + sch3Time[8];
                 if (!sch3St.equals("00:00")) {
@@ -636,13 +726,42 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
                 if (!sch3Et.equals("00:00")) {
                     mBinding.sch3et.setText(sch3Et);
                 }
-                if (sch3Time[1].equals("1")) {
+                if (sch3Time[0].equals("1")) {
                     mBinding.schedule3Cb.setChecked(true);
-                } else if (sch3Time[1].equals("0")) {
+                } else if (sch3Time[0].equals("0")) {
                     mBinding.schedule3Cb.setChecked(false);
-                }
+                }*/
                 Log.e("sch1Time", schedule4Data);
-                sch4Time = schedule4Data.split("(?!^)");
+                sch4Timee = schedule4Data.toCharArray();
+                for(int q=0;q<sch4Timee.length;q++){
+                    if(q == 1 || q == 2) {
+                        sch4Stt.append(sch4Timee[q]);
+                    }else if (q == 3){
+                        sch4Stt.append(":");
+                        sch4Stt.append(sch4Timee[q]);
+                    }else if (q == 4){
+                        sch4Stt.append(sch4Timee[q]);
+                    }else if(q == 5 || q == 6){
+                        sch4Ett.append(sch4Timee[q]);
+                    }else if (q == 7){
+                        sch4Ett.append(":");
+                        sch4Ett.append(sch4Timee[q]);
+                    }else if (q == 8){
+                        sch4Ett.append(sch4Timee[q]);
+                    }
+                }
+                if (!sch4Stt.equals("00:00")) {
+                    mBinding.sch4st.setText(sch4Stt);
+                }
+                if (!sch4Ett.equals("00:00")) {
+                    mBinding.sch4et.setText(sch4Ett);
+                }
+                if (sch4Timee.length > 0 && sch4Timee[0] == '1') {
+                    mBinding.schedule4Cb.setChecked(true);
+                } else if (sch4Timee[0] == '0') {
+                    mBinding.schedule4Cb.setChecked(false);
+                }
+                /*sch4Time = schedule4Data.split("(?<=\\G.{1})");
                 sch4St = sch4Time[1] + sch4Time[2] + ":" + sch4Time[3] + sch4Time[4];
                 sch4Et = sch4Time[5] + sch4Time[6] + ":" + sch4Time[7] + sch4Time[8];
                 if (!sch4St.equals("00:00")) {
@@ -651,11 +770,11 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
                 if (!sch4Et.equals("00:00")) {
                     mBinding.sch4et.setText(sch4Et);
                 }
-                if (sch4Time[1].equals("1")) {
+                if (sch4Time[0].equals("1")) {
                     mBinding.schedule4Cb.setChecked(true);
-                } else if (sch4Time[1].equals("0")) {
+                } else if (sch4Time[0].equals("0")) {
                     mBinding.schedule4Cb.setChecked(false);
-                }
+                }*/
 
             } else if (spiltData[1].equals("1")) {
                 if (spiltData[2].equals("RECEIVED")) {

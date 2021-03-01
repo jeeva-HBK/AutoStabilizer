@@ -339,8 +339,20 @@ public class StabilizerStatusActivity extends AppCompatActivity implements Appli
                     }
                 }
                 //Amp Decimal
-                String[] ampValue = ampVolt[1].split("(?!^)");
-                mBinding.txtAmpere.setText(ampValue[0] + ampValue[1] + "." + ampValue[2] + "A");
+                StringBuilder ampValues = new StringBuilder();
+                char[] ampValue = ampVolt[1].toCharArray();
+                for(int i=0;i<ampValue.length;i++){
+                    if(i == 0 || i ==1) {
+                        ampValues.append(ampValue[i]);
+                    }else{
+                        ampValues.append(".");
+                        ampValues.append(ampValue[i]);
+                        ampValues.append("A");
+                    }
+                }
+                mBinding.txtAmpere.setText(ampValues);
+                //String[] ampValue = ampVolt[1].split("(?!^)");
+                //mBinding.txtAmpere.setText(ampValue[0] + ampValue[1] + "." + ampValue[2] + "A");
                 // mBinding.txtAmpere.setText(ampVolt[1] + "A");
                 mBinding.txtInputVoltage.setText(inputVolt[1] + "v");
                 mBinding.txtOutputVoltage.setText(outputVolt[1] + "v");
