@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
             app:layout_constraintTop_toTopOf="parent"
-            app:title="@string/app_name"
+            app:title="SENSE Stabilizer"
             app:titleTextColor="@color/white" />
 
         <androidx.recyclerview.widget.RecyclerView

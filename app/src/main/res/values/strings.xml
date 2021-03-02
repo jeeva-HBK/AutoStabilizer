@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">Auto Stabilizer</string>
+    <string name="app_name">SENSE</string>
 
     <!--AppTexts-->
-    <string name="CrashReportMessage">Sorry! AutoStabilizer is Crashed, Please Send Us The Crash Report...</string>
+    <string name="CrashReportMessage">Sorry! Sense Stabilizer is Crashed, Please Send Us The Crash Report...</string>
     <string name="requestTimeOut">Request timeout, please try again</string>
     <string name="addStabilizer">Add Stabilizer</string>
     <string name="save">Save</string>
